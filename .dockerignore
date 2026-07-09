@@ -2,8 +2,8 @@
 node_modules
 .pnpm-store
 
-# Build output (akan di-copy dari builder stage)
-build
+# Build outputs (generated inside container, not needed from host)
+.output
 
 # Environment files (jangan ikut ke image)
 .env
@@ -23,7 +23,6 @@ data/
 # Dev tools
 .agents
 .generated
-.react-router
 
 # Misc
 *.log
