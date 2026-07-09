@@ -38,7 +38,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=${{ github.event.inputs.tag }}
-            type=raw,value=latest,enable=${{ github.event.inputs.tag == 'latest' }}
             type=sha,prefix=sha-
 
       - name: Set up Docker Buildx
@@ -49,8 +48,10 @@ jobs:
         with:
           context: .
           push: true
+          # amd64 only — server arcane adalah x86_64
+          # arm64 via QEMU emulation memperlambat build 5-10x
+          platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          platforms: linux/amd64,linux/arm64
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max

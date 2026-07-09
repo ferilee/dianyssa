@@ -7,31 +7,37 @@ RUN apk add --no-cache python3 make g++ gcc linux-headers
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Skip Puppeteer Chromium download during install (we use system Chromium)
+# Skip Puppeteer Chromium download during install
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 WORKDIR /app
 
-# Copy dependency manifests
+# Copy dependency manifests FIRST (cache layer — only invalidated when lockfile changes)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Install all dependencies (dev + prod needed for build)
+# Install ALL dependencies (dev + prod) — cached unless lockfile changes
 RUN pnpm install --frozen-lockfile
 
-# Copy source code
+# Copy source code (invalidates cache only when source changes)
 COPY . .
 
 # Build the application
 RUN pnpm build
 
-# ─── Stage 2: Production ──────────────────────────────────────────────────────
+# ─── Stage 2: Prune dev dependencies ─────────────────────────────────────────
+FROM builder AS pruner
+
+# Remove devDependencies in-place to get a clean prod-only node_modules
+RUN pnpm prune --prod
+
+# ─── Stage 3: Production runner ───────────────────────────────────────────────
 FROM node:22-alpine AS runner
 
-# Install runtime system dependencies:
-# - build tools needed to re-link native modules (node-pty)
-# - Chromium for Puppeteer PDF generation
+# Install only runtime system dependencies
 RUN apk add --no-cache \
+    # Needed to re-link native modules (node-pty, better-sqlite3)
     python3 make g++ gcc linux-headers \
+    # Chromium for Puppeteer PDF generation
     chromium \
     nss \
     freetype \
@@ -41,25 +47,20 @@ RUN apk add --no-cache \
     font-noto \
     font-noto-emoji
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
-# Tell Puppeteer to use the installed system Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 WORKDIR /app
 
-# Copy dependency manifests
+# Copy package manifests
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Install production dependencies only (native modules will be compiled here)
-RUN pnpm install --frozen-lockfile --prod
+# Copy pruned node_modules from pruner (no re-download needed!)
+COPY --from=pruner /app/node_modules ./node_modules
 
-# Copy built output from builder stage
+# Copy built output
 # - build/   → React Router client-side assets
 # - .output/ → Nitro server bundle (agent-native preset "node")
-# NOTE: .react-router/ is dev-only type-gen, not needed at runtime
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/.output ./.output
 
@@ -71,4 +72,4 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV PORT=3000
 
-CMD ["pnpm", "start"]
+CMD ["node", ".output/server/index.mjs"]
