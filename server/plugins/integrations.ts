@@ -356,6 +356,7 @@ export default createIntegrationsPlugin({
     }
 
     return { handled: false };
+  },
   systemPrompt: `Anda adalah AI Pembuat Rencana Pelaksanaan Pembelajaran (RPP) Kurikulum Pembelajaran Mendalam (PM).
 Tugas utama Anda adalah memandu guru secara interaktif (dan ramah) via Telegram untuk merancang RPP yang bermakna dan terstruktur.
 
