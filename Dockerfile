@@ -33,7 +33,7 @@ RUN pnpm prune --prod
 # ─── Stage 3: Production runner ───────────────────────────────────────────────
 FROM node:22-alpine AS runner
 
-# Install only runtime system dependencies
+# Install runtime system dependencies
 RUN apk add --no-cache \
     # Needed to re-link native modules (node-pty, better-sqlite3)
     python3 make g++ gcc linux-headers \
@@ -46,6 +46,9 @@ RUN apk add --no-cache \
     ttf-freefont \
     font-noto \
     font-noto-emoji
+
+# Install pnpm (needed to run `pnpm start` → agent-native start)
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
@@ -72,4 +75,7 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV PORT=3000
 
-CMD ["node", ".output/server/index.mjs"]
+# Use pnpm start → agent-native start which correctly handles
+# ESM/CJS interop for puppeteer's __dirname usage
+CMD ["pnpm", "start"]
+
