@@ -57,12 +57,11 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --prod
 
 # Copy built output from builder stage
-# - build/     → React Router client-side output
-# - .output/   → Nitro server bundle (agent-native preset "node")
-# - .react-router/ → React Router manifest & type declarations
+# - build/   → React Router client-side assets
+# - .output/ → Nitro server bundle (agent-native preset "node")
+# NOTE: .react-router/ is dev-only type-gen, not needed at runtime
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/.output ./.output
-COPY --from=builder /app/.react-router ./.react-router
 
 # Create data directory for SQLite persistence
 RUN mkdir -p /app/data
