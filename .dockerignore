@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build output (akan di-copy dari builder stage)
+build
+
+# Environment files (jangan ikut ke image)
+.env
+.env.*
+!.env.example
+
+# Data & runtime
+data/
+*.db
+*.sqlite
+
+# Git & CI
+.git
+.gitignore
+.github
+
+# Dev tools
+.agents
+.generated
+.react-router
+
+# Misc
+*.log
+*.md
+README*
+CHANGELOG*

@@ -1,0 +1,36 @@
+services:
+  app:
+    image: ghcr.io/ferilee/dianyssa:latest
+    container_name: dianyssa-agent
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: /app/data/app.db
+
+      # Telegram Configuration
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      INITIAL_ADMIN_TELEGRAM_ID: ${INITIAL_ADMIN_TELEGRAM_ID}
+      TELEGRAM_ARCHIVE_CHANNEL_ID: ${TELEGRAM_ARCHIVE_CHANNEL_ID}
+
+      # AI Configuration
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GEMINI_API_BASE_URL: ${GEMINI_API_BASE_URL:-https://generativelanguage.googleapis.com/v1beta}
+
+      # App
+      APP_URL: ${APP_URL:-http://localhost:3000}
+    volumes:
+      - sqlite_data:/app/data
+    networks:
+      - ferileenet
+    restart: always
+
+volumes:
+  sqlite_data:
+
+networks:
+  ferileenet:
+    external: true

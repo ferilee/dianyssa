@@ -1,0 +1,8 @@
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  node-pty: true
+  puppeteer: true
+minimumReleaseAgeExclude:
+  - '@agent-native/core@0.90.2'
+  - '@agent-native/toolkit@0.4.1 || 0.4.2'
