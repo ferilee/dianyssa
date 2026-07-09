@@ -12,6 +12,13 @@ export default defineConfig({
     ...reactRouterPlugins(),
     ...agentNativePlugins({
       ssrStubs: ["shiki"],
+      // Externalize puppeteer so Nitro doesn't bundle CJS packages into ESM
+      // (avoids "ReferenceError: __dirname is not defined in ES module scope")
+      nitro: {
+        externals: {
+          external: ["puppeteer", "puppeteer-core", "@puppeteer/browsers"],
+        },
+      },
     }),
   ],
 });
