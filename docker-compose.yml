@@ -3,7 +3,7 @@ services:
     image: ghcr.io/ferilee/dianyssa:latest
     container_name: dianyssa-agent
     ports:
-      - "3000:3000"
+      - "3002:3000"
     env_file:
       - .env
     environment:
