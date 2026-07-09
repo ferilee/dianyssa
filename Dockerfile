@@ -1,15 +1,21 @@
 # ─── Stage 1: Build ───────────────────────────────────────────────────────────
 FROM node:22-alpine AS builder
 
+# Install build tools required by native modules (node-pty uses node-gyp)
+RUN apk add --no-cache python3 make g++ gcc linux-headers
+
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Skip Puppeteer Chromium download during install (we use system Chromium)
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 WORKDIR /app
 
 # Copy dependency manifests
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Install dependencies (including devDependencies needed for build)
+# Install all dependencies (dev + prod needed for build)
 RUN pnpm install --frozen-lockfile
 
 # Copy source code
@@ -21,11 +27,11 @@ RUN pnpm build
 # ─── Stage 2: Production ──────────────────────────────────────────────────────
 FROM node:22-alpine AS runner
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
-# Install Chromium for Puppeteer (used for PDF generation)
+# Install runtime system dependencies:
+# - build tools needed to re-link native modules (node-pty)
+# - Chromium for Puppeteer PDF generation
 RUN apk add --no-cache \
+    python3 make g++ gcc linux-headers \
     chromium \
     nss \
     freetype \
@@ -35,7 +41,10 @@ RUN apk add --no-cache \
     font-noto \
     font-noto-emoji
 
-# Tell Puppeteer to use installed Chromium
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Tell Puppeteer to use the installed system Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
@@ -44,14 +53,14 @@ WORKDIR /app
 # Copy dependency manifests
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Install production dependencies only
+# Install production dependencies only (native modules will be compiled here)
 RUN pnpm install --frozen-lockfile --prod
 
 # Copy built output from builder stage
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/.react-router ./.react-router
 
-# Create data directory for SQLite
+# Create data directory for SQLite persistence
 RUN mkdir -p /app/data
 
 EXPOSE 3000
