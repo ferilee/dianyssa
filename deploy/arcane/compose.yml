@@ -1,0 +1,63 @@
+# ============================================================
+# Arcane project: dianyssa-agent production
+#
+# Letakkan folder ini di Arcane Projects Directory, misalnya:
+#   /opt/arcane/projects/dianyssa/
+#
+# Cara deploy dari Arcane UI:
+#   1. Buat project baru → pilih folder ini (atau sync dari Git).
+#   2. Isi Environment Variables di UI Arcane (semua variabel dari .env.example).
+#   3. Klik Deploy/Up.
+#
+# Tidak perlu external network karena app dan Caddy berada dalam satu project.
+# ============================================================
+
+services:
+  app:
+    image: ghcr.io/ferilee/dianyssa:${IMAGE_TAG:-latest}
+    container_name: dianyssa-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: /app/data/app.db
+    volumes:
+      - sqlite_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: dianyssa-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  sqlite_data:
+  caddy_data:
+  caddy_config:

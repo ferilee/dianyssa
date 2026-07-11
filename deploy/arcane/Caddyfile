@@ -1,0 +1,18 @@
+# ============================================================
+# Caddy reverse proxy untuk dianyssa-agent di Arcane
+#
+# Set APP_DOMAIN di Environment Variables Arcane UI,
+# atau ganti {$APP_DOMAIN} dengan domain kamu.
+# ============================================================
+
+{$APP_DOMAIN} {
+    encode gzip zstd
+
+    reverse_proxy app:3000
+
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+}

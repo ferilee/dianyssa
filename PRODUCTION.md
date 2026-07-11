@@ -223,9 +223,57 @@ Pastikan:
 
 ---
 
-## 12. Catatan Keamanan
+## 12. Alternatif Deploy dengan Arcane UI
 
-- Jangan pernah commit `.env.production` ke Git.
+Jika kamu ingin mengelola container melalui antarmuka web, kamu bisa menggunakan **[Arcane UI](https://getarcane.app)**.
+
+### 12.1 Install Arcane UI
+
+Di server, jalankan:
+
+```bash
+docker compose -f arcane-compose.yml up -d
+```
+
+Isi dulu `ENCRYPTION_KEY` dan `JWT_SECRET` di `arcane-compose.yml` dengan string acak 32 karakter.
+
+Arcane akan tersedia di `http://<ip-server>:3552`. Untuk akses dari internet, arahkan subdomain (misalnya `arcane.sekolahmu.id`) ke port 3552 via reverse proxy.
+
+### 12.2 Deploy Project dianyssa-agent dari Arcane
+
+Folder `deploy/arcane/` sudah disiapkan sebagai project Arcane.
+
+Cara deploy:
+
+1. Copy atau sync folder `deploy/arcane/` ke Arcane Projects Directory, misalnya:
+   ```bash
+   mkdir -p /opt/arcane/projects/dianyssa
+   cp -r deploy/arcane/* /opt/arcane/projects/dianyssa/
+   ```
+
+2. Di Arcane UI, buat **Project → Local Directory** dan pilih `/opt/arcane/projects/dianyssa`.
+
+3. Buka tab **Environment Variables** di Arcane, lalu isi semua variabel dari `deploy/arcane/.env.example`.
+
+4. Klik **Deploy/Up**. Arcane akan menjalankan `app` dan `caddy` dalam satu project.
+
+5. Setelah domain HTTPS aktif, daftarkan webhook Telegram:
+   ```bash
+   curl -X POST "https://rpp.sekolahmu.id/_agent-native/integrations/telegram/setup"
+   ```
+
+### 12.3 Keunggulan Arcane
+
+- Kelola container, log, image, volume, dan environment variables dari browser.
+- Update image cukup ubah `IMAGE_TAG` di Environment Variables Arcane, lalu klik **Redeploy**.
+- Tidak perlu login SSH setiap kali deploy.
+
+---
+
+## 13. Catatan Keamanan
+
+- Jangan pernah commit `.env.production` atau file `.env` Arcane ke Git.
 - Gunakan tag image spesifik, hindari `latest` di production.
+- Arcane punya akses ke Docker socket host — pastikan `ENCRYPTION_KEY` dan `JWT_SECRET` kuat, dan batasi akses ke UI Arcane.
 - Pertimbangkan migrasi ke PostgreSQL/MySQL jika traffic tinggi, karena SQLite kurang ideal untuk concurrent write.
 - Selalu backup database sebelum update besar.

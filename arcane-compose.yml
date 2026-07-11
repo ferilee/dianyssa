@@ -1,0 +1,48 @@
+# ============================================================
+# Docker Compose untuk menjalankan Arcane UI (Docker management UI)
+# Dokumentasi resmi: https://getarcane.app/docs/setup/installation
+#
+# Arcane digunakan untuk mengelola project Docker Compose dianyssa-agent
+# melalui antarmuka web, tanpa perlu login ke server via terminal.
+#
+# Cara pakai:
+#   1. Isi ENCRYPTION_KEY dan JWT_SECRET dengan string acak 32 karakter.
+#   2. Sesuaikan APP_URL dengan domain/public URL Arcane kamu.
+#   3. Jalankan: docker compose -f arcane-compose.yml up -d
+#   4. Buka Arcane di browser dan buat project dari folder deploy/arcane/.
+# ============================================================
+
+services:
+  arcane:
+    # Ganti ke tag spesifik (misal v2.3.2) untuk production
+    image: ghcr.io/getarcaneapp/manager:latest
+    container_name: arcane
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3552:3552"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - arcane-data:/app/data
+      # Optional: folder di host tempat Arcane menyimpan project Compose
+      - /opt/arcane/projects:/app/data/projects
+    environment:
+      # URL tempat kamu mengakses Arcane. Ganti dengan domain kamu jika pakai reverse proxy.
+      - APP_URL=http://localhost:3552
+      # Wajib 32 karakter. Generate: openssl rand -hex 16
+      - ENCRYPTION_KEY=replace_me_with_a_random_32_char_value
+      # String acak yang kuat
+      - JWT_SECRET=replace_me_with_a_random_32_char_value
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    # Membantu Arcane mendeteksi container-nya sendiri
+    cgroup: host
+    healthcheck:
+      test: ["CMD", "./arcane", "health", "--timeout", "2s"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 15s
+
+volumes:
+  arcane-data:
