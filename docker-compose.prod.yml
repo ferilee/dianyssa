@@ -1,0 +1,76 @@
+# ============================================================
+# Production Docker Compose for dianyssa-agent
+#
+# Uses:
+#   - GHCR image (ghcr.io/ferilee/dianyssa)
+#   - Caddy as reverse proxy + automatic HTTPS
+#   - SQLite persisted in named Docker volume
+#
+# Before first deploy:
+#   1. docker network create ferileenet
+#   2. cp .env.production.example .env.production
+#   3. Fill .env.production with real secrets and IMAGE_TAG=v1.0.0
+#   4. Replace APP_DOMAIN in Caddyfile or export it as env var
+#   5. docker compose -f docker-compose.prod.yml up -d
+# ============================================================
+
+services:
+  app:
+    image: ghcr.io/ferilee/dianyssa:${IMAGE_TAG:-latest}
+    container_name: dianyssa-agent
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: /app/data/app.db
+    volumes:
+      - sqlite_data:/app/data
+    networks:
+      - ferileenet
+    # Bind only to localhost for debugging; Caddy reaches the service by name.
+    ports:
+      - "127.0.0.1:3000:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: dianyssa-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - ferileenet
+    depends_on:
+      app:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  sqlite_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  ferileenet:
+    external: true

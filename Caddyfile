@@ -1,0 +1,21 @@
+# ============================================================
+# Caddy reverse proxy for dianyssa-agent
+#
+# Set APP_DOMAIN in .env.production, or replace {$APP_DOMAIN}
+# below with your actual domain (e.g. rpp.sekolahmu.id).
+# Caddy will automatically obtain and renew Let's Encrypt SSL.
+# ============================================================
+
+{$APP_DOMAIN} {
+    encode gzip zstd
+
+    # Forward all traffic to the app container inside Docker network
+    reverse_proxy dianyssa-agent:3000
+
+    # Optional: add security headers
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+}

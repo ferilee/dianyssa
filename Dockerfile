@@ -5,7 +5,7 @@ FROM node:22-alpine AS builder
 RUN apk add --no-cache python3 make g++ gcc linux-headers
 
 # Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@11.9.0 --activate
 
 # Skip Puppeteer Chromium download during install
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -45,10 +45,11 @@ RUN apk add --no-cache \
     ca-certificates \
     ttf-freefont \
     font-noto \
-    font-noto-emoji
+    font-noto-emoji \
+    curl
 
 # Install pnpm (needed to run `pnpm start` → agent-native start)
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@11.9.0 --activate
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
@@ -67,13 +68,19 @@ COPY --from=pruner /app/node_modules ./node_modules
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/.output ./.output
 
-# Create data directory for SQLite persistence
-RUN mkdir -p /app/data
+# Create data directory for SQLite persistence and switch to non-root user
+RUN mkdir -p /app/data && chown -R node:node /app
 
 EXPOSE 3000
 
 ENV NODE_ENV=production
 ENV PORT=3000
+
+USER node
+
+# Healthcheck on the root path
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:3000/ >/dev/null || exit 1
 
 # Use pnpm start → agent-native start which correctly handles
 # ESM/CJS interop for puppeteer's __dirname usage
