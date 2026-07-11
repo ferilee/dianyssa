@@ -241,7 +241,7 @@ Arcane akan tersedia di `http://<ip-server>:3552`. Untuk akses dari internet, ar
 
 ### 12.2 Deploy Project dianyssa-agent dari Arcane
 
-Folder `deploy/arcane/` sudah disiapkan sebagai project Arcane.
+Folder `deploy/arcane/` sudah disiapkan sebagai project Arcane. Compose ini **tidak menyertakan Caddy**; diasumsikan kamu sudah punya reverse proxy seperti **Nginx Proxy Manager**.
 
 Cara deploy:
 
@@ -255,9 +255,21 @@ Cara deploy:
 
 3. Buka tab **Environment Variables** di Arcane, lalu isi semua variabel dari `deploy/arcane/.env.example`.
 
-4. Klik **Deploy/Up**. Arcane akan menjalankan `app` dan `caddy` dalam satu project.
+   Perhatikan `APP_HOST_PORT`. Defaultnya `3010`. Pastikan port tersebut belum dipakai container lain:
+   ```bash
+   docker ps --format "table {{.Names}}\t{{.Ports}}"
+   ```
 
-5. Setelah domain HTTPS aktif, daftarkan webhook Telegram:
+4. Klik **Deploy/Up**. Arcane akan menjalankan service `app` saja.
+
+5. Arahkan domain ke app melalui reverse proxy kamu (contoh dengan Nginx Proxy Manager):
+   - **Domain Names:** `rpp.sekolahmu.id`
+   - **Scheme:** `http`
+   - **Forward Hostname / IP:** `<ip-server>`
+   - **Forward Port:** `3010` (atau sesuai `APP_HOST_PORT`)
+   - Aktifkan **SSL** (Let's Encrypt) dan force HTTPS.
+
+6. Setelah domain HTTPS aktif, daftarkan webhook Telegram:
    ```bash
    curl -X POST "https://rpp.sekolahmu.id/_agent-native/integrations/telegram/setup"
    ```
@@ -272,25 +284,27 @@ Cara deploy:
 
 #### Error: `Bind for 0.0.0.0:3000 failed: port is already allocated`
 
-Penyebab paling umum: deployment manual dari `docker-compose.prod.yml` masih berjalan dan menggunakan port 3000 (atau 80/443).
+Penyebab: container lain (misal `gemastika`) sudah memakai port 3000, atau deployment lama masih berjalan.
 
 Solusi:
 
-```bash
-# Hentikan deployment manual terlebih dahulu
-docker compose -f docker-compose.prod.yml down
+1. Pastikan `APP_HOST_PORT` di Environment Variables Arcane bukan `3000`, tapi port yang kosong (default `3010`).
+2. Hentikan deployment manual jika masih ada:
+   ```bash
+   docker compose -f docker-compose.prod.yml down
+   docker rm -f dianyssa-agent dianyssa-caddy
+   ```
+3. Di Arcane, klik **Redeploy** project dianyssa.
 
-# Kalau container masih ada, hapus manual
-docker rm -f dianyssa-agent dianyssa-caddy
-
-# Di Arcane, klik Redeploy project dianyssa
-```
-
-Jika masih bermasalah, periksa container mana yang memakai port tersebut:
+Cek port yang sudah terpakai:
 
 ```bash
 docker ps --format "table {{.Names}}\t{{.Ports}}"
 ```
+
+#### Error: `Bind for 0.0.0.0:80 failed` atau `0.0.0.0:443 failed`
+
+Jika kamu pakai Nginx Proxy Manager (atau reverse proxy lain) yang sudah menguasai port 80/443, jangan gunakan Caddy di dalam project Arcane. Compose `deploy/arcane/compose.yml` sudah disiapkan tanpa Caddy; gunakan NPM untuk SSL.
 
 ---
 

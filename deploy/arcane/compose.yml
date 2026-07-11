@@ -9,7 +9,9 @@
 #   2. Isi Environment Variables di UI Arcane (semua variabel dari .env.example).
 #   3. Klik Deploy/Up.
 #
-# Tidak perlu external network karena app dan Caddy berada dalam satu project.
+# Catatan: compose ini TIDAK menyertakan Caddy. Diasumsikan kamu sudah
+# punya reverse proxy sendiri (misal Nginx Proxy Manager) yang mengarahkan
+# domain ke port APP_HOST_PORT di server.
 # ============================================================
 
 services:
@@ -17,10 +19,6 @@ services:
     image: ghcr.io/ferilee/dianyssa:${IMAGE_TAG:-latest}
     container_name: dianyssa-agent-arcane
     restart: unless-stopped
-    # Pastikan tidak ada port yang di-publish ke host. Akses ke app hanya
-    # dari internal project (Caddy). Dockerfile meng-EXPOSE 3000, jadi kita
-    # override secara eksplisit agar tidak bentrok dengan container lain.
-    ports: []
     env_file:
       - .env
     environment:
@@ -29,6 +27,10 @@ services:
       DATABASE_URL: /app/data/app.db
     volumes:
       - sqlite_data:/app/data
+    ports:
+      # Expose app ke host pada port yang bisa kamu pilih.
+      # Reverse proxy (NPM/Caddy/Traefik) akan mengarahkan domain ke port ini.
+      - "${APP_HOST_PORT:-3010}:3000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 30s
@@ -41,27 +43,5 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  caddy:
-    image: caddy:2-alpine
-    container_name: dianyssa-caddy-arcane
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      app:
-        condition: service_healthy
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
 volumes:
   sqlite_data:
-  caddy_data:
-  caddy_config:
