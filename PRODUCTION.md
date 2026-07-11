@@ -268,6 +268,30 @@ Cara deploy:
 - Update image cukup ubah `IMAGE_TAG` di Environment Variables Arcane, lalu klik **Redeploy**.
 - Tidak perlu login SSH setiap kali deploy.
 
+### 12.4 Troubleshooting Arcane
+
+#### Error: `Bind for 0.0.0.0:3000 failed: port is already allocated`
+
+Penyebab paling umum: deployment manual dari `docker-compose.prod.yml` masih berjalan dan menggunakan port 3000 (atau 80/443).
+
+Solusi:
+
+```bash
+# Hentikan deployment manual terlebih dahulu
+docker compose -f docker-compose.prod.yml down
+
+# Kalau container masih ada, hapus manual
+docker rm -f dianyssa-agent dianyssa-caddy
+
+# Di Arcane, klik Redeploy project dianyssa
+```
+
+Jika masih bermasalah, periksa container mana yang memakai port tersebut:
+
+```bash
+docker ps --format "table {{.Names}}\t{{.Ports}}"
+```
+
 ---
 
 ## 13. Catatan Keamanan

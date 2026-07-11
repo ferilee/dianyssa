@@ -15,8 +15,12 @@
 services:
   app:
     image: ghcr.io/ferilee/dianyssa:${IMAGE_TAG:-latest}
-    container_name: dianyssa-agent
+    container_name: dianyssa-agent-arcane
     restart: unless-stopped
+    # Pastikan tidak ada port yang di-publish ke host. Akses ke app hanya
+    # dari internal project (Caddy). Dockerfile meng-EXPOSE 3000, jadi kita
+    # override secara eksplisit agar tidak bentrok dengan container lain.
+    ports: []
     env_file:
       - .env
     environment:
@@ -39,7 +43,7 @@ services:
 
   caddy:
     image: caddy:2-alpine
-    container_name: dianyssa-caddy
+    container_name: dianyssa-caddy-arcane
     restart: unless-stopped
     ports:
       - "80:80"
