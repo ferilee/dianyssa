@@ -86,7 +86,7 @@ export default defineAction({
         id: result.blog.id,
         title: result.blog.title,
         slug: result.blog.slug,
-        status: result.blog.status,
+        contentStatus: result.blog.status,
         message: `Artikel "${result.blog.title}" berhasil dibuat sebagai ${result.blog.status}.`,
       };
     }
@@ -101,7 +101,7 @@ export default defineAction({
       contentType: "blog",
       id: args.id,
       title: (result as any)?.blog?.title ?? args.title,
-      status: (result as any)?.blog?.status ?? args.status,
+      contentStatus: (result as any)?.blog?.status ?? args.status,
       message: `Artikel "${args.title}" berhasil diperbarui.`,
     };
   },

@@ -29,7 +29,7 @@ export default defineAction({
         contentType,
         id,
         newStatus: status,
-        message: `Pengumuman "${result.announcement?.title ?? id}" sekarang ${status === "active" ? "aktif" : "nonaktif"}.`,
+        message: `Pengumuman "${(result as any).announcement?.title ?? id}" sekarang ${status === "active" ? "aktif" : "nonaktif"}.`,
       };
     }
 
@@ -45,7 +45,7 @@ export default defineAction({
       contentType,
       id,
       newStatus: status,
-      message: `Artikel "${result.blog?.title ?? id}" sekarang ${status}.`,
+      message: `Artikel "${(result as any).blog?.title ?? id}" sekarang ${status}.`,
     };
   },
 });
