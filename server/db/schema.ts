@@ -30,3 +30,14 @@ export const webSessions = table("web_sessions", {
   telegramUserId: text("telegram_user_id").notNull(),
   expiresAt: integer("expires_at").notNull(),           // Batas kadaluarsa token (misal: +1 jam)
 });
+
+// 4. Tabel Mapping Telegram User ke Sesi IdeTech
+export const ideTechSessions = table("ide_tech_sessions", {
+  id: text("id").primaryKey(),
+  telegramUserId: text("telegram_user_id").notNull().unique(),
+  ideTechUserId: text("ide_tech_user_id").notNull(),
+  email: text("email").notNull(),
+  sessionToken: text("session_token").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+});
