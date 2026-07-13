@@ -252,7 +252,7 @@ export default defineAction({
           const filename = `RPP_${rpp.subject.replace(/[^a-zA-Z0-9]/g, "_")}_${rpp.grade.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
           formData.append(
             "document",
-            new Blob([pdfBuffer]),
+            new Blob([new Uint8Array(pdfBuffer)]),
             filename
           );
 
@@ -283,7 +283,7 @@ export default defineAction({
           const filename = `RPP_ARSIP_${rpp.subject.replace(/[^a-zA-Z0-9]/g, "_")}_${rpp.grade.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
           formData.append(
             "document",
-            new Blob([pdfBuffer]),
+            new Blob([new Uint8Array(pdfBuffer)]),
             filename
           );
 
