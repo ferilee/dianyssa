@@ -21,7 +21,7 @@ export default defineAction({
         throw new Error("Status pengumuman hanya bisa active atau inactive");
       }
       const result = await client.patch(
-        `${IDETECH_ENDPOINTS.announcements.list().replace("/list", "")}/${id}`,
+        IDETECH_ENDPOINTS.announcements.delete(id),
         { isActive: status === "active" }
       );
       return {

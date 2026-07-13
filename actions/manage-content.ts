@@ -37,7 +37,7 @@ export default defineAction({
 
       if (args.action === "create") {
         const result = (await client.post(
-          IDETECH_ENDPOINTS.announcements.create(),
+          IDETECH_ENDPOINTS.announcements.create,
           body
         )) as { announcement: { id: string; title: string; isActive: boolean } };
         return {
@@ -77,7 +77,7 @@ export default defineAction({
 
     if (args.action === "create") {
       const result = (await client.post(
-        IDETECH_ENDPOINTS.blogs.create(),
+        IDETECH_ENDPOINTS.blogs.create,
         body
       )) as { blog: { id: string; title: string; slug: string; status: string } };
       return {

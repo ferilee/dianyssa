@@ -17,7 +17,7 @@ export default defineAction({
     const client = createIdeTechClient(session.sessionToken);
 
     if (contentType === "announcement") {
-      const result = (await client.get(IDETECH_ENDPOINTS.announcements.list())) as {
+      const result = (await client.get(IDETECH_ENDPOINTS.announcements.list)) as {
         announcements: Array<{ id: string; title: string; isActive: boolean; type: string }>;
       };
       let items = result.announcements ?? [];
@@ -35,7 +35,7 @@ export default defineAction({
       };
     }
 
-    const result = (await client.get(IDETECH_ENDPOINTS.blogs.list())) as {
+    const result = (await client.get(IDETECH_ENDPOINTS.blogs.list)) as {
       blogs: Array<{ id: string; title: string; status: string; slug: string }>;
     };
     let items = result.blogs ?? [];
