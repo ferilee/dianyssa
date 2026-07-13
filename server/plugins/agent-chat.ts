@@ -7,7 +7,7 @@ import {
 // Nitro plugin compiles this registry dynamically from the actions folder
 import actionsRegistry from "../../.generated/actions-registry.js";
 
-const INITIAL_TOOL_NAMES = ["generate-rpp", "export-to-pdf"];
+const INITIAL_TOOL_NAMES = ["generate-rpp", "export-to-pdf", "link-idetech-account", "manage-content", "list-content", "toggle-content-status", "delete-content"];
 
 export default createAgentChatPlugin({
   appId: "rpp-bot",
