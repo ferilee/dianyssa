@@ -1,16 +1,9 @@
-/**
- * HTTP client untuk memanggil API website IdeTech dengan autentikasi session token
- * Setiap panggilan menggunakan Authorization header berupa Bearer token user yang sudah login
- */
-
 import { IDETECH_BASE_URL } from "./idetech-config";
 
 export class IdeTechClient {
-  constructor(private sessionToken: string) {
-    if (!sessionToken) throw new Error("Session token required");
-  }
+  constructor(private sessionToken: string) {}
 
-  private async request(path: string, init?: RequestInit): Promise<unknown> {
+  private async request(path: string, init?: RequestInit) {
     const url = `${IDETECH_BASE_URL}${path}`;
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -19,15 +12,15 @@ export class IdeTechClient {
     };
 
     const response = await fetch(url, { ...init, headers });
+    const body = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      const body = (await response.json().catch(() => ({}))) as Record<string, unknown>;
       throw new Error(
-        (body.message as string) || `IdeTech API error: ${response.status} ${response.statusText}`
+        body?.message || `IdeTech API error: ${response.status} ${response.statusText}`
       );
     }
 
-    return response.json();
+    return body;
   }
 
   get(path: string) {
