@@ -42,3 +42,4 @@ temp/
 learnings.md
 
 .vercel/
+.worktrees/
