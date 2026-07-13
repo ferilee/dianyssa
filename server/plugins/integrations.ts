@@ -96,12 +96,24 @@ const customTelegramAdapter = {
         rawText: text || "",
         fromId: from?.id,
         fromUsername: from?.username,
-        document: document, // Pass the document down
+        document: document,
       },
       timestamp: message.date * 1000,
     };
   },
 };
+
+async function runActionByName(name: string, args: any, userId: string): Promise<any> {
+  const actionModule = await import(`../../actions/${name}.js`).catch(() => null);
+  if (!actionModule) {
+    throw new Error(`Aksi '${name}' tidak ditemukan.`);
+  }
+  const action = actionModule.default;
+  if (!action?.run) {
+    throw new Error(`Aksi '${name}' tidak memiliki method run.`);
+  }
+  return await action.run(args, { userEmail: userId });
+}
 
 export default createIntegrationsPlugin({
   appId: "rpp-bot",
@@ -115,7 +127,7 @@ export default createIntegrationsPlugin({
     const userId = incoming.senderId;
 
     if (!userId) {
-      return { handled: true }; // Abaikan jika tidak ada senderId
+      return { handled: true };
     }
 
     const token = process.env.TELEGRAM_BOT_TOKEN || "";
@@ -157,7 +169,7 @@ export default createIntegrationsPlugin({
     // 2.5. Penanganan Unggah Dokumen (PDF/DOCX)
     const document = incoming.platformContext.document as any;
     if (document) {
-      const maxBytes = 5 * 1024 * 1024; // 5 MB
+      const maxBytes = 5 * 1024 * 1024;
       if (document.file_size > maxBytes) {
         return {
           handled: true,
@@ -188,7 +200,6 @@ export default createIntegrationsPlugin({
         const header = `[PENGGUNA MENGUNGGAH BERKAS: ${fileName}]\nBerikut adalah teks hasil ekstraksi dari dokumen acuan yang diunggah pengguna:\n---\n`;
         const footer = `\n---\nHarap gunakan teks acuan di atas untuk memandu pembuatan RPP sesuai dengan topik, mata pelajaran, dan acuan materi yang ada di dalamnya.`;
 
-        // Mutasi incoming.text agar memuat isi teks dokumen
         incoming.text = `${header}${extractedText}${footer}${incoming.text ? `\n\nCatatan Tambahan Pengguna: ${incoming.text}` : ""}`;
       } catch (err: any) {
         console.error("[upload] Gagal memproses file upload:", err);
@@ -202,6 +213,7 @@ export default createIntegrationsPlugin({
     // 3. Tangani Perintah Khusus Telegram
     const rawText = (incoming.platformContext.rawText as string) || incoming.text;
     const trimmed = rawText.trim();
+    const lower = trimmed.toLowerCase();
 
     // Perintah /addguru (Hanya Admin)
     if (trimmed.startsWith("/addguru")) {
@@ -294,7 +306,7 @@ export default createIntegrationsPlugin({
     // Perintah /riwayat (Akses Aman via DM)
     if (trimmed === "/riwayat") {
       const tokenUUID = crypto.randomUUID();
-      const expiresAt = Date.now() + 60 * 60 * 1000; // 1 Jam
+      const expiresAt = Date.now() + 60 * 60 * 1000;
 
       await db.insert(schema.webSessions).values({
         token: tokenUUID,
@@ -337,6 +349,247 @@ export default createIntegrationsPlugin({
       }
     }
 
+    // 3.5. Perintah /hubungkan - Link IdeTech Account
+    if (trimmed === "/hubungkan") {
+      return {
+        handled: true,
+        responseText: `Untuk menghubungkan akun Telegram dengan IdeTech, gunakan:\n\n\`/hubungkan email@domain.com\`\n\nContoh: \`/hubungkan admin@idetech.example\``,
+      };
+    }
+
+    const linkMatch = /^\/hubungkan\s+(\S+@\S+\.\S+)$/i.exec(trimmed);
+    if (linkMatch) {
+      const email = linkMatch[1].trim();
+      try {
+        const result = await runActionByName(
+          "link-idetech-account",
+          { telegramUserId: userId, email },
+          userId
+        );
+        return {
+          handled: true,
+          responseText: result.message ?? "Akun berhasil dihubungkan.",
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal menghubungkan akun: ${err.message || err}`,
+        };
+      }
+    }
+
+    // 3.6. Perintah Konten IdeTech (Natural Language)
+    const createAnnouncementMatch = /^buat pengumuman (.+)$/i.exec(trimmed);
+    if (createAnnouncementMatch) {
+      const fullText = createAnnouncementMatch[1].trim();
+      const title = fullText.split(/[.!?\n]/)[0]?.trim()?.slice(0, 100) || "Pengumuman Baru";
+      const content = fullText;
+      try {
+        const result = await runActionByName(
+          "manage-content",
+          {
+            contentType: "announcement",
+            action: "create",
+            title,
+            content,
+          },
+          userId
+        );
+        return {
+          handled: true,
+          responseText: result.message ?? "Pengumuman berhasil dibuat.",
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal membuat pengumuman: ${err.message || err}`,
+        };
+      }
+    }
+
+    const createBlogMatch = /^buat artikel (.+)$/i.exec(trimmed);
+    if (createBlogMatch) {
+      const fullText = createBlogMatch[1].trim();
+      const title = fullText.split(/[.!?\n]/)[0]?.trim()?.slice(0, 100) || "Artikel Baru";
+      const content = fullText;
+      try {
+        const result = await runActionByName(
+          "manage-content",
+          {
+            contentType: "blog",
+            action: "create",
+            title,
+            content,
+          },
+          userId
+        );
+        return {
+          handled: true,
+          responseText: result.message ?? "Artikel berhasil dibuat.",
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal membuat artikel: ${err.message || err}`,
+        };
+      }
+    }
+
+    if (lower === "daftar pengumuman" || lower === "list pengumuman") {
+      try {
+        const result = await runActionByName(
+          "list-content",
+          { contentType: "announcement", status: "all", limit: 10 },
+          userId
+        );
+        if (!result.items || result.items.length === 0) {
+          return { handled: true, responseText: "Belum ada pengumuman." };
+        }
+        const lines = result.items.map((item: any, i: number) =>
+          `${i + 1}. [${String(item.status).toUpperCase()}] ${item.title} — \`${item.id}\`${item.type ? ` (${item.type})` : ""}`
+        );
+        return {
+          handled: true,
+          responseText: `📋 ${result.items.length} pengumuman terakhir:\n${lines.join("\n")}`,
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal mengambil daftar pengumuman: ${err.message || err}`,
+        };
+      }
+    }
+
+    if (lower === "daftar artikel" || lower === "list artikel") {
+      try {
+        const result = await runActionByName(
+          "list-content",
+          { contentType: "blog", status: "all", limit: 10 },
+          userId
+        );
+        if (!result.items || result.items.length === 0) {
+          return { handled: true, responseText: "Belum ada artikel." };
+        }
+        const lines = result.items.map((item: any, i: number) =>
+          `${i + 1}. [${String(item.status).toUpperCase()}] ${item.title} — \`${item.id}\`${item.slug ? ` (${item.slug})` : ""}`
+        );
+        return {
+          handled: true,
+          responseText: `📋 ${result.items.length} artikel terakhir:\n${lines.join("\n")}`,
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal mengambil daftar artikel: ${err.message || err}`,
+        };
+      }
+    }
+
+    const deleteAnnouncementMatch = /^hapus pengumuman (\S+)$/i.exec(trimmed);
+    if (deleteAnnouncementMatch) {
+      const id = deleteAnnouncementMatch[1];
+      try {
+        const result = await runActionByName(
+          "delete-content",
+          { contentType: "announcement", id },
+          userId
+        );
+        return {
+          handled: true,
+          responseText: result.message ?? "Pengumuman berhasil dihapus.",
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal menghapus pengumuman: ${err.message || err}`,
+        };
+      }
+    }
+
+    const deleteBlogMatch = /^hapus artikel (\S+)$/i.exec(trimmed);
+    if (deleteBlogMatch) {
+      const id = deleteBlogMatch[1];
+      try {
+        const result = await runActionByName(
+          "delete-content",
+          { contentType: "blog", id },
+          userId
+        );
+        return {
+          handled: true,
+          responseText: result.message ?? "Artikel berhasil dihapus.",
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal menghapus artikel: ${err.message || err}`,
+        };
+      }
+    }
+
+    const publishBlogMatch = /^publikasikan artikel (\S+)$/i.exec(trimmed);
+    if (publishBlogMatch) {
+      const id = publishBlogMatch[1];
+      try {
+        const result = await runActionByName(
+          "toggle-content-status",
+          { contentType: "blog", id, status: "published" },
+          userId
+        );
+        return {
+          handled: true,
+          responseText: result.message ?? "Artikel berhasil dipublikasikan.",
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal mempublikasikan artikel: ${err.message || err}`,
+        };
+      }
+    }
+
+    const deactivateMatch = /^nonaktifkan pengumuman (\S+)$/i.exec(trimmed);
+    if (deactivateMatch) {
+      const id = deactivateMatch[1];
+      try {
+        const result = await runActionByName(
+          "toggle-content-status",
+          { contentType: "announcement", id, status: "inactive" },
+          userId
+        );
+        return {
+          handled: true,
+          responseText: result.message ?? "Pengumuman berhasil dinonaktifkan.",
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal menonaktifkan pengumuman: ${err.message || err}`,
+        };
+      }
+    }
+
+    const activateMatch = /^aktifkan pengumuman (\S+)$/i.exec(trimmed);
+    if (activateMatch) {
+      const id = activateMatch[1];
+      try {
+        const result = await runActionByName(
+          "toggle-content-status",
+          { contentType: "announcement", id, status: "active" },
+          userId
+        );
+        return {
+          handled: true,
+          responseText: result.message ?? "Pengumuman berhasil diaktifkan.",
+        };
+      } catch (err: any) {
+        return {
+          handled: true,
+          responseText: `Gagal mengaktifkan pengumuman: ${err.message || err}`,
+        };
+      }
+    }
+
     // 4. Aturan Chat Grup (Hanya respons jika di-tag / me-reply bot)
     const chatType = incoming.platformContext.chatType as string;
     const isGroup = chatType === "group" || chatType === "supergroup";
@@ -345,13 +598,12 @@ export default createIntegrationsPlugin({
       const botUsername = await getBotUsername(token);
       const mention = `@${botUsername}`;
 
-      // Cek apakah pesan memuat tag ke bot atau me-reply pesan bot
       const rawBody = (incoming.platformContext as any)?.__rawBody || {};
       const replyTo = rawBody?.message?.reply_to_message;
       const isReplyToBot = replyTo?.from?.username === botUsername;
 
       if (!trimmed.includes(mention) && !isReplyToBot) {
-        return { handled: true }; // Abaikan pesan grup biasa secara senyap
+        return { handled: true };
       }
     }
 
