@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/ferilee/dianyssa:latest
+    image: ghcr.io/ferilee/dianyssa:${IMAGE_TAG:-latest}
     container_name: dianyssa-agent
     ports:
       - "3002:3000"

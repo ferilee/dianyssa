@@ -106,6 +106,12 @@ DATABASE_URL=/app/data/app.db
 chmod 600 .env.production
 ```
 
+> **Wajib:** `APP_DOMAIN` harus diisi dan domain harus sudah pointing ke IP server sebelum deploy. Caddy akan gagal start dengan error `empty host` jika `APP_DOMAIN` kosong. Verifikasi DNS:
+>
+> ```bash
+> dig +short $APP_DOMAIN
+> ```
+
 ---
 
 ## 6. Deploy dengan Docker Compose
@@ -157,18 +163,47 @@ POST /_agent-native/integrations/telegram/webhook
 
 ## 9. Backup Database
 
-Database SQLite disimpan di volume Docker `sqlite_data`. Backup manual:
+Database SQLite disimpan di volume Docker `sqlite_data`. Backup dilakukan
+oleh `scripts/backup-sqlite.sh` di repository ini.
+
+### 9.1 Backup manual
 
 ```bash
-docker cp dianyssa-agent:/app/data/app.db ./backup/app.db.$(date +%F-%H%M)
+./scripts/backup-sqlite.sh /var/backups/dianyssa 14
+# argumen: [BACKUP_DIR=./backups] [RETENTION_DAYS=7]
 ```
 
-Atau buat cron harian:
+Script akan:
+- Validasi container `dianyssa-agent` berjalan.
+- `docker cp` file DB dan kompres dengan gzip.
+- Membersihkan backup yang lebih lama dari `RETENTION_DAYS`.
+
+### 9.2 Backup otomatis via cron
+
+Tambahkan ke crontab host:
 
 ```bash
 # crontab -e
-0 2 * * * docker cp dianyssa-agent:/app/data/app.db /backups/dianyssa/app.db.$(date +\%F) && find /backups/dianyssa -type f -mtime +7 -delete
+0 2 * * * /opt/dianyssa-agent/scripts/backup-sqlite.sh /var/backups/dianyssa 14 >> /var/log/dianyssa-backup.log 2>&1
 ```
+
+Pastikan path script absolut dan user crontab punya akses ke docker
+socket (`/var/run/docker.sock`).
+
+### 9.3 Restore
+
+```bash
+# Stop container
+docker compose -f docker-compose.prod.yml stop app
+
+# Restore dari backup
+gunzip -c /var/backups/dianyssa/app.db.20250101T020000Z.gz \
+  | docker cp - dianyssa-agent:/app/data/app.db
+
+# Start container
+docker compose -f docker-compose.prod.yml start app
+```
+
 
 ---
 

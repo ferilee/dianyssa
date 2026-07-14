@@ -24,7 +24,8 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-      DATABASE_URL: /app/data/app.db
+      # DATABASE_URL di-load dari .env.production (lihat template
+      # .env.production.example) agar single source of truth.
     volumes:
       - sqlite_data:/app/data
     networks:

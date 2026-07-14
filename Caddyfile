@@ -4,6 +4,10 @@
 # Set APP_DOMAIN in .env.production, or replace {$APP_DOMAIN}
 # below with your actual domain (e.g. rpp.sekolahmu.id).
 # Caddy will automatically obtain and renew Let's Encrypt SSL.
+#
+# Catatan: image caddy:2-alpine tidak menyertakan plugin rate_limit.
+# Untuk DDoS/rate-limit protection, lihat bagian "DDoS Protection"
+# di PRODUCTION.md (rekomendasi: Cloudflare atau custom Caddy build).
 # ============================================================
 
 {$APP_DOMAIN} {
