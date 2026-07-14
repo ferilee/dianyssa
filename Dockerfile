@@ -78,10 +78,6 @@ ENV PORT=3000
 
 USER node
 
-# Healthcheck on the root path
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:3000/ >/dev/null || exit 1
-
 # Use pnpm start → agent-native start which correctly handles
 # ESM/CJS interop for puppeteer's __dirname usage
 CMD ["pnpm", "start"]

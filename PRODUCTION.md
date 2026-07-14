@@ -16,19 +16,19 @@ Panduan ini menjelaskan cara men-deploy **dianyssa-agent** ke server production 
 
 ## 2. Rotasi Secret yang Sudah Terekspos
 
-> **PENTING:** File `.env` saat ini masih tersimpan di Git dan berisi secret nyata. Segera rotasi semua secret sebelum production.
+> **PENTING:** `.env` sudah masuk `.gitignore` dan tidak ter-commit lagi, namun jika `.env` pernah ter-push ke repo publik di masa lalu, semua secret di dalamnya harus dianggap **bocor** dan dirotasi.
 
 ```bash
-# Hapus .env dari tracking Git
-git rm --cached .env
-git commit -m "chore: remove .env from repository"
-git push
+# Pastikan .env tidak akan ter-commit:
+git check-ignore .env && echo "OK: .env ter-ignore"
 
 # Rotasi secret di luar kode:
 # - Telegram Bot Token (minta ke @BotFather)
 # - Gemini API Key
-# - Telegram Channel ID (jika berubah)
 # - Telegram Webhook Secret
+# - IDETECH_API_KEY (jika sebelumnya pernah diisi)
+# - INITIAL_ADMIN_TELEGRAM_ID & TELEGRAM_ARCHIVE_CHANNEL_ID hanya
+#   perlu diganti jika akun/channel sudah tidak digunakan
 ```
 
 ---
