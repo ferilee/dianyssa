@@ -24,7 +24,6 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-      DATABASE_URL: /app/data/app.db
     volumes:
       - sqlite_data:/app/data
     ports:
