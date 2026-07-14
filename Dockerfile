@@ -24,6 +24,27 @@ COPY . .
 # Build the application
 RUN pnpm build
 
+# Patch the bundled @puppeteer/browsers CJS-to-ESM chunk.
+# Even with externals, Nitro still inlines this transitive dependency, and its
+# CommonJS source uses `__dirname`, which is undefined in ESM at runtime
+# (`ReferenceError: __dirname is not defined in ES module scope`).
+# `import.meta.dirname` is the ESM equivalent and is available in Node >=20.11.
+RUN node -e "\
+  const fs = require('fs'); \
+  const path = require('path'); \
+  const dir = path.join('/app/.output/server/_libs', '@puppeteer'); \
+  if (!fs.existsSync(dir)) process.exit(0); \
+  const file = fs.readdirSync(dir).find(f => f.startsWith('browsers') && f.endsWith('.mjs')); \
+  if (!file) process.exit(0); \
+  const fp = path.join(dir, file); \
+  const orig = fs.readFileSync(fp, 'utf-8'); \
+  const patched = orig.replace(/(?<![\\w$.])__dirname(?![\\w$])/g, 'import.meta.dirname'); \
+  if (patched !== orig) { \
+    fs.writeFileSync(fp, patched); \
+    console.log('Patched __dirname in', fp); \
+  } \
+"
+
 # ─── Stage 2: Prune dev dependencies ─────────────────────────────────────────
 FROM builder AS pruner
 
