@@ -17,6 +17,7 @@
 services:
   app:
     image: ghcr.io/ferilee/dianyssa:${IMAGE_TAG:-latest}
+    pull_policy: always
     container_name: dianyssa-agent-arcane
     restart: unless-stopped
     env_file:
