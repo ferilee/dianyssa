@@ -2,6 +2,8 @@ import { defineAction } from "@agent-native/core/action";
 import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
 import crypto from "node:crypto";
+import { resolveIdeTechSession } from "../lib/resolve-session";
+import { createIdeTechClient } from "../lib/idetech-client";
 
 export default defineAction({
   description: "Menyimpan draf RPP baru yang telah disepakati ke dalam database dan menghasilkan ID RPP.",
@@ -37,10 +39,30 @@ export default defineAction({
       createdAt: Date.now(),
     });
 
+    let syncMessage = "";
+    try {
+      const session = await resolveIdeTechSession(telegramUserId);
+      if (session && session.sessionToken) {
+        const client = createIdeTechClient(session.sessionToken);
+        await client.post("/api/teacher/rpps", {
+          topic: args.topic,
+          grade: args.grade,
+          duration: "2 JP",
+          model: "Pembelajaran Mendalam",
+          content: args.content,
+          status: "draft",
+        });
+        syncMessage = " Dan RPP ini berhasil disinkronkan ke akun IdeTech Anda.";
+      }
+    } catch (e) {
+      console.log("Belum terhubung ke IdeTech atau gagal sinkronisasi:", e);
+    }
+
     return {
       status: "success",
       rppId,
-      message: `Draf RPP untuk ${args.subject} ${args.grade} berhasil disimpan di database dengan ID: ${rppId}. Silakan panggil aksi 'export-to-pdf' dengan rppId ini untuk mencetak PDF resmi.`,
+      message: `Draf RPP untuk ${args.subject} ${args.grade} berhasil disimpan di database dengan ID: ${rppId}.${syncMessage} Silakan panggil aksi 'export-to-pdf' dengan rppId ini untuk mencetak PDF resmi.`,
     };
   },
 });
+
