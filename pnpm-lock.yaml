@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@agent-native/core':
         specifier: 0.90.2
-        version: 0.90.2(0543857eaba9b0508bea93c1e9780d9c)
+        version: 0.90.2(52cdee81a035b701171fa4491cbf5f1f)
       '@agent-native/toolkit':
         specifier: 0.4.2
         version: 0.4.2(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)
@@ -28,7 +28,7 @@ importers:
         version: 17.4.2
       drizzle-orm:
         specifier: ^0.45.2
-        version: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)
+        version: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9)
       h3:
         specifier: ^2.0.1-rc.20
         version: 2.0.1-rc.23(crossws@0.4.9(srvx@0.11.21))
@@ -44,6 +44,9 @@ importers:
       pdf-parse:
         specifier: ^1.1.1
         version: 1.1.4
+      postgres:
+        specifier: ^3.4.9
+        version: 3.4.9
       puppeteer:
         specifier: ^22.12.1
         version: 22.15.0(typescript@6.0.3)
@@ -4449,6 +4452,10 @@ packages:
     resolution: {integrity: sha512-vuwillviilfKZsg0VGj5R/YwwcHx4SLsIOI/7K6mQkWx+l5cUHTjj5g0AasTBcyXsbfTgrwsUNmVUb5xVwyPwg==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postgres@3.4.9:
+    resolution: {integrity: sha512-GD3qdB0x1z9xgFI6cdRD6xu2Sp2WCOEoe3mtnyB5Ee0XrrL5Pe+e4CCnJrRMnL1zYtRDZmQQVbvOttLnKDLnaw==}
+    engines: {node: '>=12'}
+
   prebuild-install@7.1.3:
     resolution: {integrity: sha512-8Mf2cbV7x1cXPUILADGI3wuhfqWvtiLA1iclTDbFRZkgRQS0NqsPZphna9V+HyTEadheuPmjaJMsbzKQFOzLug==}
     engines: {node: '>=10'}
@@ -5407,7 +5414,7 @@ packages:
 
 snapshots:
 
-  '@agent-native/core@0.90.2(0543857eaba9b0508bea93c1e9780d9c)':
+  '@agent-native/core@0.90.2(52cdee81a035b701171fa4491cbf5f1f)':
     dependencies:
       '@agent-native/toolkit': 0.4.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)
       '@amplitude/analytics-browser': 2.44.4
@@ -5460,13 +5467,13 @@ snapshots:
       '@tiptap/y-tiptap': 3.0.6(prosemirror-model@1.25.10)(prosemirror-state@1.4.4)(prosemirror-view@1.42.0)(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
       '@uiw/react-codemirror': 4.25.10(@babel/runtime@7.29.7)(@codemirror/autocomplete@6.20.3)(@codemirror/language@6.12.4)(@codemirror/lint@6.9.7)(@codemirror/search@6.7.1)(@codemirror/state@6.7.1)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.43.6)(codemirror@6.0.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       ajv: 8.20.0
-      better-auth: 1.6.16(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      better-auth: 1.6.16(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       better-sqlite3: 12.11.1
       clsx: 2.1.1
       cron-parser: 5.6.1
       diff-match-patch: 1.0.5
       dotenv: 17.4.2
-      drizzle-orm: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)
+      drizzle-orm: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9)
       h3: 2.0.1-rc.23(crossws@0.4.9(srvx@0.11.21))
       highlight.js: 11.11.1
       i18next: 26.3.1(typescript@6.0.3)
@@ -5479,7 +5486,7 @@ snapshots:
       nanoid: 5.1.16
       next-themes: 0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       nf3: 0.3.17
-      nitro: 3.0.260415-beta(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(chokidar@5.0.0)(dotenv@17.4.2)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3))(jiti@2.7.0)(vite@8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.0))
+      nitro: 3.0.260415-beta(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(chokidar@5.0.0)(dotenv@17.4.2)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9))(jiti@2.7.0)(vite@8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.0))
       p-limit: 7.3.0
       prettier: 3.9.4
       react: 19.2.7
@@ -5508,6 +5515,7 @@ snapshots:
       '@tanstack/react-query': 5.101.2(react@19.2.7)
       node-pty: 1.1.0
       playwright: 1.61.1
+      postgres: 3.4.9
       react-router: 8.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss: 4.3.2
       vite: 8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.0)
@@ -6084,12 +6092,12 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
 
-  '@better-auth/drizzle-adapter@1.6.16(@better-auth/core@1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.4.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3))':
+  '@better-auth/drizzle-adapter@1.6.16(@better-auth/core@1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.4.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9))':
     dependencies:
       '@better-auth/core': 1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
       '@better-auth/utils': 0.4.1
     optionalDependencies:
-      drizzle-orm: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)
+      drizzle-orm: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9)
 
   '@better-auth/kysely-adapter@1.6.16(@better-auth/core@1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.4.1)(kysely@0.29.3)':
     dependencies:
@@ -8297,10 +8305,10 @@ snapshots:
 
   basic-ftp@5.3.1: {}
 
-  better-auth@1.6.16(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  better-auth@1.6.16(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9))(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
       '@better-auth/core': 1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0)
-      '@better-auth/drizzle-adapter': 1.6.16(@better-auth/core@1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.4.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3))
+      '@better-auth/drizzle-adapter': 1.6.16(@better-auth/core@1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.4.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9))
       '@better-auth/kysely-adapter': 1.6.16(@better-auth/core@1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.4.1)(kysely@0.29.3)
       '@better-auth/memory-adapter': 1.6.16(@better-auth/core@1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.4.1)
       '@better-auth/mongo-adapter': 1.6.16(@better-auth/core@1.6.16(@better-auth/utils@0.4.1)(@better-fetch/fetch@1.2.2)(@opentelemetry/api@1.9.1)(better-call@1.3.6(zod@4.4.3))(jose@6.2.3)(kysely@0.29.3)(nanostores@1.4.0))(@better-auth/utils@0.4.1)
@@ -8318,7 +8326,7 @@ snapshots:
       zod: 4.4.3
     optionalDependencies:
       better-sqlite3: 12.11.1
-      drizzle-orm: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)
+      drizzle-orm: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
     transitivePeerDependencies:
@@ -8581,11 +8589,11 @@ snapshots:
 
   date-fns@4.4.0: {}
 
-  db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)):
+  db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9)):
     optionalDependencies:
       '@libsql/client': 0.15.15
       better-sqlite3: 12.11.1
-      drizzle-orm: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)
+      drizzle-orm: 0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9)
 
   debug@4.4.3:
     dependencies:
@@ -8653,13 +8661,14 @@ snapshots:
 
   dotenv@17.4.2: {}
 
-  drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3):
+  drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9):
     optionalDependencies:
       '@libsql/client': 0.15.15
       '@neondatabase/serverless': 1.1.0
       '@opentelemetry/api': 1.9.1
       better-sqlite3: 12.11.1
       kysely: 0.29.3
+      postgres: 3.4.9
 
   duck@0.1.12:
     dependencies:
@@ -9702,11 +9711,11 @@ snapshots:
 
   nf3@0.3.17: {}
 
-  nitro@3.0.260415-beta(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(chokidar@5.0.0)(dotenv@17.4.2)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3))(jiti@2.7.0)(vite@8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.0)):
+  nitro@3.0.260415-beta(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(chokidar@5.0.0)(dotenv@17.4.2)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9))(jiti@2.7.0)(vite@8.1.0(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.0)):
     dependencies:
       consola: 3.4.2
       crossws: 0.4.9(srvx@0.11.21)
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9))
       env-runner: 0.1.16
       h3: 2.0.1-rc.23(crossws@0.4.9(srvx@0.11.21))
       hookable: 6.1.1
@@ -9717,7 +9726,7 @@ snapshots:
       rolldown: 1.1.4
       srvx: 0.11.21
       unenv: 2.0.0-rc.24
-      unstorage: 2.0.0-alpha.7(chokidar@5.0.0)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)))(ofetch@2.0.0-alpha.3)
+      unstorage: 2.0.0-alpha.7(chokidar@5.0.0)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9)))(ofetch@2.0.0-alpha.3)
     optionalDependencies:
       dotenv: 17.4.2
       jiti: 2.7.0
@@ -9916,6 +9925,8 @@ snapshots:
       nanoid: 3.3.15
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  postgres@3.4.9: {}
 
   prebuild-install@7.1.3:
     dependencies:
@@ -10788,10 +10799,10 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unstorage@2.0.0-alpha.7(chokidar@5.0.0)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)))(ofetch@2.0.0-alpha.3):
+  unstorage@2.0.0-alpha.7(chokidar@5.0.0)(db0@0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9)))(ofetch@2.0.0-alpha.3):
     optionalDependencies:
       chokidar: 5.0.0
-      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3))
+      db0: 0.3.4(@libsql/client@0.15.15)(better-sqlite3@12.11.1)(drizzle-orm@0.45.2(@libsql/client@0.15.15)(@neondatabase/serverless@1.1.0)(@opentelemetry/api@1.9.1)(better-sqlite3@12.11.1)(kysely@0.29.3)(postgres@3.4.9))
       ofetch: 2.0.0-alpha.3
 
   update-browserslist-db@1.2.3(browserslist@4.28.5):
