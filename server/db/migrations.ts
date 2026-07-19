@@ -132,6 +132,17 @@ export const rppBotMigrations: Array<RppBotMigration> = [
       CREATE INDEX IF NOT EXISTS idx_rpp_export_jobs_status ON rpp_export_jobs (status, created_at);
     `,
   },
+  {
+    version: 8,
+    sql: `
+      ALTER TABLE rpp_export_jobs ADD COLUMN next_attempt_at INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE rpp_export_jobs ADD COLUMN lease_expires_at INTEGER;
+      ALTER TABLE rpp_export_jobs ADD COLUMN started_at INTEGER;
+      ALTER TABLE rpp_export_jobs ADD COLUMN completed_at INTEGER;
+      CREATE INDEX IF NOT EXISTS idx_rpp_export_jobs_ready
+        ON rpp_export_jobs (status, next_attempt_at);
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

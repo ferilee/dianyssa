@@ -46,6 +46,10 @@ export const rppExportJobs = table("rpp_export_jobs", {
   status: text("status").notNull(),
   attempts: integer("attempts").notNull().default(0),
   error: text("error"),
+  nextAttemptAt: integer("next_attempt_at").notNull(),
+  leaseExpiresAt: integer("lease_expires_at"),
+  startedAt: integer("started_at"),
+  completedAt: integer("completed_at"),
   createdAt: integer("created_at").notNull(),
   updatedAt: integer("updated_at").notNull(),
 });

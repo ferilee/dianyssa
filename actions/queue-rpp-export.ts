@@ -17,7 +17,7 @@ export default defineAction({
     if (document.status !== "approved") throw new Error("RPP harus disetujui sebelum diekspor.");
     const now = Date.now();
     const jobId = crypto.randomUUID();
-    await db.insert(schema.rppExportJobs).values({ id: jobId, rppDocumentId: rppId, format, status: "queued", attempts: 0, error: null, createdAt: now, updatedAt: now });
+    await db.insert(schema.rppExportJobs).values({ id: jobId, rppDocumentId: rppId, format, status: "queued", attempts: 0, error: null, nextAttemptAt: now, leaseExpiresAt: null, startedAt: null, completedAt: null, createdAt: now, updatedAt: now });
     return { status: "queued", jobId, format };
   },
 });
