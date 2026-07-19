@@ -20,6 +20,10 @@ export const rppDocuments = table("rpp_documents", {
   grade: text("grade").notNull(),                       // Kelas
   topic: text("topic").notNull(),                       // Topik RPP
   content: text("content").notNull(),                   // Konten RPP lengkap (JSON / Markdown)
+  contentJson: text("content_json"),
+  status: text("status").notNull().default("draft"),
+  version: integer("version").notNull().default(1),
+  approvedAt: integer("approved_at"),
   pdfPath: text("pdf_path").notNull(),                  // Path file PDF di VPS untuk diunduh ulang
   createdAt: integer("created_at").notNull(),
 });

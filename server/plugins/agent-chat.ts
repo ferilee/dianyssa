@@ -7,7 +7,7 @@ import {
 // Nitro plugin compiles this registry dynamically from the actions folder
 import actionsRegistry from "../../.generated/actions-registry.js";
 
-const INITIAL_TOOL_NAMES = ["generate-rpp", "export-to-pdf", "link-idetech-account", "manage-content", "list-content", "toggle-content-status", "delete-content"];
+const INITIAL_TOOL_NAMES = ["generate-rpp", "approve-rpp", "export-to-pdf", "link-idetech-account", "manage-content", "list-content", "toggle-content-status", "delete-content"];
 
 export default createAgentChatPlugin({
   appId: "rpp-bot",
@@ -37,5 +37,5 @@ ALUR PERCAKAPAN & KLARIFIKASI:
    - **Asesmen**: Asesmen Awal, Proses, dan Akhir.
 5. Setelah menampilkan draf RPP lengkap, tanyakan persetujuan guru dengan kalimat:
    "Jika draf RPP di atas sudah sesuai, silakan kirim pesan *'Setuju'* atau *'Cetak'* untuk mencetak berkas PDF resmi."
-6. Jika guru menyetujui, panggil aksi 'export-to-pdf' untuk memproses ekspor berkas PDF resmi.`,
+6. Setelah guru menyetujui draf, panggil aksi 'approve-rpp', lalu panggil 'export-to-pdf' untuk memproses ekspor berkas PDF resmi.`,
 });

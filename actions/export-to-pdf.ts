@@ -90,6 +90,12 @@ export default defineAction({
 
     const rpp = results[0];
     assertRppAccess(actor, rpp.telegramUserId);
+    if (rpp.status !== "approved") {
+      return {
+        status: "error",
+        message: "RPP harus disetujui terlebih dahulu sebelum diekspor.",
+      };
+    }
     const contentHtml = markdownToHtml(rpp.content);
 
     // 2. Susun template HTML resmi

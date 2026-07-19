@@ -83,6 +83,16 @@ export const rppBotMigrations: Array<RppBotMigration> = [
         ON web_portal_sessions (telegram_user_id);
     `,
   },
+  {
+    version: 4,
+    sql: `
+      ALTER TABLE rpp_documents ADD COLUMN content_json TEXT;
+      ALTER TABLE rpp_documents ADD COLUMN status TEXT NOT NULL DEFAULT 'draft';
+      ALTER TABLE rpp_documents ADD COLUMN version INTEGER NOT NULL DEFAULT 1;
+      ALTER TABLE rpp_documents ADD COLUMN approved_at INTEGER;
+      CREATE INDEX IF NOT EXISTS idx_rpp_documents_status ON rpp_documents (status);
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

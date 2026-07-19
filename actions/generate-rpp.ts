@@ -1,28 +1,20 @@
 import { defineAction } from "@agent-native/core/action";
-import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
 import crypto from "node:crypto";
 import { resolveIdeTechSession } from "../lib/resolve-session";
 import { createIdeTechClient } from "../lib/idetech-client";
 import { requireAuthorizedActor } from "../server/auth/authorization.js";
+import { rppDraftSchema, rppDraftToMarkdown } from "../domain/rpp.js";
 
 export default defineAction({
   description: "Menyimpan draf RPP baru yang telah disepakati ke dalam database dan menghasilkan ID RPP.",
-  schema: z.object({
-    teacherName: z.string().describe("Nama Guru Mata Pelajaran"),
-    headmasterName: z.string().describe("Nama Kepala Sekolah"),
-    schoolName: z.string().describe("Nama Sekolah"),
-    academicYear: z.string().describe("Tahun Ajaran (contoh: 2026/2027)"),
-    subject: z.string().describe("Mata pelajaran (contoh: Matematika, IPA)"),
-    grade: z.string().describe("Kelas (contoh: Kelas 4, Kelas 7)"),
-    topic: z.string().describe("Topik pembahasan (contoh: Pecahan, Fotosintesis)"),
-    content: z.string().describe("Konten RPP lengkap hasil diskusi dalam format Markdown / teks terstruktur"),
-  }),
+  schema: rppDraftSchema.describe("Draf RPP Pembelajaran Mendalam terstruktur dan tervalidasi."),
   run: async (args, ctx) => {
     const actor = await requireAuthorizedActor(ctx);
     const db = getDb();
     const rppId = crypto.randomUUID();
 
+    const content = rppDraftToMarkdown(args);
     await db.insert(schema.rppDocuments).values({
       id: rppId,
       telegramUserId: actor.telegramUserId,
@@ -33,7 +25,10 @@ export default defineAction({
       subject: args.subject,
       grade: args.grade,
       topic: args.topic,
-      content: args.content,
+      content,
+      contentJson: JSON.stringify(args),
+      status: "draft",
+      version: 1,
       pdfPath: "", // Akan diisi oleh aksi export-to-pdf setelah file berhasil dibuat
       createdAt: Date.now(),
     });
@@ -48,7 +43,7 @@ export default defineAction({
           grade: args.grade,
           duration: "2 JP",
           model: "Pembelajaran Mendalam",
-          content: args.content,
+          content,
           status: "draft",
         });
         syncMessage = " Dan RPP ini berhasil disinkronkan ke akun IdeTech Anda.";
@@ -60,7 +55,7 @@ export default defineAction({
     return {
       status: "success",
       rppId,
-      message: `Draf RPP untuk ${args.subject} ${args.grade} berhasil disimpan di database dengan ID: ${rppId}.${syncMessage} Silakan panggil aksi 'export-to-pdf' dengan rppId ini untuk mencetak PDF resmi.`,
+      message: `Draf RPP untuk ${args.subject} ${args.grade} berhasil disimpan dengan ID ${rppId} dan status draft.${syncMessage} Tampilkan ringkasannya kepada guru, lalu panggil aksi 'approve-rpp' sebelum mengekspor dokumen.`,
     };
   },
 });
