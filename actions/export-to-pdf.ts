@@ -111,11 +111,9 @@ export default defineAction({
 <head>
   <meta charset="UTF-8">
   <title>RPP - ${rpp.subject}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
     @media print {
       body {

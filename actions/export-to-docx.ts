@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { defineAction } from "@agent-native/core/action";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getDb, schema } from "../server/db/index.js";
 import { rppDraftSchema } from "../domain/rpp.js";
 import { assertRppAccess, requireAuthorizedActor } from "../server/auth/authorization.js";
@@ -19,6 +19,22 @@ export default defineAction({
     assertRppAccess(actor, document.telegramUserId);
     if (document.status !== "approved") throw new Error("RPP harus disetujui sebelum diekspor.");
     if (!document.contentJson) throw new Error("RPP lama tidak memiliki data terstruktur untuk diekspor ke DOCX.");
+
+    const [existingArtifact] = await db
+      .select()
+      .from(schema.rppArtifacts)
+      .where(and(eq(schema.rppArtifacts.rppDocumentId, document.id), eq(schema.rppArtifacts.format, "docx")))
+      .limit(1);
+    if (existingArtifact) {
+      return {
+        status: "success",
+        artifactId: existingArtifact.id,
+        format: "docx",
+        storageKey: existingArtifact.storageKey,
+        delivered: existingArtifact.status === "delivered",
+        reused: true,
+      };
+    }
 
     const draft = rppDraftSchema.parse(JSON.parse(document.contentJson));
     const buffer = await renderRppDocx(draft);
@@ -53,6 +69,6 @@ export default defineAction({
       delivered = true;
     }
 
-    return { status: "success", artifactId, format: "docx", storageKey: stored.storageKey, delivered };
+    return { status: "success", artifactId, format: "docx", storageKey: stored.storageKey, delivered, reused: false };
   },
 });
