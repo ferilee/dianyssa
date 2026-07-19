@@ -6,6 +6,12 @@ const MAX_ATTEMPTS = 3;
 const LEASE_MS = 60_000;
 let processing = false;
 
+async function notifyFailure(chatId: string, message: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return;
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ chat_id: chatId, text: message }) });
+}
+
 function retryDelayMs(attempt: number): number {
   return Math.min(60_000, 1_000 * 2 ** Math.max(0, attempt - 1));
 }
@@ -42,6 +48,7 @@ async function processNextJob() {
       const failed = job.attempts >= MAX_ATTEMPTS;
       const retryAt = Date.now() + retryDelayMs(job.attempts);
       await db.update(schema.rppExportJobs).set({ status: failed ? "failed" : "queued", error: message, leaseExpiresAt: null, nextAttemptAt: retryAt, updatedAt: Date.now() }).where(eq(schema.rppExportJobs.id, job.id));
+      if (failed) await notifyFailure(document.telegramUserId, "Ekspor RPP gagal setelah beberapa percobaan. Silakan coba lagi atau hubungi administrator.");
     }
   } finally { processing = false; }
 }
