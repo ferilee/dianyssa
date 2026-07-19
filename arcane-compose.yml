@@ -19,7 +19,7 @@ services:
     container_name: arcane
     restart: unless-stopped
     ports:
-      - "127.0.0.1:3552:3552"
+      - "3552:3552"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - arcane-data:/app/data
