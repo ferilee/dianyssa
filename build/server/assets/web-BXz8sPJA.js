@@ -1,6 +1,6 @@
 import { a as __toCommonJS, i as __require, n as __esmMin, o as __toESM, r as __exportAll, t as __commonJSMin } from "./rolldown-runtime-CE-6LUnI.js";
-import { $ as sql, G as mapResultRow, Q as fillPlaceholders, W as isConfig, _ as extractTablesRelationalConfig, g as createTableRelationsHelpers, ht as entityKind, mt as NoopLogger, pt as DefaultLogger, t as NoopCache } from "./cache-DwtHELNC.js";
-import { a as SQLiteAsyncDialect, i as BaseSQLiteDatabase, n as SQLiteSession, r as SQLiteTransaction, t as SQLitePreparedQuery } from "./session-RBH1CpbJ.js";
+import { $ as sql, G as mapResultRow, Q as fillPlaceholders, W as isConfig, _ as extractTablesRelationalConfig, g as createTableRelationsHelpers, ht as entityKind, mt as NoopLogger, pt as DefaultLogger, t as NoopCache } from "./cache-BPuYUtol.js";
+import { a as SQLiteAsyncDialect, i as BaseSQLiteDatabase, n as SQLiteSession, r as SQLiteTransaction, t as SQLitePreparedQuery } from "./session-IA9z_ISp.js";
 //#region node_modules/.pnpm/@libsql+core@0.15.15/node_modules/@libsql/core/lib-esm/api.js
 /** Error thrown by the client. */
 var LibsqlError = class extends Error {
@@ -7864,7 +7864,7 @@ function _createClient(config) {
 	else throw new LibsqlError(`The client that uses Web standard APIs supports only "libsql:", "wss:", "ws:", "https:" and "http:" URLs, got ${JSON.stringify(config.scheme + ":")}. For more information, please read ${supportedUrlLink}`, "URL_SCHEME_NOT_SUPPORTED");
 }
 //#endregion
-//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_c5561ff4a6ac9389e27710f83e53db58/node_modules/drizzle-orm/libsql/session.js
+//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_b5d52d0b5f492bb170b2aed8fa0db5ab/node_modules/drizzle-orm/libsql/session.js
 var LibSQLSession = class LibSQLSession extends SQLiteSession {
 	constructor(client, dialect, schema, options, tx) {
 		super(dialect);
@@ -8054,7 +8054,7 @@ function normalizeFieldValue(value) {
 	return value;
 }
 //#endregion
-//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_c5561ff4a6ac9389e27710f83e53db58/node_modules/drizzle-orm/libsql/driver-core.js
+//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_b5d52d0b5f492bb170b2aed8fa0db5ab/node_modules/drizzle-orm/libsql/driver-core.js
 var LibSQLDatabase = class extends BaseSQLiteDatabase {
 	static [entityKind] = "LibSQLDatabase";
 	async batch(batch) {
@@ -8085,7 +8085,7 @@ function construct(client, config = {}) {
 	return db;
 }
 //#endregion
-//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_c5561ff4a6ac9389e27710f83e53db58/node_modules/drizzle-orm/libsql/web/index.js
+//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_b5d52d0b5f492bb170b2aed8fa0db5ab/node_modules/drizzle-orm/libsql/web/index.js
 function drizzle(...params) {
 	if (typeof params[0] === "string") return construct(createClient({ url: params[0] }), params[1]);
 	if (isConfig(params[0])) {

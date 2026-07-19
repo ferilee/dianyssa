@@ -1,7 +1,7 @@
 import { o as __toESM, r as __exportAll, t as __commonJSMin } from "./assets/rolldown-runtime-CE-6LUnI.js";
-import { a as scrubUrl, c as __spreadArray, d as ensureEmbedAuthFetchInterceptor, f as EMBED_MODE_QUERY_PARAM, i as trackSessionStatus, l as agentNativePath, o as __assign, p as EMBED_TOKEN_QUERY_PARAM, r as setSentryUser, s as __rest, u as appPath } from "./assets/analytics-uNkOE5qt.js";
-import { $ as sql, E as pgTable, F as integer$1, G as mapResultRow, Q as fillPlaceholders, R as boolean, S as desc, _ as extractTablesRelationalConfig, g as createTableRelationsHelpers, ht as entityKind, j as text$1, mt as NoopLogger, pt as DefaultLogger, t as NoopCache, w as eq } from "./assets/cache-DwtHELNC.js";
-import { a as SQLiteAsyncDialect, c as text$2, i as BaseSQLiteDatabase, l as integer$2, n as SQLiteSession, r as SQLiteTransaction, s as sqliteTable, t as SQLitePreparedQuery } from "./assets/session-RBH1CpbJ.js";
+import { a as scrubUrl, c as __spreadArray, d as ensureEmbedAuthFetchInterceptor, f as EMBED_MODE_QUERY_PARAM, i as trackSessionStatus, l as agentNativePath, o as __assign, p as EMBED_TOKEN_QUERY_PARAM, r as setSentryUser, s as __rest, u as appPath } from "./assets/analytics-PFh8M3qr.js";
+import { $ as sql, E as pgTable, F as integer$1, G as mapResultRow, Q as fillPlaceholders, R as boolean, S as desc, _ as extractTablesRelationalConfig, g as createTableRelationsHelpers, ht as entityKind, j as text$1, mt as NoopLogger, pt as DefaultLogger, t as NoopCache, w as eq } from "./assets/cache-BPuYUtol.js";
+import { a as SQLiteAsyncDialect, c as text$2, i as BaseSQLiteDatabase, l as integer$2, n as SQLiteSession, r as SQLiteTransaction, s as sqliteTable, t as SQLitePreparedQuery } from "./assets/session-IA9z_ISp.js";
 import { AsyncLocalStorage } from "node:async_hooks";
 import path from "path";
 import fs from "node:fs";
@@ -20404,7 +20404,7 @@ function isbot(userAgent) {
 	return isNonEmptyString(userAgent) && getPattern().test(userAgent);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/server/analytics.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/server/analytics.js
 /**
 * Opt-in analytics injection for SSR streams.
 * Supported environment variables:
@@ -20473,7 +20473,7 @@ function wrapWithAnalytics(body) {
 	} }));
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/server/entry-server.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/server/entry-server.js
 var { renderToReadableStream } = import_server_browser.default;
 var streamTimeout = 5e3;
 function createDocumentRequestHandler(ServerRouter) {
@@ -24367,7 +24367,7 @@ var entry_server_exports = /* @__PURE__ */ __exportAll({
 });
 var handleDocumentRequest = createDocumentRequestHandler(ServerRouter);
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/route-chunk-recovery.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/route-chunk-recovery.js
 var STALE_CHUNK_RELOAD_AT_KEY = "__agentNativeStaleChunkReloadAt";
 var STALE_CHUNK_RELOAD_COOLDOWN_MS = 1e4;
 function isDynamicImportFailureMessage(value) {
@@ -24428,7 +24428,7 @@ function recoverFromStaleChunkError(error, win = typeof window === "undefined" ?
 	return reloadForStaleChunk(win);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/application-state.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/application-state.js
 var APP_STATE_KEY_PATTERN = /^[a-zA-Z0-9_:-]+$/;
 function appStateUrl(key) {
 	if (!APP_STATE_KEY_PATTERN.test(key)) throw new TypeError("Application state keys may only contain letters, numbers, underscores, hyphens, and colons.");
@@ -32289,7 +32289,7 @@ function I18nextProvider({ i18n, defaultNS, children }) {
 	return (0, import_react.createElement)(I18nContext.Provider, { value }, children);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/localization/default-messages.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/localization/default-messages.js
 var messages = {
 	home: {
 		settingsTitle: "Settings",
@@ -32810,7 +32810,7 @@ var messages = {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/localization/shared.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/localization/shared.js
 var SUPPORTED_LOCALES = [
 	"en-US",
 	"es-ES",
@@ -32966,7 +32966,7 @@ function resolveLocaleFromPreference(preference, systemCandidates = []) {
 	return resolveLocaleFromCandidates(systemCandidates);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/use-action.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/use-action.js
 var ACTION_PREFIX = agentNativePath("/_agent-native/actions");
 /**
 * Upper bound on how long a single action fetch may stay in flight (headers
@@ -36497,13 +36497,13 @@ var getDefaultConfig = () => {
 };
 var twMerge = /*#__PURE__*/ createTailwindMerge(getDefaultConfig);
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/utils.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/utils.js
 /** Merge class names with clsx + tailwind-merge. */
 function cn$1(...inputs) {
 	return twMerge(clsx(inputs));
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/localization/server.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/localization/server.js
 function getLocaleInitScript(options = {}) {
 	const safeLocale = normalizeLocaleCode(options.locale) ?? "en-US";
 	const shouldStorePreference = options.preference !== void 0;
@@ -36516,7 +36516,7 @@ function getLocaleInitScript(options = {}) {
 	return `(function(){try{var supported=${JSON.stringify(SUPPORTED_LOCALES)};var payload=${JSON.stringify(payload)};var shouldStorePreference=${JSON.stringify(shouldStorePreference)};function valid(x){return supported.indexOf(x)>=0}function canon(x){if(typeof x!=='string'||!x)return null;try{var c=Intl.getCanonicalLocales(x)[0];if(valid(c))return c;var lang=c&&c.split('-')[0].toLowerCase();for(var i=0;i<supported.length;i++){if(supported[i].split('-')[0].toLowerCase()===lang)return supported[i]}}catch(e){}return null}function storageGet(k){try{return window.localStorage.getItem(k)}catch(e){return null}}function storageSet(k,v){try{window.localStorage.setItem(k,v)}catch(e){}}var stored=storageGet(${JSON.stringify(LOCALE_STORAGE_KEY)});var pref=payload.preference&&payload.preference.locale;var locale=payload.locale;if(!valid(locale)){locale=null}if(!locale&&stored&&stored!=='system'){locale=canon(stored)}if(!locale&&pref&&pref!=='system'){locale=canon(pref)}if(!locale){var langs=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language];for(var j=0;j<langs.length&&!locale;j++){locale=canon(langs[j])}}if(!locale)locale=${JSON.stringify(DEFAULT_LOCALE)};var root=document.documentElement;root.setAttribute('lang',locale);root.setAttribute('dir',locale==='ar-SA'?'rtl':'ltr');root.setAttribute('data-locale',locale);payload.locale=locale;payload.dir=locale==='ar-SA'?'rtl':'ltr';window[${JSON.stringify(LOCALE_HYDRATION_GLOBAL)}]=payload;if(shouldStorePreference&&pref){storageSet(${JSON.stringify(LOCALE_STORAGE_KEY)},pref)}}catch(e){}})();`;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/i18n.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/i18n.js
 var LocaleContext = globalThis.__AGENT_NATIVE_LOCALE_CONTEXT__ ?? (globalThis.__AGENT_NATIVE_LOCALE_CONTEXT__ = (0, import_react.createContext)(null));
 function browserLanguageCandidates() {
 	if (typeof navigator === "undefined") return [];
@@ -37234,7 +37234,7 @@ var Trigger = TooltipTrigger;
 var Portal = TooltipPortal;
 var Content2 = TooltipContent;
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/use-session.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/use-session.js
 /**
 * Client-side hook to get the current auth session.
 *
@@ -37295,7 +37295,7 @@ function useSession() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/DefaultSpinner.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/DefaultSpinner.js
 /**
 * Full-screen loading spinner rendered during SSR and initial hydration.
 * Uses inline SVG + styles because Tailwind may not be loaded yet on the server.
@@ -37342,7 +37342,7 @@ function DefaultSpinner() {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/active-run-state.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/active-run-state.js
 var STORAGE_KEY = "agent-chat-active-run";
 function getActiveRun() {
 	try {
@@ -37354,7 +37354,7 @@ function getActiveRun() {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/client-surface.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/client-surface.js
 /**
 * Best-effort, side-effect-free detection of the current client surface.
 * Returns "web" during SSR and in any plain browser.
@@ -37372,7 +37372,7 @@ function getClientSurface() {
 	return "web";
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/feedback-context.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/feedback-context.js
 var ACTIVE_THREAD_KEY_PREFIX = "agent-chat-active-thread";
 var MAX_CHAT_SESSION_IDS = 5;
 function isThreadStorageKey(key, storageKey) {
@@ -37435,7 +37435,7 @@ function getFeedbackClientContext(options = {}) {
 	return context;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/error-reporting.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/error-reporting.js
 var GITHUB_ISSUE_URL = "https://github.com/BuilderIO/agent-native/issues/new";
 function cleanText(value) {
 	if (value === null || value === void 0) return null;
@@ -37489,7 +37489,7 @@ function buildGitHubIssueUrl(options) {
 	return url.toString();
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/FeedbackButton.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/FeedbackButton.js
 var DEFAULT_FEEDBACK_URL = "https://forms.agent-native.com/f/agent-native-feedback/_16ewV";
 function isSyntheticAgentNativeAnonymousEmail(value) {
 	return /^anon-[^\s@]+@agent-native\.com$/i.test(value ?? "");
@@ -37886,7 +37886,7 @@ function FeedbackButton({ variant = "sidebar", label, url = DEFAULT_FEEDBACK_URL
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/ErrorReportActions.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/ErrorReportActions.js
 function ErrorReportActions({ feedbackLabel = "Send feedback", feedbackPlaceholder = "Describe what happened before this error appeared.", githubLabel = "Open GitHub issue", className, feedbackClassName, githubClassName, side = "top", align = "center", ...report }) {
 	const template = buildErrorReportTemplate({
 		...report,
@@ -37913,7 +37913,7 @@ function ErrorReportActions({ feedbackLabel = "Send feedback", feedbackPlacehold
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/ErrorBoundary.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/ErrorBoundary.js
 var primaryActionClassName = "inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 cursor-pointer";
 var secondaryActionClassName = "inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground shadow-sm hover:bg-accent";
 var errorCopy = {
@@ -38199,7 +38199,7 @@ function ErrorBoundary() {
 	return (0, import_jsx_runtime.jsx)(RoutedErrorScreen, {});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/ClientOnly.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/ClientOnly.js
 /**
 * Renders children only on the client (after hydration).
 *
@@ -38215,7 +38215,7 @@ function ClientOnly({ children, fallback }) {
 	return children;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/vite-dev-recovery-script.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/vite-dev-recovery-script.js
 /**
 * Synchronous dev-only browser recovery for Vite optimized-dependency races.
 *
@@ -38431,7 +38431,7 @@ function shouldInlineViteDevRecoveryScript() {
 	return true;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/theme.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/theme.js
 function normalizeDefaultTheme(theme) {
 	if (theme === "light" || theme === "dark" || theme === "system") return theme;
 	return "system";
@@ -38445,7 +38445,7 @@ function getThemeInitScript(defaultTheme = "system", enableSystem = true) {
 }
 getThemeInitScript();
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/create-query-client.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/create-query-client.js
 /**
 * Shared QueryClient factory for agent-native apps.
 *
@@ -39520,7 +39520,7 @@ var Toaster = /*#__PURE__*/ import_react.forwardRef(function Toaster(props, ref)
 	}));
 });
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/app-providers.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/app-providers.js
 /**
 * Shared provider shell for agent-native template roots.
 *
@@ -39680,7 +39680,7 @@ var root_default = withComponentProps(function Root() {
 	});
 });
 //#endregion
-//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_c5561ff4a6ac9389e27710f83e53db58/node_modules/drizzle-orm/d1/session.js
+//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_b5d52d0b5f492bb170b2aed8fa0db5ab/node_modules/drizzle-orm/d1/session.js
 var SQLiteD1Session = class extends SQLiteSession {
 	constructor(client, dialect, schema, options = {}) {
 		super(dialect);
@@ -39831,7 +39831,7 @@ var D1PreparedQuery = class extends SQLitePreparedQuery {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_c5561ff4a6ac9389e27710f83e53db58/node_modules/drizzle-orm/d1/driver.js
+//#region node_modules/.pnpm/drizzle-orm@0.45.2_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@opentelemetry_b5d52d0b5f492bb170b2aed8fa0db5ab/node_modules/drizzle-orm/d1/driver.js
 var DrizzleD1Database = class extends BaseSQLiteDatabase {
 	static [entityKind] = "D1Database";
 	async batch(batch) {
@@ -39862,7 +39862,7 @@ function drizzle(client, config = {}) {
 	return db;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/db/client.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/db/client.js
 /**
 * Central database client abstraction.
 *
@@ -40210,10 +40210,10 @@ function attachNeonPoolErrorLogger(pool, label = "db/neon") {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/db/create-get-db.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/db/create-get-db.js
 var _pgDrizzle;
 function getPgDrizzle() {
-	if (!_pgDrizzle) _pgDrizzle = Promise.all([import("./assets/postgres-js-CACDHKJ4.js"), import("./assets/core-ITb7vYwE.js")]).then(([drizzleMod, pgMod]) => ({
+	if (!_pgDrizzle) _pgDrizzle = Promise.all([import("./assets/postgres-js-Du92iFhQ.js"), import("./assets/src-BwMurMV_.js").then((n) => n.n)]).then(([drizzleMod, pgMod]) => ({
 		drizzle: drizzleMod.drizzle,
 		postgres: pgMod.default
 	}));
@@ -40221,7 +40221,7 @@ function getPgDrizzle() {
 }
 var _neonServerlessDrizzle;
 function getNeonServerlessDrizzle() {
-	if (!_neonServerlessDrizzle) _neonServerlessDrizzle = Promise.all([import("./assets/neon-serverless-M6tvX5FW.js"), import("./assets/serverless-skz0BDJt.js").then((n) => n.i)]).then(([drizzleMod, neonMod]) => ({
+	if (!_neonServerlessDrizzle) _neonServerlessDrizzle = Promise.all([import("./assets/neon-serverless-C4z8cG-z.js"), import("./assets/serverless-skz0BDJt.js").then((n) => n.i)]).then(([drizzleMod, neonMod]) => ({
 		drizzle: drizzleMod.drizzle,
 		Pool: neonMod.Pool
 	}));
@@ -40365,12 +40365,12 @@ function isNeonUrl(url) {
 }
 var _libsqlWebDrizzle;
 function getLibsqlWebDrizzle() {
-	if (!_libsqlWebDrizzle) _libsqlWebDrizzle = import("./assets/web-COxCBIFy.js").then((mod) => ({ drizzle: mod.drizzle }));
+	if (!_libsqlWebDrizzle) _libsqlWebDrizzle = import("./assets/web-BXz8sPJA.js").then((mod) => ({ drizzle: mod.drizzle }));
 	return _libsqlWebDrizzle;
 }
 var _betterSqliteDrizzle;
 function getBetterSqliteDrizzle() {
-	if (!_betterSqliteDrizzle) _betterSqliteDrizzle = Promise.all([import("./assets/better-sqlite3-B6ck5M__.js"), import("better-sqlite3")]).then(([drizzleMod, sqliteMod]) => ({
+	if (!_betterSqliteDrizzle) _betterSqliteDrizzle = Promise.all([import("./assets/better-sqlite3-DJm5crLo.js"), import("better-sqlite3")]).then(([drizzleMod, sqliteMod]) => ({
 		drizzle: drizzleMod.drizzle,
 		Database: sqliteMod.default
 	}));
@@ -40559,7 +40559,7 @@ function createGetDb(schema) {
 	return getDb;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/db/schema.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/db/schema.js
 function pg() {
 	return getDialect() === "postgres";
 }

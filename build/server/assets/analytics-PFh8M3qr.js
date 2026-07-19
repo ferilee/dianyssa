@@ -4,7 +4,7 @@ var EMBED_MODE_QUERY_PARAM = "embedded";
 var MCP_APP_CHAT_BRIDGE_QUERY_PARAM = "__an_mcp_chat_bridge";
 var EMBED_TARGET_HEADER = "x-agent-native-embed-target";
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/embed-auth.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/embed-auth.js
 var installed = false;
 var memoryToken = null;
 var mcpChatBridgeActive = false;
@@ -352,7 +352,7 @@ function ensureEmbedAuthFetchInterceptor() {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/api-path.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/api-path.js
 var FRAMEWORK_ROUTE_PREFIX = "/_agent-native";
 function normalizeBasePath(value) {
 	if (!value || value === "/") return "";
@@ -18947,7 +18947,7 @@ function init(options = {}) {
 	return initAndBind(BrowserClient, clientOptions);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/shared/llm-connection.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/shared/llm-connection.js
 function normalizeLlmConnection(engine) {
 	const value = typeof engine === "string" ? engine.trim() : "";
 	if (!value) return "none";
@@ -18970,7 +18970,7 @@ function llmConnectionTrackingProperties(status) {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/url-scrub.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/url-scrub.js
 /**
 * Query parameters that may carry sensitive values in the URL bar. Browser
 * telemetry and feedback integrations must not copy OAuth codes, share tokens,
@@ -19003,7 +19003,7 @@ function scrubUrl(url) {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/analytics.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/analytics.js
 var _getDefaultProps = null;
 var _agentNativeAnalyticsPublicKey = null;
 var _agentNativeAnalyticsEndpoint = null;
@@ -19050,7 +19050,7 @@ function stopSessionReplayForAuthClear(previousIdentity) {
 	}
 	if (!previousIdentity?.userEmail) return;
 	_sessionReplayIdentitySnapshot = previousIdentity;
-	import("./session-replay-DzivBZmc.js").then((mod) => mod.stopSessionReplay("auth-cleared")).catch(() => {}).finally(() => {
+	import("./session-replay-BPi3_Ff7.js").then((mod) => mod.stopSessionReplay("auth-cleared")).catch(() => {}).finally(() => {
 		if (_sessionReplayIdentitySnapshot === previousIdentity) _sessionReplayIdentitySnapshot = null;
 	});
 }
@@ -19305,7 +19305,7 @@ async function startConfiguredSessionReplay(options) {
 			started: false,
 			reason: "missing-user-id"
 		};
-		return (await import("./session-replay-DzivBZmc.js")).startSessionReplay(options);
+		return (await import("./session-replay-BPi3_Ff7.js")).startSessionReplay(options);
 	})().catch(() => ({
 		started: false,
 		reason: "import-failed"

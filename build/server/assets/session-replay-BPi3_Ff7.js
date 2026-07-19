@@ -1,5 +1,5 @@
-import { a as scrubUrl, n as getAnalyticsSessionId, t as getAnalyticsAnonymousId } from "./analytics-uNkOE5qt.js";
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_0543857eaba9b0508bea93c1e9780d9c/node_modules/@agent-native/core/dist/client/session-replay.js
+import { a as scrubUrl, n as getAnalyticsSessionId, t as getAnalyticsAnonymousId } from "./analytics-PFh8M3qr.js";
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/session-replay.js
 var DEFAULT_REPLAY_PATH = "/api/analytics/replay";
 var DEFAULT_SAMPLING_SALT = "agent-native-session-replay";
 /**
