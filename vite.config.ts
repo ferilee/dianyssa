@@ -9,6 +9,14 @@ const agentNativePlugins = agentNative as unknown as (
   options?: Parameters<typeof agentNative>[0],
 ) => any[];
 
+type CompiledNitro = {
+  options: {
+    output: {
+      serverDir: string;
+    };
+  };
+};
+
 const patchPuppeteerDirname = (serverDir: string) => {
   const outputDir = path.resolve(serverDir, "_libs");
   if (!fs.existsSync(outputDir)) return;
@@ -79,7 +87,7 @@ export default defineConfig({
           external: ["puppeteer", "puppeteer-core", "@puppeteer/browsers"],
         },
         hooks: {
-          compiled(nitro) {
+          compiled(nitro: CompiledNitro) {
             patchPuppeteerDirname(nitro.options.output.serverDir);
           },
         },

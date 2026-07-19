@@ -2,12 +2,11 @@ import type { LoaderFunctionArgs } from "react-router";
 import { getDb, schema } from "../../server/db/index.js";
 import { eq } from "drizzle-orm";
 import fs from "node:fs";
+import { getWebSessionUserId } from "../../server/auth/web-session.js";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   // 1. Cek sesi
-  const cookieHeader = request.headers.get("Cookie");
-  const sessionCookie = cookieHeader?.split(";").find((c) => c.trim().startsWith("session="));
-  const telegramUserId = sessionCookie?.split("=")[1];
+  const telegramUserId = await getWebSessionUserId(request);
 
   if (!telegramUserId) {
     throw new Response("Unauthorized", { status: 401 });

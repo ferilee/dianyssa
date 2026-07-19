@@ -1,5 +1,6 @@
 import { redirect, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
+import { getWebSessionUserId } from "../../server/auth/web-session.js";
 
 export function meta() {
   return [
@@ -9,9 +10,7 @@ export function meta() {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const cookieHeader = request.headers.get("Cookie");
-  const sessionCookie = cookieHeader?.split(";").find((c) => c.trim().startsWith("session="));
-  const telegramUserId = sessionCookie?.split("=")[1];
+  const telegramUserId = await getWebSessionUserId(request);
 
   if (telegramUserId) {
     return redirect("/dashboard");

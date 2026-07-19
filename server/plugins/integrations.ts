@@ -4,7 +4,7 @@ import {
   loadActionsFromStaticRegistry,
 } from "@agent-native/core/server";
 import { getDb, schema } from "../db/index.js";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import crypto from "node:crypto";
 import { readBody } from "h3";
 // @ts-ignore
@@ -13,6 +13,8 @@ import mammoth from "mammoth";
 
 // Nitro plugin compiles this registry dynamically from the actions folder
 import actionsRegistry from "../../.generated/actions-registry.js";
+import { issueMagicLinkToken } from "../auth/web-session.js";
+import { telegramOwnerEmail } from "../auth/telegram-identity.js";
 
 let cachedBotUsername: string | null = null;
 
@@ -112,7 +114,10 @@ async function runActionByName(name: string, args: any, userId: string): Promise
   if (!action?.run) {
     throw new Error(`Aksi '${name}' tidak memiliki method run.`);
   }
-  return await action.run(args, { userEmail: userId });
+  return await action.run(args, {
+    userEmail: telegramOwnerEmail(userId),
+    caller: "tool",
+  });
 }
 
 export default createIntegrationsPlugin({
@@ -132,14 +137,22 @@ export default createIntegrationsPlugin({
 
     const token = process.env.TELEGRAM_BOT_TOKEN || "";
 
-    // 1. Cek / Seeding Whitelist Guru pertama sebagai Admin
-    const allUsersCount = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(schema.authorizedUsers);
+    const initialAdminTelegramId = process.env.INITIAL_ADMIN_TELEGRAM_ID?.trim();
+    if (!initialAdminTelegramId || !/^\d+$/.test(initialAdminTelegramId)) {
+      console.error("[auth] INITIAL_ADMIN_TELEGRAM_ID must be configured with a numeric Telegram user ID.");
+      return {
+        handled: true,
+        responseText: "RPP Bot belum dikonfigurasi dengan benar. Hubungi administrator sistem.",
+      };
+    }
 
-    const totalUsers = allUsersCount[0]?.count ?? 0;
+    const [configuredAdmin] = await db
+      .select({ telegramUserId: schema.authorizedUsers.telegramUserId })
+      .from(schema.authorizedUsers)
+      .where(eq(schema.authorizedUsers.telegramUserId, initialAdminTelegramId))
+      .limit(1);
 
-    if (totalUsers === 0) {
+    if (!configuredAdmin && userId === initialAdminTelegramId) {
       const name = incoming.senderName || "Admin Utama";
       await db.insert(schema.authorizedUsers).values({
         telegramUserId: userId,
@@ -147,7 +160,7 @@ export default createIntegrationsPlugin({
         role: "admin",
         createdAt: Date.now(),
       });
-      console.log(`[auth] Berhasil men-seed user pertama (${name} - ${userId}) sebagai Admin.`);
+      console.log(`[auth] Seeded configured initial admin (${name} - ${userId}).`);
     }
 
     // 2. Cek Akses Whitelist
@@ -305,11 +318,11 @@ export default createIntegrationsPlugin({
 
     // Perintah /riwayat (Akses Aman via DM)
     if (trimmed === "/riwayat") {
-      const tokenUUID = crypto.randomUUID();
+      const { token: tokenUUID, tokenHash } = issueMagicLinkToken();
       const expiresAt = Date.now() + 60 * 60 * 1000;
 
       await db.insert(schema.webSessions).values({
-        token: tokenUUID,
+        tokenHash,
         telegramUserId: userId,
         expiresAt,
       });
@@ -363,7 +376,7 @@ export default createIntegrationsPlugin({
       try {
         const result = await runActionByName(
           "link-idetech-account",
-          { telegramUserId: userId, email },
+          { email },
           userId
         );
         return {

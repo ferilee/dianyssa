@@ -3,14 +3,16 @@ import { z } from "zod";
 import crypto from "node:crypto";
 import { getDb, schema } from "../server/db/index.js";
 import { IDETECH_BASE_URL } from "../lib/idetech-config";
+import { requireAuthorizedActor } from "../server/auth/authorization.js";
 
 export default defineAction({
   description: "Menghubungkan akun Telegram pengguna dengan akun IdeTech",
   schema: z.object({
-    telegramUserId: z.string().describe("ID pengguna Telegram"),
     email: z.string().email().describe("Email akun IdeTech yang akan dihubungkan"),
   }),
-  run: async ({ telegramUserId, email }) => {
+  run: async ({ email }, context) => {
+    const actor = await requireAuthorizedActor(context);
+    const { telegramUserId } = actor;
     const db = getDb();
 
     const response = await fetch(`${IDETECH_BASE_URL}/api/auth/telegram-link`, {

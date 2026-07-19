@@ -65,6 +65,24 @@ export const rppBotMigrations: Array<RppBotMigration> = [
       );
     `,
   },
+  {
+    version: 3,
+    sql: `
+      CREATE TABLE IF NOT EXISTS web_portal_sessions (
+        id TEXT PRIMARY KEY,
+        session_token_hash TEXT NOT NULL UNIQUE,
+        telegram_user_id TEXT NOT NULL,
+        created_at INTEGER NOT NULL,
+        expires_at INTEGER NOT NULL,
+        revoked_at INTEGER
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_web_portal_sessions_token
+        ON web_portal_sessions (session_token_hash);
+      CREATE INDEX IF NOT EXISTS idx_web_portal_sessions_user
+        ON web_portal_sessions (telegram_user_id);
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

@@ -1,7 +1,6 @@
 import { redirect } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
-import { getDb, schema } from "../../server/db/index.js";
-import { eq } from "drizzle-orm";
+import { consumeMagicLinkToken, createWebSession, sessionCookie } from "../../server/auth/web-session.js";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -11,35 +10,17 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return { error: "Token login tidak ditemukan. Harap dapatkan link login baru dari Telegram Bot." };
   }
 
-  const db = getDb();
-
-  // Cari sesi token di database
-  const sessions = await db
-    .select()
-    .from(schema.webSessions)
-    .where(eq(schema.webSessions.token, token))
-    .limit(1);
-
-  if (sessions.length === 0) {
-    return { error: "Link login tidak valid atau sudah pernah digunakan sebelumnya." };
+  const telegramUserId = await consumeMagicLinkToken(token);
+  if (!telegramUserId) {
+    return { error: "Link login tidak valid, kadaluarsa, atau sudah pernah digunakan." };
   }
 
-  const session = sessions[0];
-
-  // Periksa kadaluarsa (1 jam)
-  if (session.expiresAt < Date.now()) {
-    // Hapus token yang kadaluarsa
-    await db.delete(schema.webSessions).where(eq(schema.webSessions.token, token));
-    return { error: "Link login telah kadaluarsa. Harap minta link login baru melalui perintah /riwayat di Telegram." };
-  }
-
-  // Sukses: Hapus token sekali pakai ini dari database
-  await db.delete(schema.webSessions).where(eq(schema.webSessions.token, token));
+  const sessionToken = await createWebSession(telegramUserId);
 
   // Setel cookie sesi dan redirect ke dashboard
   return redirect("/dashboard", {
     headers: {
-      "Set-Cookie": `session=${session.telegramUserId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`,
+      "Set-Cookie": sessionCookie(sessionToken),
     },
   });
 }

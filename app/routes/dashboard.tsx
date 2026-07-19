@@ -3,6 +3,7 @@ import type { LoaderFunctionArgs } from "react-router";
 import { getDb, schema } from "../../server/db/index.js";
 import { eq, desc } from "drizzle-orm";
 import { useState } from "react";
+import { clearSessionCookie, getWebSessionUserId, revokeWebSession } from "../../server/auth/web-session.js";
 
 // Tipe Data untuk RPP dan User
 interface RppDocument {
@@ -28,9 +29,7 @@ interface AuthorizedUser {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   // 1. Cek sesi
-  const cookieHeader = request.headers.get("Cookie");
-  const sessionCookie = cookieHeader?.split(";").find((c) => c.trim().startsWith("session="));
-  const telegramUserId = sessionCookie?.split("=")[1];
+  const telegramUserId = await getWebSessionUserId(request);
 
   if (!telegramUserId) {
     return redirect("/");
@@ -81,9 +80,10 @@ export async function action({ request }: { request: Request }) {
   const intent = formData.get("intent");
 
   if (intent === "logout") {
+    await revokeWebSession(request);
     return redirect("/", {
       headers: {
-        "Set-Cookie": "session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
+        "Set-Cookie": clearSessionCookie(),
       },
     });
   }

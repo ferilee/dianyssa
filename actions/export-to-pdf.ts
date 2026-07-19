@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import puppeteer from "puppeteer";
 import fs from "node:fs";
 import path from "node:path";
+import { assertRppAccess, requireAuthorizedActor } from "../server/auth/authorization.js";
 
 // Helper sederhana untuk mengubah Markdown menjadi HTML terstruktur dengan kelas Tailwind
 function markdownToHtml(markdown: string): string {
@@ -70,6 +71,7 @@ export default defineAction({
     rppId: z.string().describe("ID dokumen RPP di database"),
   }),
   run: async ({ rppId }, ctx) => {
+    const actor = await requireAuthorizedActor(ctx);
     const db = getDb();
     
     // 1. Ambil data RPP dari database
@@ -87,6 +89,7 @@ export default defineAction({
     }
 
     const rpp = results[0];
+    assertRppAccess(actor, rpp.telegramUserId);
     const contentHtml = markdownToHtml(rpp.content);
 
     // 2. Susun template HTML resmi

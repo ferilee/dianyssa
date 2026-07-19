@@ -4,6 +4,7 @@ import { getDb, schema } from "../server/db/index.js";
 import crypto from "node:crypto";
 import { resolveIdeTechSession } from "../lib/resolve-session";
 import { createIdeTechClient } from "../lib/idetech-client";
+import { requireAuthorizedActor } from "../server/auth/authorization.js";
 
 export default defineAction({
   description: "Menyimpan draf RPP baru yang telah disepakati ke dalam database dan menghasilkan ID RPP.",
@@ -18,15 +19,13 @@ export default defineAction({
     content: z.string().describe("Konten RPP lengkap hasil diskusi dalam format Markdown / teks terstruktur"),
   }),
   run: async (args, ctx) => {
+    const actor = await requireAuthorizedActor(ctx);
     const db = getDb();
     const rppId = crypto.randomUUID();
 
-    // Resolusi ID Telegram Pengirim dari email konteks user
-    const telegramUserId = ctx?.userEmail?.split("@")[0] || "unknown";
-
     await db.insert(schema.rppDocuments).values({
       id: rppId,
-      telegramUserId,
+      telegramUserId: actor.telegramUserId,
       teacherName: args.teacherName,
       headmasterName: args.headmasterName,
       schoolName: args.schoolName,
@@ -41,7 +40,7 @@ export default defineAction({
 
     let syncMessage = "";
     try {
-      const session = await resolveIdeTechSession(telegramUserId);
+      const session = await resolveIdeTechSession(actor.telegramUserId);
       if (session && session.sessionToken) {
         const client = createIdeTechClient(session.sessionToken);
         await client.post("/api/teacher/rpps", {
@@ -65,4 +64,3 @@ export default defineAction({
     };
   },
 });
-

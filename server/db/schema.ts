@@ -26,9 +26,18 @@ export const rppDocuments = table("rpp_documents", {
 
 // 3. Tabel Sesi Token Web UI (Magic Link)
 export const webSessions = table("web_sessions", {
-  token: text("token").primaryKey(),                    // Token unik sekali pakai
+  tokenHash: text("token").primaryKey(),                // Hash token unik sekali pakai
   telegramUserId: text("telegram_user_id").notNull(),
   expiresAt: integer("expires_at").notNull(),           // Batas kadaluarsa token (misal: +1 jam)
+});
+
+export const webPortalSessions = table("web_portal_sessions", {
+  id: text("id").primaryKey(),
+  sessionTokenHash: text("session_token_hash").notNull().unique(),
+  telegramUserId: text("telegram_user_id").notNull(),
+  createdAt: integer("created_at").notNull(),
+  expiresAt: integer("expires_at").notNull(),
+  revokedAt: integer("revoked_at"),
 });
 
 // 4. Tabel Mapping Telegram User ke Sesi IdeTech

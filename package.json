@@ -10,7 +10,8 @@
     "postbuild": "node scripts/patch-output.js",
     "start": "agent-native start",
     "typecheck": "agent-native typecheck",
-    "action": "agent-native action"
+    "action": "agent-native action",
+    "test": "bun test"
   },
   "dependencies": {
     "@agent-native/core": "0.90.2",

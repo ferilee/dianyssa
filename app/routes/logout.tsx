@@ -1,9 +1,11 @@
 import { redirect } from "react-router";
+import { clearSessionCookie, revokeWebSession } from "../../server/auth/web-session.js";
 
-export async function loader() {
+export async function loader({ request }: { request: Request }) {
+  await revokeWebSession(request);
   return redirect("/", {
     headers: {
-      "Set-Cookie": "session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0",
+      "Set-Cookie": clearSessionCookie(),
     },
   });
 }
