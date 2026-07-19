@@ -1,8 +1,8 @@
-import { redirect, useLoaderData } from "react-router";
+import { redirect, useLoaderData, useRevalidator } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import { getDb, schema } from "../../server/db/index.js";
 import { eq, desc, inArray } from "drizzle-orm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { clearSessionCookie, getWebSessionUserId, revokeWebSession } from "../../server/auth/web-session.js";
 
 // Tipe Data untuk RPP dan User
@@ -185,11 +185,18 @@ function RppMarkdownRenderer({ content }: { content: string }) {
 
 export default function DashboardRoute() {
   const { user, rpps, artifacts, jobs } = useLoaderData() as { user: AuthorizedUser; rpps: RppDocument[]; artifacts: RppArtifact[]; jobs: RppExportJob[] };
+  const revalidator = useRevalidator();
 
   // States
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGrade, setSelectedGrade] = useState("All");
   const [activePreviewRpp, setActivePreviewRpp] = useState<RppDocument | null>(null);
+
+  useEffect(() => {
+    if (!jobs.some((job) => job.status === "queued" || job.status === "processing")) return;
+    const timer = window.setInterval(() => revalidator.revalidate(), 5_000);
+    return () => window.clearInterval(timer);
+  }, [jobs, revalidator]);
 
   // Cari list kelas unik untuk dropdown filter
   const grades = ["All", ...Array.from(new Set(rpps.map((r) => r.grade)))];
