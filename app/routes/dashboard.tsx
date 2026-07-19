@@ -1,7 +1,7 @@
 import { redirect, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import { getDb, schema } from "../../server/db/index.js";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, inArray } from "drizzle-orm";
 import { useState } from "react";
 import { clearSessionCookie, getWebSessionUserId, revokeWebSession } from "../../server/auth/web-session.js";
 
@@ -72,13 +72,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 
   const rppIds = rpps.map((rpp) => rpp.id);
-  const artifacts: RppArtifact[] = [];
-  const jobs: RppExportJob[] = [];
-  for (const rppId of rppIds) {
-    artifacts.push(...await db.select({ id: schema.rppArtifacts.id, rppDocumentId: schema.rppArtifacts.rppDocumentId, format: schema.rppArtifacts.format, status: schema.rppArtifacts.status }).from(schema.rppArtifacts).where(eq(schema.rppArtifacts.rppDocumentId, rppId)));
-    const [job] = await db.select({ id: schema.rppExportJobs.id, rppDocumentId: schema.rppExportJobs.rppDocumentId, status: schema.rppExportJobs.status, error: schema.rppExportJobs.error }).from(schema.rppExportJobs).where(eq(schema.rppExportJobs.rppDocumentId, rppId)).orderBy(desc(schema.rppExportJobs.createdAt)).limit(1);
-    if (job) jobs.push(job);
-  }
+  const artifacts: RppArtifact[] = rppIds.length ? await db.select({ id: schema.rppArtifacts.id, rppDocumentId: schema.rppArtifacts.rppDocumentId, format: schema.rppArtifacts.format, status: schema.rppArtifacts.status }).from(schema.rppArtifacts).where(inArray(schema.rppArtifacts.rppDocumentId, rppIds)) : [];
+  const jobs: RppExportJob[] = rppIds.length ? await db.select({ id: schema.rppExportJobs.id, rppDocumentId: schema.rppExportJobs.rppDocumentId, status: schema.rppExportJobs.status, error: schema.rppExportJobs.error }).from(schema.rppExportJobs).where(inArray(schema.rppExportJobs.rppDocumentId, rppIds)).orderBy(desc(schema.rppExportJobs.createdAt)) : [];
 
   return {
     user: currentUser,
