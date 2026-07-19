@@ -357,6 +357,9 @@ export default function DashboardRoute() {
                       <td className="px-6 py-4">
                         <div className="font-bold text-zinc-100 text-base">{rpp.topic}</div>
                         <div className="text-xs text-zinc-400 mt-0.5">{rpp.subject}</div>
+                        {jobs.find((job) => job.rppDocumentId === rpp.id) && (
+                          <div className="text-[10px] uppercase text-indigo-300 mt-1">{jobs.find((job) => job.rppDocumentId === rpp.id)?.status}</div>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-zinc-300 font-medium">{rpp.grade}</td>
                       {user.role === "admin" && (
@@ -396,6 +399,11 @@ export default function DashboardRoute() {
                             </svg>
                             <span>Unduh PDF</span>
                           </a>
+                          {artifacts.filter((artifact) => artifact.rppDocumentId === rpp.id).map((artifact) => (
+                            <a key={artifact.id} href={`/artifacts/${artifact.id}`} className="px-3 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-900/60 text-emerald-300 rounded-lg text-xs font-semibold">
+                              Unduh {artifact.format.toUpperCase()}
+                            </a>
+                          ))}
                         </div>
                       </td>
                     </tr>
