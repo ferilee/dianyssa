@@ -1,0 +1,58 @@
+import crypto from "node:crypto";
+import { defineAction } from "@agent-native/core/action";
+import { z } from "zod";
+import { eq } from "drizzle-orm";
+import { getDb, schema } from "../server/db/index.js";
+import { rppDraftSchema } from "../domain/rpp.js";
+import { assertRppAccess, requireAuthorizedActor } from "../server/auth/authorization.js";
+import { storeArtifact } from "../services/artifact-storage.js";
+import { renderRppDocx } from "../services/rpp-docx.js";
+
+export default defineAction({
+  description: "Mengekspor RPP yang telah disetujui menjadi dokumen DOCX resmi.",
+  schema: z.object({ rppId: z.string().uuid() }),
+  run: async ({ rppId }, context) => {
+    const actor = await requireAuthorizedActor(context);
+    const db = getDb();
+    const [document] = await db.select().from(schema.rppDocuments).where(eq(schema.rppDocuments.id, rppId)).limit(1);
+    if (!document) throw new Error("RPP tidak ditemukan.");
+    assertRppAccess(actor, document.telegramUserId);
+    if (document.status !== "approved") throw new Error("RPP harus disetujui sebelum diekspor.");
+    if (!document.contentJson) throw new Error("RPP lama tidak memiliki data terstruktur untuk diekspor ke DOCX.");
+
+    const draft = rppDraftSchema.parse(JSON.parse(document.contentJson));
+    const buffer = await renderRppDocx(draft);
+    const stored = await storeArtifact(document.id, "docx", buffer);
+    const artifactId = crypto.randomUUID();
+    await db.insert(schema.rppArtifacts).values({
+      id: artifactId,
+      rppDocumentId: document.id,
+      format: "docx",
+      storageKey: stored.storageKey,
+      sizeBytes: stored.sizeBytes,
+      checksum: stored.checksum,
+      status: "rendered",
+      createdAt: Date.now(),
+    });
+
+    let delivered = false;
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    if (token) {
+      const filename = `RPP_${document.subject.replace(/[^a-zA-Z0-9]/g, "_")}_${document.grade.replace(/[^a-zA-Z0-9]/g, "_")}.docx`;
+      const formData = new FormData();
+      formData.append("chat_id", document.telegramUserId);
+      formData.append("caption", `Berikut dokumen DOCX RPP ${document.subject} ${document.grade}: ${document.topic}`);
+      formData.append("document", new Blob([new Uint8Array(buffer)]), filename);
+      const response = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
+        method: "POST",
+        body: formData,
+      });
+      const result = (await response.json()) as { ok?: boolean; description?: string };
+      if (!result.ok) throw new Error(`Telegram delivery failed: ${result.description ?? "unknown error"}`);
+      await db.update(schema.rppArtifacts).set({ status: "delivered" }).where(eq(schema.rppArtifacts.id, artifactId));
+      delivered = true;
+    }
+
+    return { status: "success", artifactId, format: "docx", storageKey: stored.storageKey, delivered };
+  },
+});

@@ -28,6 +28,17 @@ export const rppDocuments = table("rpp_documents", {
   createdAt: integer("created_at").notNull(),
 });
 
+export const rppArtifacts = table("rpp_artifacts", {
+  id: text("id").primaryKey(),
+  rppDocumentId: text("rpp_document_id").notNull(),
+  format: text("format").notNull(),
+  storageKey: text("storage_key").notNull(),
+  sizeBytes: integer("size_bytes").notNull(),
+  checksum: text("checksum").notNull(),
+  status: text("status").notNull(),
+  createdAt: integer("created_at").notNull(),
+});
+
 // 3. Tabel Sesi Token Web UI (Magic Link)
 export const webSessions = table("web_sessions", {
   tokenHash: text("token").primaryKey(),                // Hash token unik sekali pakai

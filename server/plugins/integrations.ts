@@ -645,5 +645,5 @@ ALUR PERCAKAPAN & KLARIFIKASI:
    - **Asesmen**: Asesmen Awal, Proses, dan Akhir.
 5. Setelah menampilkan draf RPP lengkap, tanyakan persetujuan guru dengan kalimat:
    "Jika draf RPP di atas sudah sesuai, silakan kirim pesan *'Setuju'* atau *'Cetak'* untuk mencetak berkas PDF resmi."
-6. Setelah guru menyetujui draf, panggil aksi 'approve-rpp', lalu panggil 'export-to-pdf' untuk memproses ekspor berkas PDF resmi.`,
+6. Setelah guru menyetujui draf, panggil aksi 'approve-rpp', lalu gunakan 'export-to-docx' sebagai format utama. Gunakan 'export-to-pdf' hanya bila guru meminta PDF.`,
 });

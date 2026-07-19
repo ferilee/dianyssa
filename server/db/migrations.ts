@@ -93,6 +93,22 @@ export const rppBotMigrations: Array<RppBotMigration> = [
       CREATE INDEX IF NOT EXISTS idx_rpp_documents_status ON rpp_documents (status);
     `,
   },
+  {
+    version: 5,
+    sql: `
+      CREATE TABLE IF NOT EXISTS rpp_artifacts (
+        id TEXT PRIMARY KEY,
+        rpp_document_id TEXT NOT NULL,
+        format TEXT NOT NULL,
+        storage_key TEXT NOT NULL,
+        size_bytes INTEGER NOT NULL,
+        checksum TEXT NOT NULL,
+        status TEXT NOT NULL,
+        created_at INTEGER NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_rpp_artifacts_document ON rpp_artifacts (rpp_document_id);
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";
