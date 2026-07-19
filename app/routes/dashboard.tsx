@@ -21,6 +21,9 @@ interface RppDocument {
   createdAt: number;
 }
 
+interface RppArtifact { id: string; rppDocumentId: string; format: string; status: string; }
+interface RppExportJob { id: string; rppDocumentId: string; status: string; error: string | null; }
+
 interface AuthorizedUser {
   telegramUserId: string;
   name: string;
@@ -68,9 +71,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
       .orderBy(desc(schema.rppDocuments.createdAt));
   }
 
+  const rppIds = rpps.map((rpp) => rpp.id);
+  const artifacts: RppArtifact[] = [];
+  const jobs: RppExportJob[] = [];
+  for (const rppId of rppIds) {
+    artifacts.push(...await db.select({ id: schema.rppArtifacts.id, rppDocumentId: schema.rppArtifacts.rppDocumentId, format: schema.rppArtifacts.format, status: schema.rppArtifacts.status }).from(schema.rppArtifacts).where(eq(schema.rppArtifacts.rppDocumentId, rppId)));
+    const [job] = await db.select({ id: schema.rppExportJobs.id, rppDocumentId: schema.rppExportJobs.rppDocumentId, status: schema.rppExportJobs.status, error: schema.rppExportJobs.error }).from(schema.rppExportJobs).where(eq(schema.rppExportJobs.rppDocumentId, rppId)).orderBy(desc(schema.rppExportJobs.createdAt)).limit(1);
+    if (job) jobs.push(job);
+  }
+
   return {
     user: currentUser,
     rpps,
+    artifacts,
+    jobs,
   };
 }
 
@@ -175,7 +189,7 @@ function RppMarkdownRenderer({ content }: { content: string }) {
 }
 
 export default function DashboardRoute() {
-  const { user, rpps } = useLoaderData() as { user: AuthorizedUser; rpps: RppDocument[] };
+  const { user, rpps, artifacts, jobs } = useLoaderData() as { user: AuthorizedUser; rpps: RppDocument[]; artifacts: RppArtifact[]; jobs: RppExportJob[] };
 
   // States
   const [searchTerm, setSearchTerm] = useState("");
