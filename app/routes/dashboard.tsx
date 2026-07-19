@@ -96,6 +96,19 @@ export async function action({ request }: { request: Request }) {
       },
     });
   }
+  if (intent === "retry") {
+    const jobId = String(formData.get("jobId") ?? "");
+    const telegramUserId = await getWebSessionUserId(request);
+    const db = getDb();
+    const [job] = await db.select().from(schema.rppExportJobs).where(eq(schema.rppExportJobs.id, jobId)).limit(1);
+    const [document] = job ? await db.select().from(schema.rppDocuments).where(eq(schema.rppDocuments.id, job.rppDocumentId)).limit(1) : [];
+    const [user] = telegramUserId ? await db.select().from(schema.authorizedUsers).where(eq(schema.authorizedUsers.telegramUserId, telegramUserId)).limit(1) : [];
+    if (job && document && user && job.status === "failed" && (user.role === "admin" || document.telegramUserId === telegramUserId)) {
+      const now = Date.now();
+      await db.update(schema.rppExportJobs).set({ status: "queued", attempts: 0, error: null, nextAttemptAt: now, leaseExpiresAt: null, updatedAt: now }).where(eq(schema.rppExportJobs.id, job.id));
+    }
+    return null;
+  }
   return null;
 }
 
@@ -406,6 +419,9 @@ export default function DashboardRoute() {
                               Unduh {artifact.format.toUpperCase()}
                             </a>
                           ))}
+                          {jobs.find((job) => job.rppDocumentId === rpp.id)?.status === "failed" && (
+                            <form method="post"><input type="hidden" name="intent" value="retry" /><input type="hidden" name="jobId" value={jobs.find((job) => job.rppDocumentId === rpp.id)?.id} /><button className="px-3 py-1.5 bg-amber-950 text-amber-300 rounded-lg text-xs font-semibold">Coba lagi</button></form>
+                          )}
                         </div>
                       </td>
                     </tr>
