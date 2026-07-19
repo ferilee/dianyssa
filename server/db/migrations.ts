@@ -116,6 +116,22 @@ export const rppBotMigrations: Array<RppBotMigration> = [
         ON rpp_artifacts (rpp_document_id, format);
     `,
   },
+  {
+    version: 7,
+    sql: `
+      CREATE TABLE IF NOT EXISTS rpp_export_jobs (
+        id TEXT PRIMARY KEY,
+        rpp_document_id TEXT NOT NULL,
+        format TEXT NOT NULL,
+        status TEXT NOT NULL,
+        attempts INTEGER NOT NULL DEFAULT 0,
+        error TEXT,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_rpp_export_jobs_status ON rpp_export_jobs (status, created_at);
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

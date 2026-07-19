@@ -39,6 +39,17 @@ export const rppArtifacts = table("rpp_artifacts", {
   createdAt: integer("created_at").notNull(),
 });
 
+export const rppExportJobs = table("rpp_export_jobs", {
+  id: text("id").primaryKey(),
+  rppDocumentId: text("rpp_document_id").notNull(),
+  format: text("format").notNull(),
+  status: text("status").notNull(),
+  attempts: integer("attempts").notNull().default(0),
+  error: text("error"),
+  createdAt: integer("created_at").notNull(),
+  updatedAt: integer("updated_at").notNull(),
+});
+
 // 3. Tabel Sesi Token Web UI (Magic Link)
 export const webSessions = table("web_sessions", {
   tokenHash: text("token").primaryKey(),                // Hash token unik sekali pakai
