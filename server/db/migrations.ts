@@ -156,6 +156,29 @@ export const rppBotMigrations: Array<RppBotMigration> = [
       );
     `,
   },
+  {
+    version: 10,
+    sql: `
+      CREATE TABLE IF NOT EXISTS organizations (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        slug TEXT NOT NULL UNIQUE,
+        created_at INTEGER NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS organization_memberships (
+        id TEXT PRIMARY KEY,
+        organization_id TEXT NOT NULL,
+        telegram_user_id TEXT NOT NULL,
+        role TEXT NOT NULL,
+        created_at INTEGER NOT NULL,
+        UNIQUE (organization_id, telegram_user_id)
+      );
+      CREATE INDEX IF NOT EXISTS idx_organization_memberships_user
+        ON organization_memberships (telegram_user_id);
+      INSERT OR IGNORE INTO organizations (id, name, slug, created_at)
+        VALUES ('default', 'Organisasi Default', 'default', 0);
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

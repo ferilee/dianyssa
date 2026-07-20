@@ -8,6 +8,23 @@ export const authorizedUsers = table("authorized_users", {
   createdAt: integer("created_at").notNull(),
 });
 
+// Tenant tingkat pertama. Data lama ditempatkan pada organisasi `default`
+// oleh migrasi; pemindahan scope RPP dilakukan bertahap agar tidak memutus akses.
+export const organizations = table("organizations", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  createdAt: integer("created_at").notNull(),
+});
+
+export const organizationMemberships = table("organization_memberships", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull(),
+  telegramUserId: text("telegram_user_id").notNull(),
+  role: text("role").notNull(),
+  createdAt: integer("created_at").notNull(),
+});
+
 // 2. Tabel Rencana Pelaksanaan Pembelajaran (RPP)
 export const rppDocuments = table("rpp_documents", {
   id: text("id").primaryKey(),

@@ -68,6 +68,10 @@ Tujuan: aplikasi dapat dipakai lebih dari satu sekolah dengan isolasi data yang 
 
 Selesai bila: data sekolah A tidak dapat diakses sekolah B, termasuk lewat dashboard, action, artifact, dan integrasi.
 
+### Status awal Tahap 5
+
+Fondasi `organizations` dan `organization_memberships` telah ditambahkan secara additive. Organisasi `default` menjaga data lama tetap dapat diakses. Slice berikutnya wajib menambahkan `organization_id` pada RPP, artifact, job, template, dan user aktif, kemudian menerapkannya pada setiap query authorization sebelum organisasi baru dapat di-onboard.
+
 ## Urutan eksekusi berikutnya
 
 ```text
