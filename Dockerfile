@@ -49,7 +49,8 @@ RUN apk add --no-cache \
     ttf-freefont \
     font-noto \
     font-noto-emoji \
-    curl
+    curl \
+    sqlite
 
 # Install pnpm (needed to run `pnpm start` → agent-native start)
 RUN corepack enable && corepack prepare pnpm@11.9.0 --activate
@@ -84,4 +85,3 @@ USER node
 # Use pnpm start → agent-native start which correctly handles
 # ESM/CJS interop for puppeteer's __dirname usage
 CMD ["pnpm", "start"]
-

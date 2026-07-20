@@ -12,10 +12,8 @@
 # Cron contoh (jalankan tiap malam jam 02:00, simpan 14 hari):
 #   0 2 * * * /opt/dianyssa-agent/scripts/backup-sqlite.sh /var/backups/dianyssa 14 >> /var/log/dianyssa-backup.log 2>&1
 #
-# Catatan konsistensi: SQLite menggunakan WAL mode sehingga docker cp
-# terhadap file .db utama sudah cukup aman untuk kebanyakan use case.
-# Untuk backup 100% konsisten saat ada transaksi berjalan, tambahkan
-# sqlite3 CLI di image dan gunakan `sqlite3 ... ".backup /tmp/snap"`.
+# Backup dibuat menggunakan perintah SQLite `.backup`, sehingga konsisten
+# walaupun aplikasi sedang menulis database dalam WAL mode.
 
 set -euo pipefail
 
@@ -42,11 +40,18 @@ TIMESTAMP=$(date -u +%Y%m%dT%H%M%SZ)
 BACKUP_FILE="$BACKUP_DIR/app.db.${TIMESTAMP}.gz"
 
 log "backup ${CONTAINER_NAME}:${CONTAINER_DB_PATH} -> ${BACKUP_FILE}"
-if ! docker cp "${CONTAINER_NAME}:${CONTAINER_DB_PATH}" - | gzip > "${BACKUP_FILE}"; then
-  log "ERROR: backup gagal"
-  rm -f "${BACKUP_FILE}"
+SNAPSHOT_PATH="/tmp/rpp-bot-backup-${TIMESTAMP}.db"
+if ! docker exec "$CONTAINER_NAME" sqlite3 "$CONTAINER_DB_PATH" ".backup '$SNAPSHOT_PATH'"; then
+  log "ERROR: SQLite snapshot gagal"
   exit 1
 fi
+if ! docker cp "${CONTAINER_NAME}:${SNAPSHOT_PATH}" - | gzip > "${BACKUP_FILE}"; then
+  log "ERROR: backup gagal"
+  rm -f "${BACKUP_FILE}"
+  docker exec "$CONTAINER_NAME" rm -f "$SNAPSHOT_PATH" || true
+  exit 1
+fi
+docker exec "$CONTAINER_NAME" rm -f "$SNAPSHOT_PATH"
 
 SIZE=$(du -h "${BACKUP_FILE}" | cut -f1)
 log "OK: ${BACKUP_FILE} (${SIZE})"
