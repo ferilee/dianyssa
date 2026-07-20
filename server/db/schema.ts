@@ -54,7 +54,18 @@ export const rppExportJobs = table("rpp_export_jobs", {
   updatedAt: integer("updated_at").notNull(),
 });
 
-// 3. Tabel Sesi Token Web UI (Magic Link)
+// 3. Identitas dokumen per sekolah. Dipakai saat ekspor agar kop dan
+// penandatanganan tidak bergantung pada nilai hard-coded di renderer.
+export const schoolDocumentTemplates = table("school_document_templates", {
+  schoolName: text("school_name").primaryKey(),
+  letterheadText: text("letterhead_text"),
+  city: text("city").notNull().default("Jakarta"),
+  headmasterNip: text("headmaster_nip"),
+  teacherNip: text("teacher_nip"),
+  updatedAt: integer("updated_at").notNull(),
+});
+
+// 4. Tabel Sesi Token Web UI (Magic Link)
 export const webSessions = table("web_sessions", {
   tokenHash: text("token").primaryKey(),                // Hash token unik sekali pakai
   telegramUserId: text("telegram_user_id").notNull(),

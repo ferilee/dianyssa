@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { rppDraftSchema } from "../domain/rpp";
 import { renderRppDocx } from "../services/rpp-docx";
+import { normalizeSchoolDocumentTemplate } from "../services/school-document-template";
 
 describe("RPP DOCX renderer", () => {
   it("creates a DOCX zip archive from a validated RPP", async () => {
@@ -14,5 +15,15 @@ describe("RPP DOCX renderer", () => {
     const buffer = await renderRppDocx(draft);
     expect(buffer.subarray(0, 2).toString()).toBe("PK");
     expect(buffer.length).toBeGreaterThan(1000);
+  });
+
+  it("normalizes optional school template values and retains a safe city fallback", () => {
+    expect(normalizeSchoolDocumentTemplate({ city: "  Bandung ", teacherNip: " 19800101  " })).toEqual({
+      city: "Bandung",
+      teacherNip: "19800101",
+      letterheadText: undefined,
+      headmasterNip: undefined,
+    });
+    expect(normalizeSchoolDocumentTemplate({ city: " " }).city).toBe("Jakarta");
   });
 });

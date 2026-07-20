@@ -7,6 +7,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { assertRppAccess, requireAuthorizedActor } from "../server/auth/authorization.js";
 import { rppDraftSchema, rppDraftToMarkdown } from "../domain/rpp.js";
+import { resolveSchoolDocumentTemplate } from "../services/school-document-template.js";
+
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#039;");
+}
 
 // Helper sederhana untuk mengubah Markdown menjadi HTML terstruktur dengan kelas Tailwind
 function markdownToHtml(markdown: string): string {
@@ -101,6 +106,7 @@ export default defineAction({
       return { status: "error", message: "RPP lama tidak memiliki data terstruktur untuk diekspor ke PDF." };
     }
     const contentHtml = markdownToHtml(rppDraftToMarkdown(rppDraftSchema.parse(JSON.parse(rpp.contentJson))));
+    const template = await resolveSchoolDocumentTemplate(rpp.schoolName);
 
     // 2. Susun template HTML resmi
     const formattedDate = new Date(rpp.createdAt).toLocaleDateString("id-ID", {
@@ -108,6 +114,10 @@ export default defineAction({
       month: "long",
       year: "numeric",
     });
+    const letterheadText = template.letterheadText ? `<p class="text-xs text-gray-600 mt-1">${escapeHtml(template.letterheadText)}</p>` : "";
+    const city = escapeHtml(template.city);
+    const headmasterNip = escapeHtml(template.headmasterNip ?? "_____________________");
+    const teacherNip = escapeHtml(template.teacherNip ?? "_____________________");
 
     const fullHtml = `
 <!DOCTYPE html>
@@ -142,6 +152,7 @@ export default defineAction({
   <!-- Kop Surat Resmi -->
   <div class="text-center border-b-4 border-double border-gray-800 pb-4 mb-6">
     <h2 class="text-lg font-bold uppercase tracking-wider">${rpp.schoolName}</h2>
+    ${letterheadText}
     <h1 class="text-xl font-extrabold uppercase tracking-widest mt-1">RENCANA PELAKSANAAN PEMBELAJARAN (RPP)</h1>
     <p class="text-xs text-gray-600 mt-1">Kurikulum Pembelajaran Mendalam (PM) • Tahun Ajaran ${rpp.academicYear}</p>
   </div>
@@ -193,18 +204,18 @@ export default defineAction({
             <strong>Kepala Sekolah</strong>
           </td>
           <td class="w-1/2 text-center pb-20 border-none">
-            Jakarta, ${formattedDate}<br>
+            ${city}, ${formattedDate}<br>
             <strong>Guru Mata Pelajaran</strong>
           </td>
         </tr>
         <tr class="border-none">
           <td class="text-center font-bold border-none">
             <u>${rpp.headmasterName}</u><br>
-            <span class="text-[10px] font-normal text-gray-500">NIP. _____________________</span>
+            <span class="text-[10px] font-normal text-gray-500">NIP. ${headmasterNip}</span>
           </td>
           <td class="text-center font-bold border-none">
             <u>${rpp.teacherName}</u><br>
-            <span class="text-[10px] font-normal text-gray-500">NIP. _____________________</span>
+            <span class="text-[10px] font-normal text-gray-500">NIP. ${teacherNip}</span>
           </td>
         </tr>
       </tbody>

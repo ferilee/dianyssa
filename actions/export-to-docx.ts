@@ -7,6 +7,7 @@ import { rppDraftSchema } from "../domain/rpp.js";
 import { assertRppAccess, requireAuthorizedActor } from "../server/auth/authorization.js";
 import { storeArtifact } from "../services/artifact-storage.js";
 import { renderRppDocx } from "../services/rpp-docx.js";
+import { resolveSchoolDocumentTemplate } from "../services/school-document-template.js";
 
 export default defineAction({
   description: "Mengekspor RPP yang telah disetujui menjadi dokumen DOCX resmi.",
@@ -37,7 +38,8 @@ export default defineAction({
     }
 
     const draft = rppDraftSchema.parse(JSON.parse(document.contentJson));
-    const buffer = await renderRppDocx(draft);
+    const template = await resolveSchoolDocumentTemplate(document.schoolName);
+    const buffer = await renderRppDocx(draft, template);
     const stored = await storeArtifact(document.id, "docx", buffer);
     const artifactId = crypto.randomUUID();
     await db.insert(schema.rppArtifacts).values({

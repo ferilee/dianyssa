@@ -140,7 +140,20 @@ export const rppBotMigrations: Array<RppBotMigration> = [
       ALTER TABLE rpp_export_jobs ADD COLUMN started_at INTEGER;
       ALTER TABLE rpp_export_jobs ADD COLUMN completed_at INTEGER;
       CREATE INDEX IF NOT EXISTS idx_rpp_export_jobs_ready
-        ON rpp_export_jobs (status, next_attempt_at);
+      ON rpp_export_jobs (status, next_attempt_at);
+    `,
+  },
+  {
+    version: 9,
+    sql: `
+      CREATE TABLE IF NOT EXISTS school_document_templates (
+        school_name TEXT PRIMARY KEY,
+        letterhead_text TEXT,
+        city TEXT NOT NULL DEFAULT 'Jakarta',
+        headmaster_nip TEXT,
+        teacher_nip TEXT,
+        updated_at INTEGER NOT NULL
+      );
     `,
   },
 ];
