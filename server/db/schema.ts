@@ -5,6 +5,7 @@ export const authorizedUsers = table("authorized_users", {
   telegramUserId: text("telegram_user_id").primaryKey(), // ID unik user Telegram
   name: text("name").notNull(),                          // Nama lengkap guru
   role: text("role").default("user").notNull(),          // 'admin' atau 'user'
+  organizationId: text("organization_id").notNull().default("default"),
   createdAt: integer("created_at").notNull(),
 });
 
@@ -29,6 +30,7 @@ export const organizationMemberships = table("organization_memberships", {
 export const rppDocuments = table("rpp_documents", {
   id: text("id").primaryKey(),
   telegramUserId: text("telegram_user_id").notNull(),   // Pemilik dokumen
+  organizationId: text("organization_id").notNull().default("default"),
   teacherName: text("teacher_name").notNull(),          // Nama Guru Mapel
   headmasterName: text("headmaster_name").notNull(),    // Nama Kepala Sekolah
   schoolName: text("school_name").notNull(),            // Nama Sekolah
@@ -48,6 +50,7 @@ export const rppDocuments = table("rpp_documents", {
 export const rppArtifacts = table("rpp_artifacts", {
   id: text("id").primaryKey(),
   rppDocumentId: text("rpp_document_id").notNull(),
+  organizationId: text("organization_id").notNull().default("default"),
   format: text("format").notNull(),
   storageKey: text("storage_key").notNull(),
   sizeBytes: integer("size_bytes").notNull(),
@@ -59,6 +62,7 @@ export const rppArtifacts = table("rpp_artifacts", {
 export const rppExportJobs = table("rpp_export_jobs", {
   id: text("id").primaryKey(),
   rppDocumentId: text("rpp_document_id").notNull(),
+  organizationId: text("organization_id").notNull().default("default"),
   format: text("format").notNull(),
   status: text("status").notNull(),
   attempts: integer("attempts").notNull().default(0),

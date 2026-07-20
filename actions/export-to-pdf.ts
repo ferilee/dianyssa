@@ -95,7 +95,7 @@ export default defineAction({
     }
 
     const rpp = results[0];
-    assertRppAccess(actor, rpp.telegramUserId);
+    assertRppAccess(actor, rpp.telegramUserId, rpp.organizationId);
     if (rpp.status !== "approved") {
       return {
         status: "error",

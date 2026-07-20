@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getDb, schema } from "../../server/db/index.js";
 import { getWebSessionUserId } from "../../server/auth/web-session.js";
 import { readArtifact } from "../../services/artifact-storage.js";
@@ -13,7 +13,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!artifact) throw new Response("Artifact tidak ditemukan", { status: 404 });
   const [document] = await db.select().from(schema.rppDocuments).where(eq(schema.rppDocuments.id, artifact.rppDocumentId)).limit(1);
   const [user] = await db.select().from(schema.authorizedUsers).where(eq(schema.authorizedUsers.telegramUserId, telegramUserId)).limit(1);
-  if (!document || !user || (user.role !== "admin" && document.telegramUserId !== telegramUserId)) throw new Response("Forbidden", { status: 403 });
+  if (!document || !user || user.organizationId !== document.organizationId || (user.role !== "admin" && document.telegramUserId !== telegramUserId)) throw new Response("Forbidden", { status: 403 });
   const extension = artifact.format === "docx" ? "docx" : "pdf";
   try { return new Response(new Uint8Array(await readArtifact(artifact.storageKey)), { headers: { "Content-Type": extension === "docx" ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document" : "application/pdf", "Content-Disposition": `attachment; filename="RPP.${extension}"` } }); }
   catch { throw new Response("Berkas tidak tersedia", { status: 404 }); }

@@ -17,7 +17,7 @@ export default defineAction({
       .limit(1);
 
     if (!document) throw new Error("RPP tidak ditemukan.");
-    assertRppAccess(actor, document.telegramUserId);
+    assertRppAccess(actor, document.telegramUserId, document.organizationId);
     if (document.status !== "draft") {
       throw new Error("Hanya RPP berstatus draft yang dapat disetujui.");
     }

@@ -12,7 +12,7 @@ export default defineAction({
     const db = getDb();
     const [document] = await db.select().from(schema.rppDocuments).where(eq(schema.rppDocuments.id, rppId)).limit(1);
     if (!document) throw new Error("RPP tidak ditemukan.");
-    assertRppAccess(actor, document.telegramUserId);
+    assertRppAccess(actor, document.telegramUserId, document.organizationId);
     const [job] = await db.select().from(schema.rppExportJobs).where(eq(schema.rppExportJobs.rppDocumentId, rppId)).orderBy(desc(schema.rppExportJobs.createdAt)).limit(1);
     return job ?? { status: "not_requested" };
   },

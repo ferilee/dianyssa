@@ -13,11 +13,11 @@ export default defineAction({
     const db = getDb();
     const [document] = await db.select().from(schema.rppDocuments).where(eq(schema.rppDocuments.id, rppId)).limit(1);
     if (!document) throw new Error("RPP tidak ditemukan.");
-    assertRppAccess(actor, document.telegramUserId);
+    assertRppAccess(actor, document.telegramUserId, document.organizationId);
     if (document.status !== "approved") throw new Error("RPP harus disetujui sebelum diekspor.");
     const now = Date.now();
     const jobId = crypto.randomUUID();
-    await db.insert(schema.rppExportJobs).values({ id: jobId, rppDocumentId: rppId, format, status: "queued", attempts: 0, error: null, nextAttemptAt: now, leaseExpiresAt: null, startedAt: null, completedAt: null, createdAt: now, updatedAt: now });
+    await db.insert(schema.rppExportJobs).values({ id: jobId, rppDocumentId: rppId, organizationId: actor.organizationId, format, status: "queued", attempts: 0, error: null, nextAttemptAt: now, leaseExpiresAt: null, startedAt: null, completedAt: null, createdAt: now, updatedAt: now });
     return { status: "queued", jobId, format };
   },
 });

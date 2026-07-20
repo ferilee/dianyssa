@@ -39,9 +39,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     .where(eq(schema.authorizedUsers.telegramUserId, telegramUserId))
     .limit(1);
 
-  const isAdmin = userResults[0]?.role === "admin";
+  const user = userResults[0];
+  const isAdmin = user?.role === "admin";
 
-  if (rpp.telegramUserId !== telegramUserId && !isAdmin) {
+  if (!user || user.organizationId !== rpp.organizationId || (rpp.telegramUserId !== telegramUserId && !isAdmin)) {
     throw new Response("Forbidden", { status: 403 });
   }
 

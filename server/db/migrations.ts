@@ -179,6 +179,22 @@ export const rppBotMigrations: Array<RppBotMigration> = [
         VALUES ('default', 'Organisasi Default', 'default', 0);
     `,
   },
+  {
+    version: 11,
+    sql: `
+      ALTER TABLE authorized_users ADD COLUMN organization_id TEXT NOT NULL DEFAULT 'default';
+      ALTER TABLE rpp_documents ADD COLUMN organization_id TEXT NOT NULL DEFAULT 'default';
+      ALTER TABLE rpp_artifacts ADD COLUMN organization_id TEXT NOT NULL DEFAULT 'default';
+      ALTER TABLE rpp_export_jobs ADD COLUMN organization_id TEXT NOT NULL DEFAULT 'default';
+      CREATE INDEX IF NOT EXISTS idx_rpp_documents_organization ON rpp_documents (organization_id, created_at);
+      CREATE INDEX IF NOT EXISTS idx_rpp_artifacts_organization ON rpp_artifacts (organization_id);
+      CREATE INDEX IF NOT EXISTS idx_rpp_export_jobs_organization ON rpp_export_jobs (organization_id, status);
+      INSERT OR IGNORE INTO organization_memberships (id, organization_id, telegram_user_id, role, created_at)
+        SELECT 'default:' || telegram_user_id, 'default', telegram_user_id,
+          CASE WHEN role = 'admin' THEN 'school_admin' ELSE 'teacher' END, created_at
+        FROM authorized_users;
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

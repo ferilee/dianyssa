@@ -1,7 +1,7 @@
 import { redirect, useLoaderData, useRevalidator } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import { getDb, schema } from "../../server/db/index.js";
-import { eq, desc, inArray } from "drizzle-orm";
+import { and, eq, desc, inArray } from "drizzle-orm";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { clearSessionCookie, getWebSessionUserId, revokeWebSession } from "../../server/auth/web-session.js";
@@ -64,13 +64,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     rpps = await db
       .select()
       .from(schema.rppDocuments)
+      .where(eq(schema.rppDocuments.organizationId, currentUser.organizationId))
       .orderBy(desc(schema.rppDocuments.createdAt));
   } else {
     // Guru biasa hanya dapat melihat RPP milik sendiri
     rpps = await db
       .select()
       .from(schema.rppDocuments)
-      .where(eq(schema.rppDocuments.telegramUserId, telegramUserId))
+      .where(and(eq(schema.rppDocuments.telegramUserId, telegramUserId), eq(schema.rppDocuments.organizationId, currentUser.organizationId)))
       .orderBy(desc(schema.rppDocuments.createdAt));
   }
 

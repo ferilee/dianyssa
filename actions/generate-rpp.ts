@@ -18,6 +18,7 @@ export default defineAction({
     await db.insert(schema.rppDocuments).values({
       id: rppId,
       telegramUserId: actor.telegramUserId,
+      organizationId: actor.organizationId,
       teacherName: args.teacherName,
       headmasterName: args.headmasterName,
       schoolName: args.schoolName,

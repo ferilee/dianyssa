@@ -17,7 +17,7 @@ export default defineAction({
     const db = getDb();
     const [document] = await db.select().from(schema.rppDocuments).where(eq(schema.rppDocuments.id, rppId)).limit(1);
     if (!document) throw new Error("RPP tidak ditemukan.");
-    assertRppAccess(actor, document.telegramUserId);
+    assertRppAccess(actor, document.telegramUserId, document.organizationId);
     if (document.status !== "approved") throw new Error("RPP harus disetujui sebelum diekspor.");
     if (!document.contentJson) throw new Error("RPP lama tidak memiliki data terstruktur untuk diekspor ke DOCX.");
 
@@ -45,6 +45,7 @@ export default defineAction({
     await db.insert(schema.rppArtifacts).values({
       id: artifactId,
       rppDocumentId: document.id,
+      organizationId: document.organizationId,
       format: "docx",
       storageKey: stored.storageKey,
       sizeBytes: stored.sizeBytes,
