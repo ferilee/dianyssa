@@ -218,6 +218,7 @@ export const rppBotMigrations: Array<RppBotMigration> = [
         ON school_document_templates (organization_id, school_name);
     `,
   },
+  { version: 13, sql: `ALTER TABLE web_portal_sessions ADD COLUMN active_organization_id TEXT NOT NULL DEFAULT 'default';` },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

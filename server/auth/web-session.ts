@@ -63,12 +63,16 @@ export async function createWebSession(telegramUserId: string): Promise<string> 
 }
 
 export async function getWebSessionUserId(request: Request): Promise<string | null> {
+  return (await getWebSessionContext(request))?.telegramUserId ?? null;
+}
+
+export async function getWebSessionContext(request: Request): Promise<{ telegramUserId: string; activeOrganizationId: string } | null> {
   const sessionToken = readCookie(request, COOKIE_NAME);
   if (!sessionToken) return null;
 
   const db = getDb();
   const [session] = await db
-    .select({ telegramUserId: schema.webPortalSessions.telegramUserId })
+    .select({ telegramUserId: schema.webPortalSessions.telegramUserId, activeOrganizationId: schema.webPortalSessions.activeOrganizationId })
     .from(schema.webPortalSessions)
     .where(
       and(
@@ -79,7 +83,7 @@ export async function getWebSessionUserId(request: Request): Promise<string | nu
     )
     .limit(1);
 
-  return session?.telegramUserId ?? null;
+  return session ?? null;
 }
 
 export async function revokeWebSession(request: Request): Promise<void> {

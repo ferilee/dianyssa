@@ -99,6 +99,7 @@ export const webPortalSessions = table("web_portal_sessions", {
   id: text("id").primaryKey(),
   sessionTokenHash: text("session_token_hash").notNull().unique(),
   telegramUserId: text("telegram_user_id").notNull(),
+  activeOrganizationId: text("active_organization_id").notNull().default("default"),
   createdAt: integer("created_at").notNull(),
   expiresAt: integer("expires_at").notNull(),
   revokedAt: integer("revoked_at"),

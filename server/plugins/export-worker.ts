@@ -1,7 +1,7 @@
-import { and, asc, eq, lte } from "drizzle-orm";
-import { getDb, schema } from "../db/index.js";
-import { telegramOwnerEmail } from "../auth/telegram-identity.js";
 import { exportWorkerHealth } from "../operations/export-worker-health.js";
+import { telegramOwnerEmail } from "../auth/telegram-identity.js";
+import { createDrizzleExportJobRepository } from "../../services/drizzle-export-job-repository.js";
+import type { ExportJobRepository } from "../../services/export-job-repository.js";
 
 const MAX_ATTEMPTS = 3;
 const LEASE_MS = 60_000;
@@ -28,32 +28,21 @@ const productionExecutor: ExportJobExecutor = async ({ format, rppId, telegramUs
   await action.run({ rppId }, { userEmail: telegramOwnerEmail(telegramUserId), caller: "tool" });
 };
 
-export async function processNextJob(executeExport: ExportJobExecutor = productionExecutor) {
+export async function processNextJob(executeExport: ExportJobExecutor = productionExecutor, repository: ExportJobRepository = createDrizzleExportJobRepository()) {
   exportWorkerHealth.recordTick();
   if (processing) return;
   processing = true;
   try {
-    const db = getDb();
     const now = Date.now();
-    const recovered = await db.update(schema.rppExportJobs)
-      .set({ status: "queued", leaseExpiresAt: null, error: "Worker lease expired; retrying.", nextAttemptAt: now, updatedAt: now })
-      .where(and(eq(schema.rppExportJobs.status, "processing"), lte(schema.rppExportJobs.leaseExpiresAt, now)))
-      .returning({ id: schema.rppExportJobs.id });
-    if (recovered.length) logJob("lease_recovered", { count: recovered.length });
-    const [candidate] = await db.select().from(schema.rppExportJobs)
-      .where(and(eq(schema.rppExportJobs.status, "queued"), lte(schema.rppExportJobs.nextAttemptAt, now)))
-      .orderBy(asc(schema.rppExportJobs.createdAt)).limit(1);
-    if (!candidate) return;
-    const [job] = await db.update(schema.rppExportJobs)
-      .set({ status: "processing", attempts: candidate.attempts + 1, startedAt: now, leaseExpiresAt: now + LEASE_MS, updatedAt: now })
-      .where(and(eq(schema.rppExportJobs.id, candidate.id), eq(schema.rppExportJobs.status, "queued")))
-      .returning();
+    const recovered = await repository.recoverExpiredLeases(now);
+    if (recovered) logJob("lease_recovered", { count: recovered });
+    const job = await repository.claimNext(now, LEASE_MS);
     if (!job) return;
     exportWorkerHealth.recordJobStarted(now);
     logJob("job_started", { jobId: job.id, rppDocumentId: job.rppDocumentId, format: job.format, attempt: job.attempts });
-    const [document] = await db.select().from(schema.rppDocuments).where(eq(schema.rppDocuments.id, job.rppDocumentId)).limit(1);
+    const document = await repository.findDocument(job.rppDocumentId);
     if (!document) {
-      await db.update(schema.rppExportJobs).set({ status: "failed", error: "RPP not found", updatedAt: Date.now() }).where(eq(schema.rppExportJobs.id, job.id));
+      await repository.retry(job.id, 3, "RPP not found", now, now);
       exportWorkerHealth.recordJobFailed();
       logJob("job_failed", { jobId: job.id, reason: "rpp_not_found", attempt: job.attempts });
       return;
@@ -61,14 +50,14 @@ export async function processNextJob(executeExport: ExportJobExecutor = producti
     try {
       await executeExport({ format: job.format, rppId: job.rppDocumentId, telegramUserId: document.telegramUserId });
       const completedAt = Date.now();
-      await db.update(schema.rppExportJobs).set({ status: "completed", error: null, leaseExpiresAt: null, completedAt, updatedAt: completedAt }).where(eq(schema.rppExportJobs.id, job.id));
+      await repository.complete(job.id, completedAt);
       exportWorkerHealth.recordJobCompleted(completedAt);
       logJob("job_completed", { jobId: job.id, format: job.format, attempt: job.attempts, renderLatencyMs: completedAt - now });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       const failed = job.attempts >= MAX_ATTEMPTS;
       const retryAt = Date.now() + retryDelayMs(job.attempts);
-      await db.update(schema.rppExportJobs).set({ status: failed ? "failed" : "queued", error: message, leaseExpiresAt: null, nextAttemptAt: retryAt, updatedAt: Date.now() }).where(eq(schema.rppExportJobs.id, job.id));
+      await repository.retry(job.id, job.attempts, message, retryAt, Date.now());
       exportWorkerHealth.recordJobFailed();
       logJob(failed ? "job_failed" : "job_retry_scheduled", { jobId: job.id, format: job.format, attempt: job.attempts, retryAt: failed ? null : retryAt, error: message });
       if (failed) await notifyFailure(document.telegramUserId, "Ekspor RPP gagal setelah beberapa percobaan. Silakan coba lagi atau hubungi administrator.");

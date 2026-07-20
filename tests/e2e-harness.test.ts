@@ -4,6 +4,8 @@ import fs from "node:fs/promises";
 import { createClient, type Client } from "@libsql/client";
 import { rppBotMigrations, RPP_BOT_MIGRATIONS_TABLE } from "../server/db/migrations";
 import { assertRppAccess } from "../server/auth/authorization";
+import { createLibsqlExportJobRepository } from "../services/libsql-export-job-repository";
+import { processNextJob } from "../server/plugins/export-worker";
 
 const clients: Array<{ client: Client; file: string }> = [];
 
@@ -69,5 +71,28 @@ describe("E2E harness", () => {
     await db.execute({ sql: "UPDATE rpp_export_jobs SET status = 'completed', attempts = 2, error = NULL, completed_at = ?, updated_at = ? WHERE id = ? AND status = 'queued'", args: [retryAt, retryAt, "job-delivery"] });
     const [completed] = (await db.execute({ sql: "SELECT id, status, attempts, error FROM rpp_export_jobs WHERE id = ?", args: ["job-delivery"] })).rows;
     expect(completed).toEqual({ id: "job-delivery", status: "completed", attempts: 2, error: null });
+  });
+
+  it("runs the worker with a mocked Telegram executor, retries, then completes", async () => {
+    const db = await createE2eDatabase(); const now = Date.now();
+    await db.execute({ sql: "INSERT INTO rpp_documents (id, telegram_user_id, organization_id, teacher_name, headmaster_name, school_name, academic_year, subject, grade, topic, content, pdf_path, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", args: ["rpp-worker", "1001", "default", "Guru", "Kepsek", "Sekolah", "2026", "IPA", "5", "Topik", "x", "", now] });
+    await db.execute({ sql: "INSERT INTO rpp_export_jobs (id, rpp_document_id, organization_id, format, status, attempts, next_attempt_at, created_at, updated_at) VALUES (?, ?, ?, ?, 'queued', 0, ?, ?, ?)", args: ["job-worker", "rpp-worker", "default", "docx", 0, now, now] });
+    const repo = createLibsqlExportJobRepository(db); let calls = 0;
+    await processNextJob(async () => { calls++; throw new Error("mock telegram outage"); }, repo);
+    const retry = await db.execute({ sql: "SELECT status, attempts FROM rpp_export_jobs WHERE id=?", args: ["job-worker"] });
+    expect(retry.rows[0]).toEqual({ status: "queued", attempts: 1 });
+    await db.execute({ sql: "UPDATE rpp_export_jobs SET next_attempt_at=0 WHERE id=?", args: ["job-worker"] });
+    await processNextJob(async () => { calls++; }, repo);
+    const done = await db.execute({ sql: "SELECT status, attempts FROM rpp_export_jobs WHERE id=?", args: ["job-worker"] });
+    expect(done.rows[0]).toEqual({ status: "completed", attempts: 2 }); expect(calls).toBe(2);
+  });
+
+  it("recovers an expired lease after a worker restart and completes the job", async () => {
+    const db = await createE2eDatabase(); const now = Date.now();
+    await db.execute({ sql: "INSERT INTO rpp_documents (id, telegram_user_id, organization_id, teacher_name, headmaster_name, school_name, academic_year, subject, grade, topic, content, pdf_path, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", args: ["rpp-lease", "1001", "default", "Guru", "Kepsek", "Sekolah", "2026", "IPA", "5", "Topik", "x", "", now] });
+    await db.execute({ sql: "INSERT INTO rpp_export_jobs (id, rpp_document_id, organization_id, format, status, attempts, next_attempt_at, lease_expires_at, created_at, updated_at) VALUES (?, ?, ?, ?, 'processing', 1, ?, ?, ?, ?)", args: ["job-lease", "rpp-lease", "default", "docx", now, now - 1, now, now] });
+    await processNextJob(async () => {}, createLibsqlExportJobRepository(db));
+    const job = await db.execute({ sql: "SELECT status, attempts FROM rpp_export_jobs WHERE id=?", args: ["job-lease"] });
+    expect(job.rows[0]).toEqual({ status: "completed", attempts: 2 });
   });
 });
