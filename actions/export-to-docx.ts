@@ -8,6 +8,7 @@ import { assertRppAccess, requireAuthorizedActor } from "../server/auth/authoriz
 import { storeArtifact } from "../services/artifact-storage.js";
 import { renderRppDocx } from "../services/rpp-docx.js";
 import { resolveSchoolDocumentTemplate } from "../services/school-document-template.js";
+import { sendTelegramDocument } from "../services/telegram-delivery.js";
 
 export default defineAction({
   description: "Mengekspor RPP yang telah disetujui menjadi dokumen DOCX resmi.",
@@ -58,16 +59,7 @@ export default defineAction({
     const token = process.env.TELEGRAM_BOT_TOKEN;
     if (token) {
       const filename = `RPP_${document.subject.replace(/[^a-zA-Z0-9]/g, "_")}_${document.grade.replace(/[^a-zA-Z0-9]/g, "_")}.docx`;
-      const formData = new FormData();
-      formData.append("chat_id", document.telegramUserId);
-      formData.append("caption", `Berikut dokumen DOCX RPP ${document.subject} ${document.grade}: ${document.topic}`);
-      formData.append("document", new Blob([new Uint8Array(buffer)]), filename);
-      const response = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
-        method: "POST",
-        body: formData,
-      });
-      const result = (await response.json()) as { ok?: boolean; description?: string };
-      if (!result.ok) throw new Error(`Telegram delivery failed: ${result.description ?? "unknown error"}`);
+      await sendTelegramDocument({ token, chatId: document.telegramUserId, caption: `Berikut dokumen DOCX RPP ${document.subject} ${document.grade}: ${document.topic}`, filename, content: buffer });
       await db.update(schema.rppArtifacts).set({ status: "delivered" }).where(eq(schema.rppArtifacts.id, artifactId));
       delivered = true;
     }
