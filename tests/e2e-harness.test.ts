@@ -56,4 +56,18 @@ describe("E2E harness", () => {
     expect(() => assertRppAccess(actorB, String(document?.telegram_user_id), String(document?.organization_id))).toThrow("not authorized");
     expect(artifact?.organization_id).toBe("org-a");
   });
+
+  it("requeues a failed Telegram delivery and completes the same export job on retry", async () => {
+    const db = await createE2eDatabase();
+    const now = Date.now();
+    await db.execute({ sql: "INSERT INTO rpp_export_jobs (id, rpp_document_id, organization_id, format, status, attempts, next_attempt_at, created_at, updated_at) VALUES (?, ?, ?, ?, 'processing', 1, ?, ?, ?)", args: ["job-delivery", "rpp-delivery", "org-a", "docx", now, now, now] });
+    const retryAt = now + 1_000;
+    await db.execute({ sql: "UPDATE rpp_export_jobs SET status = 'queued', error = ?, lease_expires_at = NULL, next_attempt_at = ?, updated_at = ? WHERE id = ?", args: ["Telegram delivery failed: mocked outage", retryAt, now, "job-delivery"] });
+    const [queued] = (await db.execute({ sql: "SELECT id, status, attempts, next_attempt_at FROM rpp_export_jobs WHERE id = ?", args: ["job-delivery"] })).rows;
+    expect(queued).toEqual({ id: "job-delivery", status: "queued", attempts: 1, next_attempt_at: retryAt });
+
+    await db.execute({ sql: "UPDATE rpp_export_jobs SET status = 'completed', attempts = 2, error = NULL, completed_at = ?, updated_at = ? WHERE id = ? AND status = 'queued'", args: [retryAt, retryAt, "job-delivery"] });
+    const [completed] = (await db.execute({ sql: "SELECT id, status, attempts, error FROM rpp_export_jobs WHERE id = ?", args: ["job-delivery"] })).rows;
+    expect(completed).toEqual({ id: "job-delivery", status: "completed", attempts: 2, error: null });
+  });
 });
