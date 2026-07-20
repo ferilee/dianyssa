@@ -158,8 +158,10 @@ export default createIntegrationsPlugin({
         telegramUserId: userId,
         name: name,
         role: "admin",
+        organizationId: "default",
         createdAt: Date.now(),
       });
+      await db.insert(schema.organizationMemberships).values({ id: `default:${userId}`, organizationId: "default", telegramUserId: userId, role: "platform_admin", createdAt: Date.now() }).onConflictDoNothing();
       console.log(`[auth] Seeded configured initial admin (${name} - ${userId}).`);
     }
 
@@ -253,8 +255,10 @@ export default createIntegrationsPlugin({
           telegramUserId: targetId,
           name: targetName,
           role: "user",
+          organizationId: user.organizationId,
           createdAt: Date.now(),
         });
+        await db.insert(schema.organizationMemberships).values({ id: crypto.randomUUID(), organizationId: user.organizationId, telegramUserId: targetId, role: "teacher", createdAt: Date.now() });
         return {
           handled: true,
           responseText: `Guru *${targetName}* dengan ID Telegram \`${targetId}\` berhasil didaftarkan.`,
