@@ -2,11 +2,12 @@ import type { LoaderFunctionArgs } from "react-router";
 import { getDb, schema } from "../../server/db/index.js";
 import { eq } from "drizzle-orm";
 import fs from "node:fs";
-import { getWebSessionUserId } from "../../server/auth/web-session.js";
+import { getWebSessionContext } from "../../server/auth/web-session.js";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   // 1. Cek sesi
-  const telegramUserId = await getWebSessionUserId(request);
+  const session = await getWebSessionContext(request);
+  const telegramUserId = session?.telegramUserId;
 
   if (!telegramUserId) {
     throw new Response("Unauthorized", { status: 401 });
@@ -42,7 +43,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const user = userResults[0];
   const isAdmin = user?.role === "admin";
 
-  if (!user || user.organizationId !== rpp.organizationId || (rpp.telegramUserId !== telegramUserId && !isAdmin)) {
+  if (!user || session?.activeOrganizationId !== rpp.organizationId || (rpp.telegramUserId !== telegramUserId && !isAdmin)) {
     throw new Response("Forbidden", { status: 403 });
   }
 

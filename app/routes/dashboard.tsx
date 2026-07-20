@@ -4,7 +4,7 @@ import { getDb, schema } from "../../server/db/index.js";
 import { and, eq, desc, inArray } from "drizzle-orm";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { clearSessionCookie, getWebSessionUserId, revokeWebSession } from "../../server/auth/web-session.js";
+import { clearSessionCookie, getWebSessionContext, getWebSessionUserId, revokeWebSession, setActiveOrganization } from "../../server/auth/web-session.js";
 import { normalizeSchoolDocumentTemplate, schoolDocumentTemplateId } from "../../services/school-document-template.js";
 
 // Tipe Data untuk RPP dan User
@@ -35,7 +35,8 @@ interface AuthorizedUser {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   // 1. Cek sesi
-  const telegramUserId = await getWebSessionUserId(request);
+  const session = await getWebSessionContext(request);
+  const telegramUserId = session?.telegramUserId;
 
   if (!telegramUserId) {
     return redirect("/");
@@ -56,6 +57,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 
   const currentUser = userResults[0];
+  const memberships = await db.select().from(schema.organizationMemberships).where(eq(schema.organizationMemberships.telegramUserId, telegramUserId));
 
   // 3. Ambil data RPP berdasarkan role
   let rpps: RppDocument[] = [];
@@ -64,14 +66,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     rpps = await db
       .select()
       .from(schema.rppDocuments)
-      .where(eq(schema.rppDocuments.organizationId, currentUser.organizationId))
+      .where(eq(schema.rppDocuments.organizationId, session.activeOrganizationId))
       .orderBy(desc(schema.rppDocuments.createdAt));
   } else {
     // Guru biasa hanya dapat melihat RPP milik sendiri
     rpps = await db
       .select()
       .from(schema.rppDocuments)
-      .where(and(eq(schema.rppDocuments.telegramUserId, telegramUserId), eq(schema.rppDocuments.organizationId, currentUser.organizationId)))
+      .where(and(eq(schema.rppDocuments.telegramUserId, telegramUserId), eq(schema.rppDocuments.organizationId, session.activeOrganizationId)))
       .orderBy(desc(schema.rppDocuments.createdAt));
   }
 
@@ -79,7 +81,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const schoolNames = [...new Set(rpps.map((rpp) => rpp.schoolName))];
   const artifacts: RppArtifact[] = rppIds.length ? await db.select({ id: schema.rppArtifacts.id, rppDocumentId: schema.rppArtifacts.rppDocumentId, format: schema.rppArtifacts.format, status: schema.rppArtifacts.status }).from(schema.rppArtifacts).where(inArray(schema.rppArtifacts.rppDocumentId, rppIds)) : [];
   const jobs: RppExportJob[] = rppIds.length ? await db.select({ id: schema.rppExportJobs.id, rppDocumentId: schema.rppExportJobs.rppDocumentId, status: schema.rppExportJobs.status, error: schema.rppExportJobs.error }).from(schema.rppExportJobs).where(inArray(schema.rppExportJobs.rppDocumentId, rppIds)).orderBy(desc(schema.rppExportJobs.createdAt)) : [];
-  const schoolTemplates: SchoolDocumentTemplate[] = schoolNames.length ? await db.select().from(schema.schoolDocumentTemplates).where(and(eq(schema.schoolDocumentTemplates.organizationId, currentUser.organizationId), inArray(schema.schoolDocumentTemplates.schoolName, schoolNames))) : [];
+  const schoolTemplates: SchoolDocumentTemplate[] = schoolNames.length ? await db.select().from(schema.schoolDocumentTemplates).where(and(eq(schema.schoolDocumentTemplates.organizationId, session.activeOrganizationId), inArray(schema.schoolDocumentTemplates.schoolName, schoolNames))) : [];
 
   return {
     user: currentUser,
@@ -87,6 +89,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     artifacts,
     jobs,
     schoolTemplates,
+    memberships,
+    activeOrganizationId: session.activeOrganizationId,
   };
 }
 
@@ -124,6 +128,7 @@ export async function action({ request }: { request: Request }) {
     }
     return null;
   }
+  if (intent === "switch-organization") { await setActiveOrganization(request, String(formData.get("organizationId") ?? "")); return null; }
   if (intent === "save-school-template") {
     const telegramUserId = await getWebSessionUserId(request);
     const db = getDb();
@@ -233,7 +238,7 @@ function RppMarkdownRenderer({ content }: { content: string }) {
 }
 
 export default function DashboardRoute() {
-  const { user, rpps, artifacts, jobs, schoolTemplates } = useLoaderData() as { user: AuthorizedUser; rpps: RppDocument[]; artifacts: RppArtifact[]; jobs: RppExportJob[]; schoolTemplates: SchoolDocumentTemplate[] };
+  const { user, rpps, artifacts, jobs, schoolTemplates, memberships, activeOrganizationId } = useLoaderData() as { user: AuthorizedUser; rpps: RppDocument[]; artifacts: RppArtifact[]; jobs: RppExportJob[]; schoolTemplates: SchoolDocumentTemplate[]; memberships: Array<{ organizationId: string; role: string }>; activeOrganizationId: string };
   const revalidator = useRevalidator();
 
   // States
@@ -278,6 +283,7 @@ export default function DashboardRoute() {
         </div>
 
         <div className="flex items-center space-x-4">
+          {memberships.length > 1 && <form method="post"><input type="hidden" name="intent" value="switch-organization" /><select name="organizationId" defaultValue={activeOrganizationId} onChange={(event) => event.currentTarget.form?.requestSubmit()} className="bg-zinc-800 text-xs rounded px-2 py-1">{memberships.map((membership) => <option key={membership.organizationId} value={membership.organizationId}>{membership.organizationId}</option>)}</select></form>}
           <div className="text-right hidden sm:block">
             <div className="text-sm font-semibold">{user.name}</div>
             <div className="text-xs text-zinc-400 capitalize">

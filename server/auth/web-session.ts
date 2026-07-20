@@ -96,6 +96,16 @@ export async function revokeWebSession(request: Request): Promise<void> {
     .where(eq(schema.webPortalSessions.sessionTokenHash, hashToken(sessionToken)));
 }
 
+export async function setActiveOrganization(request: Request, organizationId: string): Promise<void> {
+  const sessionToken = readCookie(request, COOKIE_NAME);
+  if (!sessionToken) throw new Error("No active web session.");
+  const context = await getWebSessionContext(request);
+  if (!context) throw new Error("Invalid web session.");
+  const [membership] = await getDb().select().from(schema.organizationMemberships).where(and(eq(schema.organizationMemberships.organizationId, organizationId), eq(schema.organizationMemberships.telegramUserId, context.telegramUserId))).limit(1);
+  if (!membership) throw new Error("You are not a member of this organization.");
+  await getDb().update(schema.webPortalSessions).set({ activeOrganizationId: organizationId }).where(eq(schema.webPortalSessions.sessionTokenHash, hashToken(sessionToken)));
+}
+
 export function sessionCookie(sessionToken: string): string {
   return `${COOKIE_NAME}=${sessionToken}; ${cookieAttributes(Math.floor(SESSION_TTL_MS / 1000))}`;
 }

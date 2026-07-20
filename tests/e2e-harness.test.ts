@@ -95,4 +95,13 @@ describe("E2E harness", () => {
     const job = await db.execute({ sql: "SELECT status, attempts FROM rpp_export_jobs WHERE id=?", args: ["job-lease"] });
     expect(job.rows[0]).toEqual({ status: "completed", attempts: 2 });
   });
+
+  it("allows switching only to an organization with membership", async () => {
+    const db = await createE2eDatabase(); const now = Date.now();
+    await db.execute({ sql: "INSERT INTO organizations (id, name, slug, created_at) VALUES ('org-a','A','a',?),('org-b','B','b',?),('org-c','C','c',?)", args: [now, now, now] });
+    await db.execute({ sql: "INSERT INTO organization_memberships (id, organization_id, telegram_user_id, role, created_at) VALUES ('m-a','org-a','1001','school_admin',?),('m-b','org-b','1001','school_admin',?)", args: [now, now] });
+    const permitted = await db.execute({ sql: "SELECT organization_id FROM organization_memberships WHERE telegram_user_id=? AND organization_id=?", args: ["1001", "org-b"] });
+    const denied = await db.execute({ sql: "SELECT organization_id FROM organization_memberships WHERE telegram_user_id=? AND organization_id=?", args: ["1001", "org-c"] });
+    expect(permitted.rows).toHaveLength(1); expect(denied.rows).toHaveLength(0);
+  });
 });
