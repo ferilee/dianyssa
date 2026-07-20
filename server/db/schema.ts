@@ -78,7 +78,9 @@ export const rppExportJobs = table("rpp_export_jobs", {
 // 3. Identitas dokumen per sekolah. Dipakai saat ekspor agar kop dan
 // penandatanganan tidak bergantung pada nilai hard-coded di renderer.
 export const schoolDocumentTemplates = table("school_document_templates", {
-  schoolName: text("school_name").primaryKey(),
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull(),
+  schoolName: text("school_name").notNull(),
   letterheadText: text("letterhead_text"),
   city: text("city").notNull().default("Jakarta"),
   headmasterNip: text("headmaster_nip"),

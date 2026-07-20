@@ -195,6 +195,29 @@ export const rppBotMigrations: Array<RppBotMigration> = [
         FROM authorized_users;
     `,
   },
+  {
+    version: 12,
+    sql: `
+      ALTER TABLE school_document_templates RENAME TO school_document_templates_legacy;
+      CREATE TABLE school_document_templates (
+        id TEXT PRIMARY KEY,
+        organization_id TEXT NOT NULL,
+        school_name TEXT NOT NULL,
+        letterhead_text TEXT,
+        city TEXT NOT NULL DEFAULT 'Jakarta',
+        headmaster_nip TEXT,
+        teacher_nip TEXT,
+        updated_at INTEGER NOT NULL,
+        UNIQUE (organization_id, school_name)
+      );
+      INSERT INTO school_document_templates (id, organization_id, school_name, letterhead_text, city, headmaster_nip, teacher_nip, updated_at)
+        SELECT 'default:' || school_name, 'default', school_name, letterhead_text, city, headmaster_nip, teacher_nip, updated_at
+        FROM school_document_templates_legacy;
+      DROP TABLE school_document_templates_legacy;
+      CREATE INDEX IF NOT EXISTS idx_school_document_templates_organization
+        ON school_document_templates (organization_id, school_name);
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

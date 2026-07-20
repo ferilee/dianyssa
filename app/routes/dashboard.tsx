@@ -5,7 +5,7 @@ import { and, eq, desc, inArray } from "drizzle-orm";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { clearSessionCookie, getWebSessionUserId, revokeWebSession } from "../../server/auth/web-session.js";
-import { normalizeSchoolDocumentTemplate } from "../../services/school-document-template.js";
+import { normalizeSchoolDocumentTemplate, schoolDocumentTemplateId } from "../../services/school-document-template.js";
 
 // Tipe Data untuk RPP dan User
 interface RppDocument {
@@ -79,7 +79,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const schoolNames = [...new Set(rpps.map((rpp) => rpp.schoolName))];
   const artifacts: RppArtifact[] = rppIds.length ? await db.select({ id: schema.rppArtifacts.id, rppDocumentId: schema.rppArtifacts.rppDocumentId, format: schema.rppArtifacts.format, status: schema.rppArtifacts.status }).from(schema.rppArtifacts).where(inArray(schema.rppArtifacts.rppDocumentId, rppIds)) : [];
   const jobs: RppExportJob[] = rppIds.length ? await db.select({ id: schema.rppExportJobs.id, rppDocumentId: schema.rppExportJobs.rppDocumentId, status: schema.rppExportJobs.status, error: schema.rppExportJobs.error }).from(schema.rppExportJobs).where(inArray(schema.rppExportJobs.rppDocumentId, rppIds)).orderBy(desc(schema.rppExportJobs.createdAt)) : [];
-  const schoolTemplates: SchoolDocumentTemplate[] = schoolNames.length ? await db.select().from(schema.schoolDocumentTemplates).where(inArray(schema.schoolDocumentTemplates.schoolName, schoolNames)) : [];
+  const schoolTemplates: SchoolDocumentTemplate[] = schoolNames.length ? await db.select().from(schema.schoolDocumentTemplates).where(and(eq(schema.schoolDocumentTemplates.organizationId, currentUser.organizationId), inArray(schema.schoolDocumentTemplates.schoolName, schoolNames))) : [];
 
   return {
     user: currentUser,
@@ -139,8 +139,8 @@ export async function action({ request }: { request: Request }) {
     });
     const template = normalizeSchoolDocumentTemplate(values);
     const now = Date.now();
-    await db.insert(schema.schoolDocumentTemplates).values({ schoolName: values.schoolName, ...template, updatedAt: now }).onConflictDoUpdate({
-      target: schema.schoolDocumentTemplates.schoolName,
+    await db.insert(schema.schoolDocumentTemplates).values({ id: schoolDocumentTemplateId(user.organizationId, values.schoolName), organizationId: user.organizationId, schoolName: values.schoolName, ...template, updatedAt: now }).onConflictDoUpdate({
+      target: schema.schoolDocumentTemplates.id,
       set: { ...template, updatedAt: now },
     });
     return { status: "success", message: `Template ${values.schoolName} tersimpan.` };

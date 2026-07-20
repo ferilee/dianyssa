@@ -106,7 +106,7 @@ export default defineAction({
       return { status: "error", message: "RPP lama tidak memiliki data terstruktur untuk diekspor ke PDF." };
     }
     const contentHtml = markdownToHtml(rppDraftToMarkdown(rppDraftSchema.parse(JSON.parse(rpp.contentJson))));
-    const template = await resolveSchoolDocumentTemplate(rpp.schoolName);
+    const template = await resolveSchoolDocumentTemplate(rpp.organizationId, rpp.schoolName);
 
     // 2. Susun template HTML resmi
     const formattedDate = new Date(rpp.createdAt).toLocaleDateString("id-ID", {

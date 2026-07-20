@@ -38,7 +38,7 @@ export default defineAction({
     }
 
     const draft = rppDraftSchema.parse(JSON.parse(document.contentJson));
-    const template = await resolveSchoolDocumentTemplate(document.schoolName);
+    const template = await resolveSchoolDocumentTemplate(document.organizationId, document.schoolName);
     const buffer = await renderRppDocx(draft, template);
     const stored = await storeArtifact(document.id, "docx", buffer);
     const artifactId = crypto.randomUUID();

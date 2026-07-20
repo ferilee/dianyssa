@@ -2,7 +2,7 @@ import { defineAction } from "@agent-native/core/action";
 import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
 import { requireAuthorizedActor } from "../server/auth/authorization.js";
-import { normalizeSchoolDocumentTemplate } from "../services/school-document-template.js";
+import { normalizeSchoolDocumentTemplate, schoolDocumentTemplateId } from "../services/school-document-template.js";
 
 const optionalText = z.string().trim().max(500).optional();
 
@@ -23,9 +23,9 @@ export default defineAction({
     const now = Date.now();
     await getDb()
       .insert(schema.schoolDocumentTemplates)
-      .values({ schoolName: args.schoolName, ...template, updatedAt: now })
+      .values({ id: schoolDocumentTemplateId(actor.organizationId, args.schoolName), organizationId: actor.organizationId, schoolName: args.schoolName, ...template, updatedAt: now })
       .onConflictDoUpdate({
-        target: schema.schoolDocumentTemplates.schoolName,
+        target: schema.schoolDocumentTemplates.id,
         set: { ...template, updatedAt: now },
       });
 
