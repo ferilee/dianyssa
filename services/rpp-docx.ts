@@ -1,8 +1,9 @@
-import { Document, HeadingLevel, Packer, Paragraph, TextRun } from "docx";
+import { Document, HeadingLevel, Packer, Paragraph, Table, TableCell, TableRow, TextRun, WidthType } from "docx";
 import type { RppDraft } from "../domain/rpp.js";
 
 const bullets = (items: string[]) => items.map((item) => new Paragraph({ text: item, bullet: { level: 0 } }));
 const heading = (text: string, level: typeof HeadingLevel[keyof typeof HeadingLevel]) => new Paragraph({ text, heading: level });
+const metadataRow = (label: string, value: string) => new TableRow({ children: [new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: label, bold: true })] })] }), new TableCell({ children: [new Paragraph(value)] })] });
 
 export async function renderRppDocx(draft: RppDraft): Promise<Buffer> {
   const document = new Document({
@@ -12,11 +13,7 @@ export async function renderRppDocx(draft: RppDraft): Promise<Buffer> {
         new Paragraph({ text: "RENCANA PELAKSANAAN PEMBELAJARAN" }),
         new Paragraph({ children: [new TextRun({ text: `Tahun Ajaran ${draft.academicYear}`, italics: true })] }),
         heading("Informasi Umum", HeadingLevel.HEADING_1),
-        new Paragraph(`Guru Mata Pelajaran: ${draft.teacherName}`),
-        new Paragraph(`Kepala Sekolah: ${draft.headmasterName}`),
-        new Paragraph(`Mata Pelajaran: ${draft.subject}`),
-        new Paragraph(`Kelas: ${draft.grade}`),
-        new Paragraph(`Topik: ${draft.topic}`),
+        new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [metadataRow("Guru Mata Pelajaran", draft.teacherName), metadataRow("Kepala Sekolah", draft.headmasterName), metadataRow("Mata Pelajaran", draft.subject), metadataRow("Kelas", draft.grade), metadataRow("Topik", draft.topic)] }),
         heading("Identifikasi", HeadingLevel.HEADING_1),
         new Paragraph(`Profil Peserta Didik: ${draft.identification.learnerProfile}`),
         new Paragraph(`Analisis Materi: ${draft.identification.materialAnalysis}`),
@@ -38,6 +35,8 @@ export async function renderRppDocx(draft: RppDraft): Promise<Buffer> {
         heading("Asesmen Awal", HeadingLevel.HEADING_2), ...bullets(draft.assessments.initial),
         heading("Asesmen Proses", HeadingLevel.HEADING_2), ...bullets(draft.assessments.process),
         heading("Asesmen Akhir", HeadingLevel.HEADING_2), ...bullets(draft.assessments.final),
+        new Paragraph({ text: "", spacing: { after: 800 } }),
+        new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [new TableRow({ children: [new TableCell({ children: [new Paragraph({ text: "Mengetahui,\nKepala Sekolah", alignment: "center" as any, spacing: { after: 1000 } }), new Paragraph({ text: draft.headmasterName, alignment: "center" as any })] }), new TableCell({ children: [new Paragraph({ text: `Jakarta, ${new Date().toLocaleDateString("id-ID")}\nGuru Mata Pelajaran`, alignment: "center" as any, spacing: { after: 1000 } }), new Paragraph({ text: draft.teacherName, alignment: "center" as any })] })] })] }),
       ],
     }],
   });
