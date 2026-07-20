@@ -21,7 +21,14 @@ function retryDelayMs(attempt: number): number {
   return Math.min(60_000, 1_000 * 2 ** Math.max(0, attempt - 1));
 }
 
-async function processNextJob() {
+export type ExportJobExecutor = (input: { format: string; rppId: string; telegramUserId: string }) => Promise<void>;
+
+const productionExecutor: ExportJobExecutor = async ({ format, rppId, telegramUserId }) => {
+  const action = (await import(`../../actions/export-to-${format}.js`)).default;
+  await action.run({ rppId }, { userEmail: telegramOwnerEmail(telegramUserId), caller: "tool" });
+};
+
+export async function processNextJob(executeExport: ExportJobExecutor = productionExecutor) {
   exportWorkerHealth.recordTick();
   if (processing) return;
   processing = true;
@@ -52,8 +59,7 @@ async function processNextJob() {
       return;
     }
     try {
-      const action = (await import(`../../actions/export-to-${job.format}.js`)).default;
-      await action.run({ rppId: job.rppDocumentId }, { userEmail: telegramOwnerEmail(document.telegramUserId), caller: "tool" });
+      await executeExport({ format: job.format, rppId: job.rppDocumentId, telegramUserId: document.telegramUserId });
       const completedAt = Date.now();
       await db.update(schema.rppExportJobs).set({ status: "completed", error: null, leaseExpiresAt: null, completedAt, updatedAt: completedAt }).where(eq(schema.rppExportJobs.id, job.id));
       exportWorkerHealth.recordJobCompleted(completedAt);
