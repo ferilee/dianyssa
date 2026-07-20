@@ -3,7 +3,9 @@ import type { LoaderFunctionArgs } from "react-router";
 import { getDb, schema } from "../../server/db/index.js";
 import { eq, desc, inArray } from "drizzle-orm";
 import { useEffect, useState } from "react";
+import { z } from "zod";
 import { clearSessionCookie, getWebSessionUserId, revokeWebSession } from "../../server/auth/web-session.js";
+import { normalizeSchoolDocumentTemplate } from "../../services/school-document-template.js";
 
 // Tipe Data untuk RPP dan User
 interface RppDocument {
@@ -23,6 +25,7 @@ interface RppDocument {
 
 interface RppArtifact { id: string; rppDocumentId: string; format: string; status: string; }
 interface RppExportJob { id: string; rppDocumentId: string; status: string; error: string | null; }
+interface SchoolDocumentTemplate { schoolName: string; letterheadText: string | null; city: string; headmasterNip: string | null; teacherNip: string | null; }
 
 interface AuthorizedUser {
   telegramUserId: string;
@@ -72,16 +75,27 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 
   const rppIds = rpps.map((rpp) => rpp.id);
+  const schoolNames = [...new Set(rpps.map((rpp) => rpp.schoolName))];
   const artifacts: RppArtifact[] = rppIds.length ? await db.select({ id: schema.rppArtifacts.id, rppDocumentId: schema.rppArtifacts.rppDocumentId, format: schema.rppArtifacts.format, status: schema.rppArtifacts.status }).from(schema.rppArtifacts).where(inArray(schema.rppArtifacts.rppDocumentId, rppIds)) : [];
   const jobs: RppExportJob[] = rppIds.length ? await db.select({ id: schema.rppExportJobs.id, rppDocumentId: schema.rppExportJobs.rppDocumentId, status: schema.rppExportJobs.status, error: schema.rppExportJobs.error }).from(schema.rppExportJobs).where(inArray(schema.rppExportJobs.rppDocumentId, rppIds)).orderBy(desc(schema.rppExportJobs.createdAt)) : [];
+  const schoolTemplates: SchoolDocumentTemplate[] = schoolNames.length ? await db.select().from(schema.schoolDocumentTemplates).where(inArray(schema.schoolDocumentTemplates.schoolName, schoolNames)) : [];
 
   return {
     user: currentUser,
     rpps,
     artifacts,
     jobs,
+    schoolTemplates,
   };
 }
+
+const schoolTemplateFormSchema = z.object({
+  schoolName: z.string().trim().min(2).max(250),
+  letterheadText: z.string().trim().max(500).optional(),
+  city: z.string().trim().min(2).max(100),
+  headmasterNip: z.string().trim().max(100).optional(),
+  teacherNip: z.string().trim().max(100).optional(),
+});
 
 export async function action({ request }: { request: Request }) {
   // Aksi Logout
@@ -108,6 +122,27 @@ export async function action({ request }: { request: Request }) {
       await db.update(schema.rppExportJobs).set({ status: "queued", attempts: 0, error: null, nextAttemptAt: now, leaseExpiresAt: null, updatedAt: now }).where(eq(schema.rppExportJobs.id, job.id));
     }
     return null;
+  }
+  if (intent === "save-school-template") {
+    const telegramUserId = await getWebSessionUserId(request);
+    const db = getDb();
+    const [user] = telegramUserId ? await db.select().from(schema.authorizedUsers).where(eq(schema.authorizedUsers.telegramUserId, telegramUserId)).limit(1) : [];
+    if (!user || user.role !== "admin") throw new Response("Forbidden", { status: 403 });
+
+    const values = schoolTemplateFormSchema.parse({
+      schoolName: formData.get("schoolName"),
+      letterheadText: formData.get("letterheadText") || undefined,
+      city: formData.get("city"),
+      headmasterNip: formData.get("headmasterNip") || undefined,
+      teacherNip: formData.get("teacherNip") || undefined,
+    });
+    const template = normalizeSchoolDocumentTemplate(values);
+    const now = Date.now();
+    await db.insert(schema.schoolDocumentTemplates).values({ schoolName: values.schoolName, ...template, updatedAt: now }).onConflictDoUpdate({
+      target: schema.schoolDocumentTemplates.schoolName,
+      set: { ...template, updatedAt: now },
+    });
+    return { status: "success", message: `Template ${values.schoolName} tersimpan.` };
   }
   return null;
 }
@@ -197,7 +232,7 @@ function RppMarkdownRenderer({ content }: { content: string }) {
 }
 
 export default function DashboardRoute() {
-  const { user, rpps, artifacts, jobs } = useLoaderData() as { user: AuthorizedUser; rpps: RppDocument[]; artifacts: RppArtifact[]; jobs: RppExportJob[] };
+  const { user, rpps, artifacts, jobs, schoolTemplates } = useLoaderData() as { user: AuthorizedUser; rpps: RppDocument[]; artifacts: RppArtifact[]; jobs: RppExportJob[]; schoolTemplates: SchoolDocumentTemplate[] };
   const revalidator = useRevalidator();
 
   // States
@@ -223,6 +258,7 @@ export default function DashboardRoute() {
     const matchesGrade = selectedGrade === "All" || rpp.grade === selectedGrade;
     return matchesSearch && matchesGrade;
   });
+  const activeTemplate = activePreviewRpp ? schoolTemplates.find((template) => template.schoolName === activePreviewRpp.schoolName) : undefined;
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans">
@@ -310,6 +346,38 @@ export default function DashboardRoute() {
             </div>
           </div>
         </div>
+
+        {user.role === "admin" && rpps.length > 0 && (
+          <details className="bg-zinc-900 border border-zinc-800/80 rounded-2xl p-5 shadow-sm group">
+            <summary className="cursor-pointer font-bold text-sm text-zinc-100 list-none flex items-center justify-between">
+              <span>Identitas dokumen sekolah</span>
+              <span className="text-xs font-medium text-indigo-300 group-open:hidden">Atur template</span>
+              <span className="text-xs font-medium text-indigo-300 hidden group-open:inline">Tutup</span>
+            </summary>
+            <p className="text-xs text-zinc-400 mt-3">Berlaku pada ekspor berikutnya untuk sekolah yang dipilih. RPP lama tidak diubah.</p>
+            <form method="post" className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input type="hidden" name="intent" value="save-school-template" />
+              <label className="text-xs text-zinc-400">Sekolah
+                <select name="schoolName" required className="mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200">
+                  {Array.from(new Set(rpps.map((rpp) => rpp.schoolName))).map((schoolName) => <option key={schoolName} value={schoolName}>{schoolName}</option>)}
+                </select>
+              </label>
+              <label className="text-xs text-zinc-400">Kota tanda tangan
+                <input name="city" required defaultValue="Jakarta" className="mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200" />
+              </label>
+              <label className="text-xs text-zinc-400 md:col-span-2">Teks kop/alamat (opsional)
+                <input name="letterheadText" maxLength={500} className="mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200" />
+              </label>
+              <label className="text-xs text-zinc-400">NIP kepala sekolah (opsional)
+                <input name="headmasterNip" maxLength={100} className="mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200" />
+              </label>
+              <label className="text-xs text-zinc-400">NIP guru (opsional)
+                <input name="teacherNip" maxLength={100} className="mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200" />
+              </label>
+              <div className="md:col-span-2"><button type="submit" className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-semibold">Simpan template</button></div>
+            </form>
+          </details>
+        )}
 
         {/* Search & Filter Bar */}
         <div className="bg-zinc-900 border border-zinc-800/80 p-4 rounded-2xl flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
@@ -476,6 +544,7 @@ export default function DashboardRoute() {
                   <h4 className="text-sm font-bold uppercase tracking-wider text-zinc-400">
                     {activePreviewRpp.schoolName}
                   </h4>
+                  {activeTemplate?.letterheadText && <p className="text-[10px] text-zinc-500 mt-1">{activeTemplate.letterheadText}</p>}
                   <h1 className="text-lg font-black uppercase mt-1 tracking-widest text-zinc-100">
                     RENCANA PELAKSANAAN PEMBELAJARAN
                   </h1>
@@ -507,6 +576,10 @@ export default function DashboardRoute() {
                 {/* RPP Content Render */}
                 <div className="mt-8">
                   <RppMarkdownRenderer content={activePreviewRpp.content} />
+                </div>
+                <div className="grid grid-cols-2 gap-6 pt-8 text-center text-xs text-zinc-400">
+                  <div><p>Mengetahui, Kepala Sekolah</p><p className="mt-12 font-semibold text-zinc-200">{activePreviewRpp.headmasterName}</p>{activeTemplate?.headmasterNip && <p>NIP. {activeTemplate.headmasterNip}</p>}</div>
+                  <div><p>{activeTemplate?.city ?? "Jakarta"}, {new Date(activePreviewRpp.createdAt).toLocaleDateString("id-ID")}</p><p>Guru Mata Pelajaran</p><p className="mt-8 font-semibold text-zinc-200">{activePreviewRpp.teacherName}</p>{activeTemplate?.teacherNip && <p>NIP. {activeTemplate.teacherNip}</p>}</div>
                 </div>
               </div>
             </div>
