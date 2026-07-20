@@ -44,4 +44,4 @@ docker compose -f docker-compose.prod.yml start app
 curl -fsS http://127.0.0.1:3000/healthz
 ```
 
-Lakukan restore terlebih dahulu di lingkungan staging; backup database tidak mencakup artifact object storage R2, sehingga bucket R2 perlu mempunyai lifecycle/replication backup sendiri.
+Lakukan restore terlebih dahulu di lingkungan staging; backup database tidak mencakup artifact object storage S3, sehingga bucket S3 perlu mempunyai lifecycle/replication backup sendiri.
