@@ -6,6 +6,7 @@ import puppeteer from "puppeteer";
 import fs from "node:fs";
 import path from "node:path";
 import { assertRppAccess, requireAuthorizedActor } from "../server/auth/authorization.js";
+import { rppDraftSchema, rppDraftToMarkdown } from "../domain/rpp.js";
 
 // Helper sederhana untuk mengubah Markdown menjadi HTML terstruktur dengan kelas Tailwind
 function markdownToHtml(markdown: string): string {
@@ -96,7 +97,10 @@ export default defineAction({
         message: "RPP harus disetujui terlebih dahulu sebelum diekspor.",
       };
     }
-    const contentHtml = markdownToHtml(rpp.content);
+    if (!rpp.contentJson) {
+      return { status: "error", message: "RPP lama tidak memiliki data terstruktur untuk diekspor ke PDF." };
+    }
+    const contentHtml = markdownToHtml(rppDraftToMarkdown(rppDraftSchema.parse(JSON.parse(rpp.contentJson))));
 
     // 2. Susun template HTML resmi
     const formattedDate = new Date(rpp.createdAt).toLocaleDateString("id-ID", {
