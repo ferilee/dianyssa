@@ -1,13 +1,14 @@
 import { defineAction } from "@agent-native/core/action";
 import { z } from "zod";
 import { getDb, schema } from "../server/db/index.js";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import puppeteer from "puppeteer";
-import fs from "node:fs";
-import path from "node:path";
+import crypto from "node:crypto";
 import { assertRppAccess, requireAuthorizedActor } from "../server/auth/authorization.js";
 import { rppDraftSchema, rppDraftToMarkdown } from "../domain/rpp.js";
 import { resolveSchoolDocumentTemplate } from "../services/school-document-template.js";
+import { storeArtifact } from "../services/artifact-storage.js";
+import { sendTelegramDocument } from "../services/telegram-delivery.js";
 
 function escapeHtml(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#039;");
@@ -226,13 +227,6 @@ export default defineAction({
     `;
 
     // 3. Render HTML ke PDF menggunakan Puppeteer
-    const pdfDir = path.join(process.cwd(), "data", "pdfs");
-    const pdfPath = path.join(pdfDir, `rpp-${rppId}.pdf`);
-
-    if (!fs.existsSync(pdfDir)) {
-      fs.mkdirSync(pdfDir, { recursive: true });
-    }
-
     let pdfBuffer: Buffer;
     try {
       const browser = await puppeteer.launch({
@@ -253,8 +247,6 @@ export default defineAction({
       });
       await browser.close();
 
-      // Tulis file ke disk
-      fs.writeFileSync(pdfPath, pdfBuffer);
     } catch (pdfErr: any) {
       console.error("[pdf] Gagal merender dengan Puppeteer:", pdfErr);
       return {
@@ -263,11 +255,10 @@ export default defineAction({
       };
     }
 
-    // 4. Update path PDF di database
-    await db
-      .update(schema.rppDocuments)
-      .set({ pdfPath })
-      .where(eq(schema.rppDocuments.id, rppId));
+    const [existingArtifact] = await db.select().from(schema.rppArtifacts).where(and(eq(schema.rppArtifacts.rppDocumentId, rpp.id), eq(schema.rppArtifacts.format, "pdf"))).limit(1);
+    const artifactId = existingArtifact?.id ?? crypto.randomUUID();
+    const stored = existingArtifact ? { storageKey: existingArtifact.storageKey } : await storeArtifact(rpp.id, "pdf", pdfBuffer);
+    if (!existingArtifact) await db.insert(schema.rppArtifacts).values({ id: artifactId, rppDocumentId: rpp.id, organizationId: rpp.organizationId, format: "pdf", storageKey: stored.storageKey, sizeBytes: pdfBuffer.length, checksum: crypto.createHash("sha256").update(pdfBuffer).digest("hex"), status: "rendered", createdAt: Date.now() });
 
     // 5. Kirim PDF ke Telegram via Bot API jika token terkonfigurasi
     const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -275,28 +266,9 @@ export default defineAction({
       // Kirim ke Guru
       if (rpp.telegramUserId && rpp.telegramUserId !== "unknown") {
         try {
-          const formData = new FormData();
-          formData.append("chat_id", rpp.telegramUserId);
-          formData.append(
-            "caption",
-            `Berikut adalah berkas PDF resmi RPP mata pelajaran *${rpp.subject}* kelas *${rpp.grade}* dengan topik "*${rpp.topic}*" yang telah Anda setujui.`
-          );
-          
           const filename = `RPP_${rpp.subject.replace(/[^a-zA-Z0-9]/g, "_")}_${rpp.grade.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
-          formData.append(
-            "document",
-            new Blob([new Uint8Array(pdfBuffer)]),
-            filename
-          );
-
-          const res = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
-            method: "POST",
-            body: formData,
-          });
-          const resData = (await res.json()) as any;
-          if (!resData.ok) {
-            console.error("[telegram] Gagal mengirim dokumen ke guru:", resData.description);
-          }
+          await sendTelegramDocument({ token, chatId: rpp.telegramUserId, caption: `Berikut PDF RPP ${rpp.subject} ${rpp.grade}: ${rpp.topic}`, filename, content: pdfBuffer });
+          await db.update(schema.rppArtifacts).set({ status: "delivered" }).where(eq(schema.rppArtifacts.id, artifactId));
         } catch (tgErr) {
           console.error("[telegram] Terjadi error saat mengirim dokumen ke guru:", tgErr);
         }
@@ -306,28 +278,8 @@ export default defineAction({
       const archiveChannelId = process.env.TELEGRAM_ARCHIVE_CHANNEL_ID;
       if (archiveChannelId) {
         try {
-          const formData = new FormData();
-          formData.append("chat_id", archiveChannelId);
-          formData.append(
-            "caption",
-            `[ARSIP RPP RESMI]\n\n• Sekolah: ${rpp.schoolName}\n• Guru: ${rpp.teacherName}\n• Mata Pelajaran: ${rpp.subject}\n• Kelas: ${rpp.grade}\n• Topik: ${rpp.topic}\n• Tahun Ajaran: ${rpp.academicYear}`
-          );
-          
           const filename = `RPP_ARSIP_${rpp.subject.replace(/[^a-zA-Z0-9]/g, "_")}_${rpp.grade.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
-          formData.append(
-            "document",
-            new Blob([new Uint8Array(pdfBuffer)]),
-            filename
-          );
-
-          const res = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
-            method: "POST",
-            body: formData,
-          });
-          const resData = (await res.json()) as any;
-          if (!resData.ok) {
-            console.error("[telegram] Gagal mengarsipkan dokumen ke channel:", resData.description);
-          }
+          await sendTelegramDocument({ token, chatId: archiveChannelId, caption: `[ARSIP RPP RESMI]\n\n• Sekolah: ${rpp.schoolName}\n• Guru: ${rpp.teacherName}\n• Mata Pelajaran: ${rpp.subject}\n• Kelas: ${rpp.grade}\n• Topik: ${rpp.topic}\n• Tahun Ajaran: ${rpp.academicYear}`, filename, content: pdfBuffer });
         } catch (archiveErr) {
           console.error("[telegram] Terjadi error saat mengarsipkan dokumen ke channel:", archiveErr);
         }
@@ -336,8 +288,9 @@ export default defineAction({
 
     return {
       status: "success",
-      pdfPath,
-      message: `PDF berhasil diekspor dan dikirimkan ke Telegram. Path berkas: ${pdfPath}`,
+      artifactId,
+      storageKey: stored.storageKey,
+      message: "PDF berhasil diekspor.",
     };
   },
 });
