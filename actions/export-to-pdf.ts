@@ -116,9 +116,20 @@ export default defineAction({
   <meta charset="UTF-8">
   <title>RPP - ${rpp.subject}</title>
   <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-    }
+    * { box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; color: #111827; font-size: 10pt; line-height: 1.5; }
+    .text-center { text-align: center; } .text-justify { text-align: justify; }
+    .font-bold, .font-extrabold, .font-semibold { font-weight: 700; }
+    .uppercase { text-transform: uppercase; } .tracking-widest { letter-spacing: .12em; }
+    .border-b-4 { border-bottom: 4px double #111827; } .border-b-2 { border-bottom: 2px solid #111827; }
+    .pb-4 { padding-bottom: 16px; } .pb-2 { padding-bottom: 8px; } .py-1 { padding: 4px 0; }
+    .mb-6 { margin-bottom: 24px; } .mb-12 { margin-bottom: 48px; } .mt-12 { margin-top: 48px; }
+    .p-4 { padding: 16px; } .p-8 { padding: 32px; } .mt-1 { margin-top: 4px; }
+    .text-xl { font-size: 16pt; } .text-lg { font-size: 13pt; } .text-base { font-size: 11pt; } .text-xs { font-size: 8pt; }
+    .bg-gray-50 { background: #f9fafb; } .border { border: 1px solid #d1d5db; } .rounded-lg { border-radius: 6px; }
+    .w-full { width: 100%; } .w-1\/2 { width: 50%; } .w-1\/4 { width: 25%; } table { border-collapse: collapse; }
+    .page-break-inside-avoid { break-inside: avoid; } .pb-20 { padding-bottom: 80px; } .text-gray-500 { color: #6b7280; }
+    .prose h1, .prose h2, .prose h3 { margin: 18px 0 8px; } .prose p { margin: 0 0 10px; } .prose ul { margin: 0 0 10px; padding-left: 20px; }
     @media print {
       body {
         margin: 0;
