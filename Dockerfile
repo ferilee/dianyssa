@@ -32,6 +32,9 @@ FROM builder AS pruner
 
 # Remove devDependencies in-place to get a clean prod-only node_modules
 RUN pnpm prune --prod
+# Agent-Native's bundled Drizzle adapter imports this at runtime. Fail the image
+# build early rather than publishing a container that starts with its auth guard locked.
+RUN test -d node_modules/postgres
 
 # ─── Stage 3: Production runner ───────────────────────────────────────────────
 FROM node:22-alpine AS runner
