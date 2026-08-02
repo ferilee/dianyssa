@@ -9,11 +9,19 @@ import { processNextJob } from "../server/plugins/export-worker";
 
 const clients: Array<{ client: Client; file: string }> = [];
 
-async function createE2eDatabase() {
+async function createE2eDatabase(options: { withAgentNativeOrganizations?: boolean } = {}) {
   const file = `/tmp/rpp-e2e-${crypto.randomUUID()}.db`;
   const client = createClient({ url: `file:${file}` });
   clients.push({ client, file });
   await client.execute(`CREATE TABLE ${RPP_BOT_MIGRATIONS_TABLE} (version INTEGER PRIMARY KEY)`);
+  if (options.withAgentNativeOrganizations) {
+    await client.execute(`CREATE TABLE organizations (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      created_by TEXT NOT NULL,
+      created_at INTEGER NOT NULL
+    )`);
+  }
   for (const migration of rppBotMigrations) {
     await client.executeMultiple(migration.sql as string);
     await client.execute({ sql: `INSERT INTO ${RPP_BOT_MIGRATIONS_TABLE} (version) VALUES (?)`, args: [migration.version] });
@@ -24,10 +32,23 @@ async function createE2eDatabase() {
 afterEach(async () => { while (clients.length) { const entry = clients.pop(); entry?.client.close(); if (entry) await fs.rm(entry.file, { force: true }); } });
 
 describe("E2E harness", () => {
+  it("keeps RPP tenant tables separate from Agent-Native organizations", async () => {
+    const db = await createE2eDatabase({ withAgentNativeOrganizations: true });
+    const tables = await db.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('organizations', 'rpp_organizations', 'rpp_organization_memberships') ORDER BY name");
+    const defaultOrganization = await db.execute("SELECT id, slug FROM rpp_organizations WHERE id = 'default'");
+
+    expect(tables.rows).toEqual([
+      { name: "organizations" },
+      { name: "rpp_organization_memberships" },
+      { name: "rpp_organizations" },
+    ]);
+    expect(defaultOrganization.rows).toEqual([{ id: "default", slug: "default" }]);
+  });
+
   it("creates an isolated database with the complete RPP workflow schema", async () => {
     const db = await createE2eDatabase();
     const migrations = await db.execute(`SELECT COUNT(*) AS count FROM ${RPP_BOT_MIGRATIONS_TABLE}`);
-    const tables = await db.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('rpp_documents', 'rpp_export_jobs', 'organizations', 'organization_memberships')");
+    const tables = await db.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('rpp_documents', 'rpp_export_jobs', 'rpp_organizations', 'rpp_organization_memberships')");
     expect(Number(migrations.rows[0]?.count)).toBe(rppBotMigrations.length);
     expect(tables.rows).toHaveLength(4);
   });
@@ -49,7 +70,7 @@ describe("E2E harness", () => {
   it("denies an organization B user access to organization A's RPP and artifact", async () => {
     const db = await createE2eDatabase();
     const now = Date.now();
-    await db.execute({ sql: "INSERT INTO organizations (id, name, slug, created_at) VALUES (?, ?, ?, ?), (?, ?, ?, ?)", args: ["org-a", "Sekolah A", "sekolah-a", now, "org-b", "Sekolah B", "sekolah-b", now] });
+    await db.execute({ sql: "INSERT INTO rpp_organizations (id, name, slug, created_at) VALUES (?, ?, ?, ?), (?, ?, ?, ?)", args: ["org-a", "Sekolah A", "sekolah-a", now, "org-b", "Sekolah B", "sekolah-b", now] });
     await db.execute({ sql: "INSERT INTO rpp_documents (id, telegram_user_id, organization_id, teacher_name, headmaster_name, school_name, academic_year, subject, grade, topic, content, pdf_path, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", args: ["rpp-a", "1001", "org-a", "Guru A", "Kepsek A", "Sekolah A", "2026/2027", "IPA", "5", "Ekosistem", "konten", "", now] });
     await db.execute({ sql: "INSERT INTO rpp_artifacts (id, rpp_document_id, organization_id, format, storage_key, size_bytes, checksum, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", args: ["artifact-a", "rpp-a", "org-a", "docx", "rpp-a.docx", 10, "checksum", "rendered", now] });
     const [document] = (await db.execute({ sql: "SELECT telegram_user_id, organization_id FROM rpp_documents WHERE id = ?", args: ["rpp-a"] })).rows;
@@ -98,10 +119,10 @@ describe("E2E harness", () => {
 
   it("allows switching only to an organization with membership", async () => {
     const db = await createE2eDatabase(); const now = Date.now();
-    await db.execute({ sql: "INSERT INTO organizations (id, name, slug, created_at) VALUES ('org-a','A','a',?),('org-b','B','b',?),('org-c','C','c',?)", args: [now, now, now] });
-    await db.execute({ sql: "INSERT INTO organization_memberships (id, organization_id, telegram_user_id, role, created_at) VALUES ('m-a','org-a','1001','school_admin',?),('m-b','org-b','1001','school_admin',?)", args: [now, now] });
-    const permitted = await db.execute({ sql: "SELECT organization_id FROM organization_memberships WHERE telegram_user_id=? AND organization_id=?", args: ["1001", "org-b"] });
-    const denied = await db.execute({ sql: "SELECT organization_id FROM organization_memberships WHERE telegram_user_id=? AND organization_id=?", args: ["1001", "org-c"] });
+    await db.execute({ sql: "INSERT INTO rpp_organizations (id, name, slug, created_at) VALUES ('org-a','A','a',?),('org-b','B','b',?),('org-c','C','c',?)", args: [now, now, now] });
+    await db.execute({ sql: "INSERT INTO rpp_organization_memberships (id, organization_id, telegram_user_id, role, created_at) VALUES ('m-a','org-a','1001','school_admin',?),('m-b','org-b','1001','school_admin',?)", args: [now, now] });
+    const permitted = await db.execute({ sql: "SELECT organization_id FROM rpp_organization_memberships WHERE telegram_user_id=? AND organization_id=?", args: ["1001", "org-b"] });
+    const denied = await db.execute({ sql: "SELECT organization_id FROM rpp_organization_memberships WHERE telegram_user_id=? AND organization_id=?", args: ["1001", "org-c"] });
     expect(permitted.rows).toHaveLength(1); expect(denied.rows).toHaveLength(0);
   });
 });

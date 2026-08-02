@@ -159,13 +159,13 @@ export const rppBotMigrations: Array<RppBotMigration> = [
   {
     version: 10,
     sql: `
-      CREATE TABLE IF NOT EXISTS organizations (
+      CREATE TABLE IF NOT EXISTS rpp_organizations (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         slug TEXT NOT NULL UNIQUE,
         created_at INTEGER NOT NULL
       );
-      CREATE TABLE IF NOT EXISTS organization_memberships (
+      CREATE TABLE IF NOT EXISTS rpp_organization_memberships (
         id TEXT PRIMARY KEY,
         organization_id TEXT NOT NULL,
         telegram_user_id TEXT NOT NULL,
@@ -173,9 +173,9 @@ export const rppBotMigrations: Array<RppBotMigration> = [
         created_at INTEGER NOT NULL,
         UNIQUE (organization_id, telegram_user_id)
       );
-      CREATE INDEX IF NOT EXISTS idx_organization_memberships_user
-        ON organization_memberships (telegram_user_id);
-      INSERT OR IGNORE INTO organizations (id, name, slug, created_at)
+      CREATE INDEX IF NOT EXISTS idx_rpp_organization_memberships_user
+        ON rpp_organization_memberships (telegram_user_id);
+      INSERT OR IGNORE INTO rpp_organizations (id, name, slug, created_at)
         VALUES ('default', 'Organisasi Default', 'default', 0);
     `,
   },
@@ -189,7 +189,7 @@ export const rppBotMigrations: Array<RppBotMigration> = [
       CREATE INDEX IF NOT EXISTS idx_rpp_documents_organization ON rpp_documents (organization_id, created_at);
       CREATE INDEX IF NOT EXISTS idx_rpp_artifacts_organization ON rpp_artifacts (organization_id);
       CREATE INDEX IF NOT EXISTS idx_rpp_export_jobs_organization ON rpp_export_jobs (organization_id, status);
-      INSERT OR IGNORE INTO organization_memberships (id, organization_id, telegram_user_id, role, created_at)
+      INSERT OR IGNORE INTO rpp_organization_memberships (id, organization_id, telegram_user_id, role, created_at)
         SELECT 'default:' || telegram_user_id, 'default', telegram_user_id,
           CASE WHEN role = 'admin' THEN 'school_admin' ELSE 'teacher' END, created_at
         FROM authorized_users;
