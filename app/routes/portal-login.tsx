@@ -16,16 +16,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 
   const sessionToken = await createWebSession(telegramUserId);
-
-  // Setel cookie sesi dan redirect ke dashboard
   return redirect("/dashboard", {
-    headers: {
-      "Set-Cookie": sessionCookie(sessionToken),
-    },
+    headers: { "Set-Cookie": sessionCookie(sessionToken) },
   });
 }
 
-export default function LoginRoute({ loaderData }: { loaderData?: { error?: string } }) {
+export default function PortalLoginRoute({ loaderData }: { loaderData?: { error?: string } }) {
   const error = loaderData?.error;
 
   return (

@@ -1,6 +1,8 @@
 import { createAuthPlugin } from "@agent-native/core/server";
+import { RPP_PORTAL_PUBLIC_PATHS } from "../auth/portal-routes.js";
 
 export default createAuthPlugin({
+  publicPaths: [...RPP_PORTAL_PUBLIC_PATHS],
   marketing: {
     appName: "RPP Bot",
     tagline:

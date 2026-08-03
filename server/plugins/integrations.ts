@@ -14,6 +14,7 @@ import mammoth from "mammoth";
 // Nitro plugin compiles this registry dynamically from the actions folder
 import actionsRegistry from "../../.generated/actions-registry.js";
 import { issueMagicLinkToken } from "../auth/web-session.js";
+import { buildPortalLoginUrl } from "../auth/portal-routes.js";
 import { telegramOwnerEmail } from "../auth/telegram-identity.js";
 
 let cachedBotUsername: string | null = null;
@@ -332,7 +333,7 @@ export default createIntegrationsPlugin({
       });
 
       const appUrl = process.env.APP_URL || "http://localhost:8080";
-      const magicLink = `${appUrl}/login?token=${tokenUUID}`;
+      const magicLink = buildPortalLoginUrl(appUrl, tokenUUID);
 
       const chatType = incoming.platformContext.chatType as string;
       const isGroup = chatType === "group" || chatType === "supergroup";
