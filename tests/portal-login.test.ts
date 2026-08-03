@@ -4,6 +4,7 @@ import {
   RPP_PORTAL_PUBLIC_PATHS,
   buildPortalLoginUrl,
 } from "../server/auth/portal-routes";
+import { loader as portalLoginLoader } from "../app/routes/portal-login";
 
 describe("portal magic-link routing", () => {
   it("uses a non-reserved portal login URL and exposes only RPP portal routes", () => {
@@ -19,5 +20,13 @@ describe("portal magic-link routing", () => {
       "/artifacts",
       "/logout",
     ]);
+  });
+
+  it("does not consume a magic token when a link preview performs a GET", async () => {
+    const result = await portalLoginLoader({
+      request: new Request("https://agent.example.id/portal-login?token=one-time-token"),
+    } as never);
+
+    expect(result).toEqual({ token: "one-time-token" });
   });
 });
