@@ -4,7 +4,7 @@ import {
   loadActionsFromStaticRegistry,
 } from "@agent-native/core/server";
 import { getDb, schema } from "../db/index.js";
-import { eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import crypto from "node:crypto";
 import { readBody } from "h3";
 // @ts-ignore
@@ -16,6 +16,7 @@ import actionsRegistry from "../../.generated/actions-registry.js";
 import { issueMagicLinkToken } from "../auth/web-session.js";
 import { buildPortalLoginUrl } from "../auth/portal-routes.js";
 import { telegramOwnerEmail } from "../auth/telegram-identity.js";
+import { parseRppFinalApproval } from "../rpp/approval-intent.js";
 
 let cachedBotUsername: string | null = null;
 
@@ -587,6 +588,52 @@ export default createIntegrationsPlugin({
       }
     }
 
+    // Persetujuan akhir diproses tanpa LLM agar draf yang telah tersimpan
+    // tidak bergantung pada model untuk meneruskan dua action berurutan.
+    // Hanya perintah eksplisit yang ditangani di sini; persetujuan terhadap
+    // pertanyaan klarifikasi tetap diteruskan ke agen untuk menyusun draf.
+    const exportFormat = parseRppFinalApproval(trimmed);
+    if (exportFormat) {
+      const [draft] = await db
+        .select({ id: schema.rppDocuments.id, topic: schema.rppDocuments.topic })
+        .from(schema.rppDocuments)
+        .where(
+          and(
+            eq(schema.rppDocuments.telegramUserId, userId),
+            eq(schema.rppDocuments.organizationId, user.organizationId),
+            eq(schema.rppDocuments.status, "draft"),
+          ),
+        )
+        .orderBy(desc(schema.rppDocuments.createdAt))
+        .limit(1);
+
+      if (draft) {
+        try {
+          await runActionByName("approve-rpp", { rppId: draft.id }, userId);
+          const queued = await runActionByName(
+            "queue-rpp-export",
+            { rppId: draft.id, format: exportFormat },
+            userId,
+          );
+          return {
+            handled: true,
+            responseText: `Draf RPP *${draft.topic}* telah disetujui. Berkas ${exportFormat.toUpperCase()} sedang diproses (job: \`${queued.jobId}\`). Saya akan mengirimkan hasilnya setelah siap.`,
+          };
+        } catch (err: any) {
+          console.error("[rpp] Failed to approve or queue export:", err);
+          return {
+            handled: true,
+            responseText: "Draf RPP sudah ditemukan, tetapi proses ekspor belum dapat dimulai. Silakan kirim *Cetak* sekali lagi dalam beberapa saat.",
+          };
+        }
+      }
+
+      return {
+        handled: true,
+        responseText: "Belum ada draf RPP tersimpan yang dapat dicetak. Silakan kirim *Lanjutkan buat draf RPP lengkap* agar saya menyusun dan menyimpan draf terlebih dahulu.",
+      };
+    }
+
     const activateMatch = /^aktifkan pengumuman (\S+)$/i.exec(trimmed);
     if (activateMatch) {
       const id = activateMatch[1];
@@ -642,13 +689,14 @@ ALUR PERCAKAPAN & KLARIFIKASI:
    - Dimensi Profil Lulusan yang disasar (Pilih dari: Keimanan, Kewargaan, Penalaran Kritis, Kreativitas, Kolaborasi, Kemandirian, Kesehatan, Komunikasi).
    Jika pengguna telah mengunggah berkas acuan, cari informasi ini terlebih dahulu di dalam teks hasil ekstraksi yang diberikan, lalu mintalah konfirmasi guru ("Saya mendeteksi informasi berikut... Apakah sudah benar?").
 3. Bimbing guru untuk merancang tujuan pembelajaran serta metode yang berfokus pada kedalaman pemahaman (Pembelajaran Mendalam).
-4. Setelah semua informasi disepakati, sajikan draf RPP terstruktur dengan komponen:
+4. Persetujuan terhadap arah, tujuan, atau metode pembelajaran adalah *klarifikasi antara*, bukan persetujuan cetak. Setelah klarifikasi itu disetujui, Anda HARUS segera memanggil aksi \`generate-rpp\` dengan draf RPP lengkap dan terstruktur. Jangan menampilkan atau menyebut ada draf final sebelum aksi tersebut berhasil mengembalikan \`rppId\`.
+5. Setelah \`generate-rpp\` berhasil, sajikan ringkasan draf RPP terstruktur dengan komponen:
    - **Informasi Umum**: Metadata dasar RPP.
    - **Identifikasi**: Profil siswa, relevansi materi, dan Dimensi Profil Lulusan.
    - **Desain**: Tujuan Pembelajaran dan Kerangka Pembelajaran (Pedagogis, Lingkungan, Kemitraan, Digital).
    - **Pengalaman Belajar**: Awal (orientasi), Inti (Aktivitas Memahami, Mengaplikasi, Merefleksi), dan Penutup.
    - **Asesmen**: Asesmen Awal, Proses, dan Akhir.
-5. Setelah menampilkan draf RPP lengkap, tanyakan persetujuan guru dengan kalimat:
-   "Jika draf RPP di atas sudah sesuai, silakan kirim pesan *'Setuju'* atau *'Cetak'* untuk mencetak berkas PDF resmi."
-6. Setelah guru menyetujui draf, panggil aksi 'approve-rpp', lalu gunakan 'queue-rpp-export' dengan format DOCX sebagai format utama. Gunakan PDF hanya bila guru memintanya.`,
+6. Setelah draf tersimpan dan ditampilkan, tanyakan persetujuan final dengan kalimat:
+   "Draf sudah tersimpan. Jika sudah sesuai, kirim *Setuju* atau *Cetak DOCX*. Kirim *Cetak PDF* bila Anda menginginkan PDF."
+7. Jangan memanggil \`approve-rpp\` atau \`queue-rpp-export\` untuk pesan persetujuan final dari Telegram: adapter Telegram akan memproses perintah eksplisit tersebut secara aman terhadap draf terakhir milik guru di organisasinya.`,
 });

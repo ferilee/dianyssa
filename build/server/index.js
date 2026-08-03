@@ -1,10 +1,26 @@
 import { o as __toESM, r as __exportAll, t as __commonJSMin } from "./assets/rolldown-runtime-CE-6LUnI.js";
-import { a as scrubUrl, c as __spreadArray, d as ensureEmbedAuthFetchInterceptor, f as EMBED_MODE_QUERY_PARAM, i as trackSessionStatus, l as agentNativePath, o as __assign, p as EMBED_TOKEN_QUERY_PARAM, r as setSentryUser, s as __rest, u as appPath } from "./assets/analytics-PFh8M3qr.js";
-import { $ as sql, E as pgTable, F as integer$1, G as mapResultRow, Q as fillPlaceholders, R as boolean, S as desc, _ as extractTablesRelationalConfig, g as createTableRelationsHelpers, ht as entityKind, j as text$1, mt as NoopLogger, pt as DefaultLogger, t as NoopCache, w as eq } from "./assets/cache-BPuYUtol.js";
-import { a as SQLiteAsyncDialect, c as text$2, i as BaseSQLiteDatabase, l as integer$2, n as SQLiteSession, r as SQLiteTransaction, s as sqliteTable, t as SQLitePreparedQuery } from "./assets/session-IA9z_ISp.js";
+import { a as scrubUrl, c as __spreadArray, d as ensureEmbedAuthFetchInterceptor, f as EMBED_MODE_QUERY_PARAM, i as trackSessionStatus, l as agentNativePath, o as __assign, p as EMBED_TOKEN_QUERY_PARAM, r as setSentryUser, s as __rest, u as appPath } from "./assets/analytics-DPR7TRid.js";
+import { A as integer$1, B as mapResultRow, E as text$1, G as DefaultLogger, K as NoopLogger, N as boolean, _ as gt, c as createTableRelationsHelpers, g as eq, h as and, it as sql, l as extractTablesRelationalConfig, m as desc, rt as fillPlaceholders, t as NoopCache, v as inArray, vt as entityKind, x as pgTable, y as isNull } from "./assets/cache-C2UvVjgK.js";
+import { a as SQLiteAsyncDialect, c as text$2, i as BaseSQLiteDatabase, l as integer$2, n as SQLiteSession, r as SQLiteTransaction, s as sqliteTable, t as SQLitePreparedQuery } from "./assets/session-CrBGaati.js";
+import { $ as NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS, A as NODE_RETRY_MODE_CONFIG_OPTIONS, C as getRecursionDetectionPlugin, D as setFeature, E as resolveHostHeaderConfig, F as resolveHttpHandlerRuntimeConfig, G as customEndpointFunctions, H as getEndpointPlugin, J as resolveParams, K as EndpointCache, L as determineTimestampFormat, M as DEFAULT_RETRY_MODE, N as getContentLengthPlugin, O as getRetryPlugin, P as getHttpHandlerExtensionConfiguration, Q as NODE_REGION_CONFIG_OPTIONS, S as getHttpAuthSchemeEndpointRuleSetPlugin, T as getHostHeaderPlugin, U as resolveEndpointConfig, W as decideEndpoint, X as resolveRegionConfig, Y as resolveDefaultsModeConfig, Z as NODE_REGION_CONFIG_FILE_OPTIONS, _ as resolveUserAgentConfig, _t as normalizeProvider, at as getDefaultExtensionConfiguration, b as getHttpSigningPlugin, c as ProtocolLib, ct as loadConfigsForDefaultMode, d as getAwsRegionExtensionConfiguration, dt as TypeRegistry, et as NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS, f as resolveAwsRegionExtensionConfiguration, ft as NormalizedSchema, g as getUserAgentPlugin, gt as Client, h as createDefaultUserAgentProvider, it as NoOpLogger, j as resolveRetryConfig, k as NODE_MAX_ATTEMPT_CONFIG_OPTIONS, lt as ServiceException, m as NODE_APP_ID_CONFIG_OPTIONS, mt as getSchemaSerdePlugin, n as NODE_AUTH_SCHEME_PREFERENCE_OPTIONS, nt as booleanSelector, ot as resolveDefaultRuntimeConfig, p as awsEndpointFunctions, q as BinaryDecisionDiagram, r as AwsSdkSigV4Signer, rt as makeBuilder, s as SerdeContextConfig, st as emitWarningIfUnsupportedVersion, t as resolveAwsSdkSigV4Config, tt as SelectorType$1, u as Sha256Node, v as DefaultIdentityProviderConfig, vt as getSmithyContext, w as getLoggerPlugin, x as httpSigningMiddlewareOptions, yt as emitWarningIfUnsupportedVersion$1 } from "./assets/resolveAwsSdkSigV4Config-D4g-ozje.js";
+import { t as setCredentialFeature } from "./assets/setCredentialFeature-B8gFd5oe.js";
+import "./assets/loadSharedConfigFiles-C3UoXJA4.js";
+import { t as HttpRequest } from "./assets/httpRequest-MsxXbvEi.js";
+import { r as HttpResponse, t as NodeHttpHandler } from "./assets/node-http-handler-ESuki7Pk.js";
+import { r as parseUrl, t as loadConfig } from "./assets/configLoader-BF4DGsON.js";
+import { a as SignatureV4MultiRegion, i as XmlShapeDeserializer, n as resolveAwsSdkSigV4AConfig, r as AwsSdkSigV4ASigner, t as NODE_SIGV4A_CONFIG_OPTIONS } from "./assets/resolveAwsSdkSigV4AConfig-c2d3O6iO.js";
+import { A as isArrayBuffer, D as toBase64, E as toUtf8, O as fromUtf8, T as parseRfc7231DateTime, a as streamCollector, c as createChecksumStream, d as fromHex, f as toHex, i as sdkStreamMixin, k as fromBase64, l as toUint8Array, n as generateIdempotencyToken, o as getAwsChunkedEncodingStream, p as NumericValue, s as createBufferedReadable, u as calculateBodyLength, x as dateToUtcString } from "./assets/serde-DSMreXns.js";
+import { t as CredentialsProviderError } from "./assets/CredentialsProviderError-uKEwU1di.js";
+import { t as chain } from "./assets/chain-opDPuwo1.js";
+import { i as HttpBindingProtocol, n as HttpInterceptingShapeSerializer, r as HttpInterceptingShapeDeserializer } from "./assets/common-Byc0ENcF.js";
+import path from "node:path";
+import crypto, { createHash, createHmac } from "node:crypto";
 import { AsyncLocalStorage } from "node:async_hooks";
-import path from "path";
-import fs from "node:fs";
+import path$1 from "path";
+import fs from "node:fs/promises";
+import { Readable, Writable } from "node:stream";
+import fs$1 from "node:fs";
+import * as zlib from "node:zlib";
 //#region node_modules/.pnpm/react@19.2.7/node_modules/react/cjs/react-jsx-runtime.production.js
 /**
 * @license React
@@ -20404,7 +20420,7 @@ function isbot(userAgent) {
 	return isNonEmptyString(userAgent) && getPattern().test(userAgent);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/server/analytics.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/server/analytics.js
 /**
 * Opt-in analytics injection for SSR streams.
 * Supported environment variables:
@@ -20473,7 +20489,7 @@ function wrapWithAnalytics(body) {
 	} }));
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/server/entry-server.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/server/entry-server.js
 var { renderToReadableStream } = import_server_browser.default;
 var streamTimeout = 5e3;
 function createDocumentRequestHandler(ServerRouter) {
@@ -21927,6 +21943,52 @@ function useNavigation() {
 		let { matches, historyAction, ...rest } = state.navigation;
 		return rest;
 	}, [state.navigation]);
+}
+/**
+* Revalidate the data on the page for reasons outside of normal data mutations
+* like [`Window` focus](https://developer.mozilla.org/en-US/docs/Web/API/Window/focus_event)
+* or polling on an interval.
+*
+* Note that page data is already revalidated automatically after actions.
+* If you find yourself using this for normal CRUD operations on your data in
+* response to user interactions, you're probably not taking advantage of the
+* other APIs like {@link useFetcher}, {@link Form}, {@link useSubmit} that do
+* this automatically.
+*
+* @example
+* import { useRevalidator } from "react-router";
+*
+* function WindowFocusRevalidator() {
+*   const revalidator = useRevalidator();
+*
+*   useFakeWindowFocus(() => {
+*     revalidator.revalidate();
+*   });
+*
+*   return (
+*     <div hidden={revalidator.state === "idle"}>
+*       Revalidating...
+*     </div>
+*   );
+* }
+*
+* @public
+* @category Hooks
+* @mode framework
+* @mode data
+* @returns An object with a `revalidate` function and the current revalidation
+* `state`
+*/
+function useRevalidator() {
+	let dataRouterContext = useDataRouterContext$2("useRevalidator");
+	let state = useDataRouterState$1("useRevalidator");
+	let revalidate = import_react.useCallback(async () => {
+		await dataRouterContext.router.revalidate();
+	}, [dataRouterContext.router]);
+	return import_react.useMemo(() => ({
+		revalidate,
+		state: state.revalidation
+	}), [revalidate, state.revalidation]);
 }
 /**
 * Returns the active route matches, useful for accessing `loaderData` for
@@ -24367,7 +24429,7 @@ var entry_server_exports = /* @__PURE__ */ __exportAll({
 });
 var handleDocumentRequest = createDocumentRequestHandler(ServerRouter);
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/route-chunk-recovery.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/route-chunk-recovery.js
 var STALE_CHUNK_RELOAD_AT_KEY = "__agentNativeStaleChunkReloadAt";
 var STALE_CHUNK_RELOAD_COOLDOWN_MS = 1e4;
 function isDynamicImportFailureMessage(value) {
@@ -24428,7 +24490,7 @@ function recoverFromStaleChunkError(error, win = typeof window === "undefined" ?
 	return reloadForStaleChunk(win);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/application-state.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/application-state.js
 var APP_STATE_KEY_PATTERN = /^[a-zA-Z0-9_:-]+$/;
 function appStateUrl(key) {
 	if (!APP_STATE_KEY_PATTERN.test(key)) throw new TypeError("Application state keys may only contain letters, numbers, underscores, hyphens, and colons.");
@@ -24662,7 +24724,7 @@ function hashQueryKeyByOptions(queryKey, options) {
 	return (options?.queryKeyHashFn || hashKey)(queryKey);
 }
 function hashKey(queryKey) {
-	return JSON.stringify(queryKey, (_, val) => isPlainObject(val) ? Object.keys(val).sort().reduce((result, key) => {
+	return JSON.stringify(queryKey, (_, val) => isPlainObject$1(val) ? Object.keys(val).sort().reduce((result, key) => {
 		result[key] = val[key];
 		return result;
 	}, {}) : val);
@@ -24678,7 +24740,7 @@ function replaceEqualDeep(a, b, depth = 0) {
 	if (a === b) return a;
 	if (depth > 500) return b;
 	const array = isPlainArray(a) && isPlainArray(b);
-	if (!array && !(isPlainObject(a) && isPlainObject(b))) return b;
+	if (!array && !(isPlainObject$1(a) && isPlainObject$1(b))) return b;
 	const aSize = (array ? a : Object.keys(a)).length;
 	const bItems = array ? b : Object.keys(b);
 	const bSize = bItems.length;
@@ -24706,7 +24768,7 @@ function replaceEqualDeep(a, b, depth = 0) {
 function isPlainArray(value) {
 	return Array.isArray(value) && value.length === Object.keys(value).length;
 }
-function isPlainObject(o) {
+function isPlainObject$1(o) {
 	if (!hasObjectPrototype(o)) return false;
 	const ctor = o.constructor;
 	if (ctor === void 0) return true;
@@ -29667,7 +29729,7 @@ var zeroGap = {
 	right: 0,
 	gap: 0
 };
-var parse = function(x) {
+var parse$1 = function(x) {
 	return parseInt(x || "", 10) || 0;
 };
 var getOffset = function(gapMode) {
@@ -29676,9 +29738,9 @@ var getOffset = function(gapMode) {
 	var top = cs[gapMode === "padding" ? "paddingTop" : "marginTop"];
 	var right = cs[gapMode === "padding" ? "paddingRight" : "marginRight"];
 	return [
-		parse(left),
-		parse(top),
-		parse(right)
+		parse$1(left),
+		parse$1(top),
+		parse$1(right)
 	];
 };
 var getGapWidth = function(gapMode) {
@@ -32289,7 +32351,7 @@ function I18nextProvider({ i18n, defaultNS, children }) {
 	return (0, import_react.createElement)(I18nContext.Provider, { value }, children);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/localization/default-messages.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/localization/default-messages.js
 var messages = {
 	home: {
 		settingsTitle: "Settings",
@@ -32810,7 +32872,7 @@ var messages = {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/localization/shared.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/localization/shared.js
 var SUPPORTED_LOCALES = [
 	"en-US",
 	"es-ES",
@@ -32966,7 +33028,7 @@ function resolveLocaleFromPreference(preference, systemCandidates = []) {
 	return resolveLocaleFromCandidates(systemCandidates);
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/use-action.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/use-action.js
 var ACTION_PREFIX = agentNativePath("/_agent-native/actions");
 /**
 * Upper bound on how long a single action fetch may stay in flight (headers
@@ -36497,13 +36559,13 @@ var getDefaultConfig = () => {
 };
 var twMerge = /*#__PURE__*/ createTailwindMerge(getDefaultConfig);
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/utils.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/utils.js
 /** Merge class names with clsx + tailwind-merge. */
 function cn$1(...inputs) {
 	return twMerge(clsx(inputs));
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/localization/server.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/localization/server.js
 function getLocaleInitScript(options = {}) {
 	const safeLocale = normalizeLocaleCode(options.locale) ?? "en-US";
 	const shouldStorePreference = options.preference !== void 0;
@@ -36516,7 +36578,7 @@ function getLocaleInitScript(options = {}) {
 	return `(function(){try{var supported=${JSON.stringify(SUPPORTED_LOCALES)};var payload=${JSON.stringify(payload)};var shouldStorePreference=${JSON.stringify(shouldStorePreference)};function valid(x){return supported.indexOf(x)>=0}function canon(x){if(typeof x!=='string'||!x)return null;try{var c=Intl.getCanonicalLocales(x)[0];if(valid(c))return c;var lang=c&&c.split('-')[0].toLowerCase();for(var i=0;i<supported.length;i++){if(supported[i].split('-')[0].toLowerCase()===lang)return supported[i]}}catch(e){}return null}function storageGet(k){try{return window.localStorage.getItem(k)}catch(e){return null}}function storageSet(k,v){try{window.localStorage.setItem(k,v)}catch(e){}}var stored=storageGet(${JSON.stringify(LOCALE_STORAGE_KEY)});var pref=payload.preference&&payload.preference.locale;var locale=payload.locale;if(!valid(locale)){locale=null}if(!locale&&stored&&stored!=='system'){locale=canon(stored)}if(!locale&&pref&&pref!=='system'){locale=canon(pref)}if(!locale){var langs=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language];for(var j=0;j<langs.length&&!locale;j++){locale=canon(langs[j])}}if(!locale)locale=${JSON.stringify(DEFAULT_LOCALE)};var root=document.documentElement;root.setAttribute('lang',locale);root.setAttribute('dir',locale==='ar-SA'?'rtl':'ltr');root.setAttribute('data-locale',locale);payload.locale=locale;payload.dir=locale==='ar-SA'?'rtl':'ltr';window[${JSON.stringify(LOCALE_HYDRATION_GLOBAL)}]=payload;if(shouldStorePreference&&pref){storageSet(${JSON.stringify(LOCALE_STORAGE_KEY)},pref)}}catch(e){}})();`;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/i18n.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/i18n.js
 var LocaleContext = globalThis.__AGENT_NATIVE_LOCALE_CONTEXT__ ?? (globalThis.__AGENT_NATIVE_LOCALE_CONTEXT__ = (0, import_react.createContext)(null));
 function browserLanguageCandidates() {
 	if (typeof navigator === "undefined") return [];
@@ -36722,6 +36784,3626 @@ function flattenMessages(value, prefix = "", out = {}) {
 	return out;
 }
 flattenMessages(messages);
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/core.js
+var _a$1;
+function $constructor(name, initializer, params) {
+	function init(inst, def) {
+		if (!inst._zod) Object.defineProperty(inst, "_zod", {
+			value: {
+				def,
+				constr: _,
+				traits: /* @__PURE__ */ new Set()
+			},
+			enumerable: false
+		});
+		if (inst._zod.traits.has(name)) return;
+		inst._zod.traits.add(name);
+		initializer(inst, def);
+		const proto = _.prototype;
+		const keys = Object.keys(proto);
+		for (let i = 0; i < keys.length; i++) {
+			const k = keys[i];
+			if (!(k in inst)) inst[k] = proto[k].bind(inst);
+		}
+	}
+	const Parent = params?.Parent ?? Object;
+	class Definition extends Parent {}
+	Object.defineProperty(Definition, "name", { value: name });
+	function _(def) {
+		var _a;
+		const inst = params?.Parent ? new Definition() : this;
+		init(inst, def);
+		(_a = inst._zod).deferred ?? (_a.deferred = []);
+		for (const fn of inst._zod.deferred) fn();
+		return inst;
+	}
+	Object.defineProperty(_, "init", { value: init });
+	Object.defineProperty(_, Symbol.hasInstance, { value: (inst) => {
+		if (params?.Parent && inst instanceof params.Parent) return true;
+		return inst?._zod?.traits?.has(name);
+	} });
+	Object.defineProperty(_, "name", { value: name });
+	return _;
+}
+var $ZodAsyncError = class extends Error {
+	constructor() {
+		super(`Encountered Promise during synchronous parse. Use .parseAsync() instead.`);
+	}
+};
+var $ZodEncodeError = class extends Error {
+	constructor(name) {
+		super(`Encountered unidirectional transform during encode: ${name}`);
+		this.name = "ZodEncodeError";
+	}
+};
+(_a$1 = globalThis).__zod_globalConfig ?? (_a$1.__zod_globalConfig = {});
+var globalConfig = globalThis.__zod_globalConfig;
+function config(newConfig) {
+	if (newConfig) Object.assign(globalConfig, newConfig);
+	return globalConfig;
+}
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/util.js
+function getEnumValues(entries) {
+	const numericValues = Object.values(entries).filter((v) => typeof v === "number");
+	return Object.entries(entries).filter(([k, _]) => numericValues.indexOf(+k) === -1).map(([_, v]) => v);
+}
+function jsonStringifyReplacer(_, value) {
+	if (typeof value === "bigint") return value.toString();
+	return value;
+}
+function cached(getter) {
+	return { get value() {
+		{
+			const value = getter();
+			Object.defineProperty(this, "value", { value });
+			return value;
+		}
+		throw new Error("cached value already set");
+	} };
+}
+function nullish(input) {
+	return input === null || input === void 0;
+}
+function cleanRegex(source) {
+	const start = source.startsWith("^") ? 1 : 0;
+	const end = source.endsWith("$") ? source.length - 1 : source.length;
+	return source.slice(start, end);
+}
+var EVALUATING = /* @__PURE__*/ Symbol("evaluating");
+function defineLazy(object, key, getter) {
+	let value = void 0;
+	Object.defineProperty(object, key, {
+		get() {
+			if (value === EVALUATING) return;
+			if (value === void 0) {
+				value = EVALUATING;
+				value = getter();
+			}
+			return value;
+		},
+		set(v) {
+			Object.defineProperty(object, key, { value: v });
+		},
+		configurable: true
+	});
+}
+function assignProp(target, prop, value) {
+	Object.defineProperty(target, prop, {
+		value,
+		writable: true,
+		enumerable: true,
+		configurable: true
+	});
+}
+function mergeDefs(...defs) {
+	const mergedDescriptors = {};
+	for (const def of defs) {
+		const descriptors = Object.getOwnPropertyDescriptors(def);
+		Object.assign(mergedDescriptors, descriptors);
+	}
+	return Object.defineProperties({}, mergedDescriptors);
+}
+function esc(str) {
+	return JSON.stringify(str);
+}
+function slugify(input) {
+	return input.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/[\s_-]+/g, "-").replace(/^-+|-+$/g, "");
+}
+var captureStackTrace = "captureStackTrace" in Error ? Error.captureStackTrace : (..._args) => {};
+function isObject(data) {
+	return typeof data === "object" && data !== null && !Array.isArray(data);
+}
+var allowsEval = /* @__PURE__*/ cached(() => {
+	if (globalConfig.jitless) return false;
+	if (typeof navigator !== "undefined" && navigator?.userAgent?.includes("Cloudflare")) return false;
+	try {
+		new Function("");
+		return true;
+	} catch (_) {
+		return false;
+	}
+});
+function isPlainObject(o) {
+	if (isObject(o) === false) return false;
+	const ctor = o.constructor;
+	if (ctor === void 0) return true;
+	if (typeof ctor !== "function") return true;
+	const prot = ctor.prototype;
+	if (isObject(prot) === false) return false;
+	if (Object.prototype.hasOwnProperty.call(prot, "isPrototypeOf") === false) return false;
+	return true;
+}
+function shallowClone(o) {
+	if (isPlainObject(o)) return { ...o };
+	if (Array.isArray(o)) return [...o];
+	if (o instanceof Map) return new Map(o);
+	if (o instanceof Set) return new Set(o);
+	return o;
+}
+var propertyKeyTypes = /* @__PURE__*/ new Set([
+	"string",
+	"number",
+	"symbol"
+]);
+function escapeRegex(str) {
+	return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function clone(inst, def, params) {
+	const cl = new inst._zod.constr(def ?? inst._zod.def);
+	if (!def || params?.parent) cl._zod.parent = inst;
+	return cl;
+}
+function normalizeParams(_params) {
+	const params = _params;
+	if (!params) return {};
+	if (typeof params === "string") return { error: () => params };
+	if (params?.message !== void 0) {
+		if (params?.error !== void 0) throw new Error("Cannot specify both `message` and `error` params");
+		params.error = params.message;
+	}
+	delete params.message;
+	if (typeof params.error === "string") return {
+		...params,
+		error: () => params.error
+	};
+	return params;
+}
+function optionalKeys(shape) {
+	return Object.keys(shape).filter((k) => {
+		return shape[k]._zod.optin === "optional" && shape[k]._zod.optout === "optional";
+	});
+}
+Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -Number.MAX_VALUE, Number.MAX_VALUE;
+function pick(schema, mask) {
+	const currDef = schema._zod.def;
+	const checks = currDef.checks;
+	if (checks && checks.length > 0) throw new Error(".pick() cannot be used on object schemas containing refinements");
+	return clone(schema, mergeDefs(schema._zod.def, {
+		get shape() {
+			const newShape = {};
+			for (const key in mask) {
+				if (!(key in currDef.shape)) throw new Error(`Unrecognized key: "${key}"`);
+				if (!mask[key]) continue;
+				newShape[key] = currDef.shape[key];
+			}
+			assignProp(this, "shape", newShape);
+			return newShape;
+		},
+		checks: []
+	}));
+}
+function omit(schema, mask) {
+	const currDef = schema._zod.def;
+	const checks = currDef.checks;
+	if (checks && checks.length > 0) throw new Error(".omit() cannot be used on object schemas containing refinements");
+	return clone(schema, mergeDefs(schema._zod.def, {
+		get shape() {
+			const newShape = { ...schema._zod.def.shape };
+			for (const key in mask) {
+				if (!(key in currDef.shape)) throw new Error(`Unrecognized key: "${key}"`);
+				if (!mask[key]) continue;
+				delete newShape[key];
+			}
+			assignProp(this, "shape", newShape);
+			return newShape;
+		},
+		checks: []
+	}));
+}
+function extend(schema, shape) {
+	if (!isPlainObject(shape)) throw new Error("Invalid input to extend: expected a plain object");
+	const checks = schema._zod.def.checks;
+	if (checks && checks.length > 0) {
+		const existingShape = schema._zod.def.shape;
+		for (const key in shape) if (Object.getOwnPropertyDescriptor(existingShape, key) !== void 0) throw new Error("Cannot overwrite keys on object schemas containing refinements. Use `.safeExtend()` instead.");
+	}
+	return clone(schema, mergeDefs(schema._zod.def, { get shape() {
+		const _shape = {
+			...schema._zod.def.shape,
+			...shape
+		};
+		assignProp(this, "shape", _shape);
+		return _shape;
+	} }));
+}
+function safeExtend(schema, shape) {
+	if (!isPlainObject(shape)) throw new Error("Invalid input to safeExtend: expected a plain object");
+	return clone(schema, mergeDefs(schema._zod.def, { get shape() {
+		const _shape = {
+			...schema._zod.def.shape,
+			...shape
+		};
+		assignProp(this, "shape", _shape);
+		return _shape;
+	} }));
+}
+function merge(a, b) {
+	if (a._zod.def.checks?.length) throw new Error(".merge() cannot be used on object schemas containing refinements. Use .safeExtend() instead.");
+	return clone(a, mergeDefs(a._zod.def, {
+		get shape() {
+			const _shape = {
+				...a._zod.def.shape,
+				...b._zod.def.shape
+			};
+			assignProp(this, "shape", _shape);
+			return _shape;
+		},
+		get catchall() {
+			return b._zod.def.catchall;
+		},
+		checks: b._zod.def.checks ?? []
+	}));
+}
+function partial(Class, schema, mask) {
+	const checks = schema._zod.def.checks;
+	if (checks && checks.length > 0) throw new Error(".partial() cannot be used on object schemas containing refinements");
+	return clone(schema, mergeDefs(schema._zod.def, {
+		get shape() {
+			const oldShape = schema._zod.def.shape;
+			const shape = { ...oldShape };
+			if (mask) for (const key in mask) {
+				if (!(key in oldShape)) throw new Error(`Unrecognized key: "${key}"`);
+				if (!mask[key]) continue;
+				shape[key] = Class ? new Class({
+					type: "optional",
+					innerType: oldShape[key]
+				}) : oldShape[key];
+			}
+			else for (const key in oldShape) shape[key] = Class ? new Class({
+				type: "optional",
+				innerType: oldShape[key]
+			}) : oldShape[key];
+			assignProp(this, "shape", shape);
+			return shape;
+		},
+		checks: []
+	}));
+}
+function required(Class, schema, mask) {
+	return clone(schema, mergeDefs(schema._zod.def, { get shape() {
+		const oldShape = schema._zod.def.shape;
+		const shape = { ...oldShape };
+		if (mask) for (const key in mask) {
+			if (!(key in shape)) throw new Error(`Unrecognized key: "${key}"`);
+			if (!mask[key]) continue;
+			shape[key] = new Class({
+				type: "nonoptional",
+				innerType: oldShape[key]
+			});
+		}
+		else for (const key in oldShape) shape[key] = new Class({
+			type: "nonoptional",
+			innerType: oldShape[key]
+		});
+		assignProp(this, "shape", shape);
+		return shape;
+	} }));
+}
+function aborted(x, startIndex = 0) {
+	if (x.aborted === true) return true;
+	for (let i = startIndex; i < x.issues.length; i++) if (x.issues[i]?.continue !== true) return true;
+	return false;
+}
+function explicitlyAborted(x, startIndex = 0) {
+	if (x.aborted === true) return true;
+	for (let i = startIndex; i < x.issues.length; i++) if (x.issues[i]?.continue === false) return true;
+	return false;
+}
+function prefixIssues(path, issues) {
+	return issues.map((iss) => {
+		var _a;
+		(_a = iss).path ?? (_a.path = []);
+		iss.path.unshift(path);
+		return iss;
+	});
+}
+function unwrapMessage(message) {
+	return typeof message === "string" ? message : message?.message;
+}
+function finalizeIssue(iss, ctx, config) {
+	const message = iss.message ? iss.message : unwrapMessage(iss.inst?._zod.def?.error?.(iss)) ?? unwrapMessage(ctx?.error?.(iss)) ?? unwrapMessage(config.customError?.(iss)) ?? unwrapMessage(config.localeError?.(iss)) ?? "Invalid input";
+	const { inst: _inst, continue: _continue, input: _input, ...rest } = iss;
+	rest.path ?? (rest.path = []);
+	rest.message = message;
+	if (ctx?.reportInput) rest.input = _input;
+	return rest;
+}
+function getLengthableOrigin(input) {
+	if (Array.isArray(input)) return "array";
+	if (typeof input === "string") return "string";
+	return "unknown";
+}
+function issue(...args) {
+	const [iss, input, inst] = args;
+	if (typeof iss === "string") return {
+		message: iss,
+		code: "custom",
+		input,
+		inst
+	};
+	return { ...iss };
+}
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/errors.js
+var initializer$1 = (inst, def) => {
+	inst.name = "$ZodError";
+	Object.defineProperty(inst, "_zod", {
+		value: inst._zod,
+		enumerable: false
+	});
+	Object.defineProperty(inst, "issues", {
+		value: def,
+		enumerable: false
+	});
+	inst.message = JSON.stringify(def, jsonStringifyReplacer, 2);
+	Object.defineProperty(inst, "toString", {
+		value: () => inst.message,
+		enumerable: false
+	});
+};
+var $ZodError = $constructor("$ZodError", initializer$1);
+var $ZodRealError = $constructor("$ZodError", initializer$1, { Parent: Error });
+function flattenError(error, mapper = (issue) => issue.message) {
+	const fieldErrors = {};
+	const formErrors = [];
+	for (const sub of error.issues) if (sub.path.length > 0) {
+		fieldErrors[sub.path[0]] = fieldErrors[sub.path[0]] || [];
+		fieldErrors[sub.path[0]].push(mapper(sub));
+	} else formErrors.push(mapper(sub));
+	return {
+		formErrors,
+		fieldErrors
+	};
+}
+function formatError(error, mapper = (issue) => issue.message) {
+	const fieldErrors = { _errors: [] };
+	const processError = (error, path = []) => {
+		for (const issue of error.issues) if (issue.code === "invalid_union" && issue.errors.length) issue.errors.map((issues) => processError({ issues }, [...path, ...issue.path]));
+		else if (issue.code === "invalid_key") processError({ issues: issue.issues }, [...path, ...issue.path]);
+		else if (issue.code === "invalid_element") processError({ issues: issue.issues }, [...path, ...issue.path]);
+		else {
+			const fullpath = [...path, ...issue.path];
+			if (fullpath.length === 0) fieldErrors._errors.push(mapper(issue));
+			else {
+				let curr = fieldErrors;
+				let i = 0;
+				while (i < fullpath.length) {
+					const el = fullpath[i];
+					if (!(i === fullpath.length - 1)) curr[el] = curr[el] || { _errors: [] };
+					else {
+						curr[el] = curr[el] || { _errors: [] };
+						curr[el]._errors.push(mapper(issue));
+					}
+					curr = curr[el];
+					i++;
+				}
+			}
+		}
+	};
+	processError(error);
+	return fieldErrors;
+}
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/parse.js
+var _parse = (_Err) => (schema, value, _ctx, _params) => {
+	const ctx = _ctx ? {
+		..._ctx,
+		async: false
+	} : { async: false };
+	const result = schema._zod.run({
+		value,
+		issues: []
+	}, ctx);
+	if (result instanceof Promise) throw new $ZodAsyncError();
+	if (result.issues.length) {
+		const e = new ((_params?.Err) ?? _Err)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())));
+		captureStackTrace(e, _params?.callee);
+		throw e;
+	}
+	return result.value;
+};
+var _parseAsync = (_Err) => async (schema, value, _ctx, params) => {
+	const ctx = _ctx ? {
+		..._ctx,
+		async: true
+	} : { async: true };
+	let result = schema._zod.run({
+		value,
+		issues: []
+	}, ctx);
+	if (result instanceof Promise) result = await result;
+	if (result.issues.length) {
+		const e = new ((params?.Err) ?? _Err)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())));
+		captureStackTrace(e, params?.callee);
+		throw e;
+	}
+	return result.value;
+};
+var _safeParse = (_Err) => (schema, value, _ctx) => {
+	const ctx = _ctx ? {
+		..._ctx,
+		async: false
+	} : { async: false };
+	const result = schema._zod.run({
+		value,
+		issues: []
+	}, ctx);
+	if (result instanceof Promise) throw new $ZodAsyncError();
+	return result.issues.length ? {
+		success: false,
+		error: new (_Err ?? $ZodError)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())))
+	} : {
+		success: true,
+		data: result.value
+	};
+};
+var safeParse$1 = /* @__PURE__*/ _safeParse($ZodRealError);
+var _safeParseAsync = (_Err) => async (schema, value, _ctx) => {
+	const ctx = _ctx ? {
+		..._ctx,
+		async: true
+	} : { async: true };
+	let result = schema._zod.run({
+		value,
+		issues: []
+	}, ctx);
+	if (result instanceof Promise) result = await result;
+	return result.issues.length ? {
+		success: false,
+		error: new _Err(result.issues.map((iss) => finalizeIssue(iss, ctx, config())))
+	} : {
+		success: true,
+		data: result.value
+	};
+};
+var safeParseAsync$1 = /* @__PURE__*/ _safeParseAsync($ZodRealError);
+var _encode = (_Err) => (schema, value, _ctx) => {
+	const ctx = _ctx ? {
+		..._ctx,
+		direction: "backward"
+	} : { direction: "backward" };
+	return _parse(_Err)(schema, value, ctx);
+};
+var _decode = (_Err) => (schema, value, _ctx) => {
+	return _parse(_Err)(schema, value, _ctx);
+};
+var _encodeAsync = (_Err) => async (schema, value, _ctx) => {
+	const ctx = _ctx ? {
+		..._ctx,
+		direction: "backward"
+	} : { direction: "backward" };
+	return _parseAsync(_Err)(schema, value, ctx);
+};
+var _decodeAsync = (_Err) => async (schema, value, _ctx) => {
+	return _parseAsync(_Err)(schema, value, _ctx);
+};
+var _safeEncode = (_Err) => (schema, value, _ctx) => {
+	const ctx = _ctx ? {
+		..._ctx,
+		direction: "backward"
+	} : { direction: "backward" };
+	return _safeParse(_Err)(schema, value, ctx);
+};
+var _safeDecode = (_Err) => (schema, value, _ctx) => {
+	return _safeParse(_Err)(schema, value, _ctx);
+};
+var _safeEncodeAsync = (_Err) => async (schema, value, _ctx) => {
+	const ctx = _ctx ? {
+		..._ctx,
+		direction: "backward"
+	} : { direction: "backward" };
+	return _safeParseAsync(_Err)(schema, value, ctx);
+};
+var _safeDecodeAsync = (_Err) => async (schema, value, _ctx) => {
+	return _safeParseAsync(_Err)(schema, value, _ctx);
+};
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/regexes.js
+/**
+* @deprecated CUID v1 is deprecated by its authors due to information leakage
+* (timestamps embedded in the id). Use {@link cuid2} instead.
+* See https://github.com/paralleldrive/cuid.
+*/
+var cuid = /^[cC][0-9a-z]{6,}$/;
+var cuid2 = /^[0-9a-z]+$/;
+var ulid = /^[0-9A-HJKMNP-TV-Za-hjkmnp-tv-z]{26}$/;
+var xid = /^[0-9a-vA-V]{20}$/;
+var ksuid = /^[A-Za-z0-9]{27}$/;
+var nanoid = /^[a-zA-Z0-9_-]{21}$/;
+/** ISO 8601-1 duration regex. Does not support the 8601-2 extensions like negative durations or fractional/negative components. */
+var duration$1 = /^P(?:(\d+W)|(?!.*W)(?=\d|T\d)(\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+([.,]\d+)?S)?)?)$/;
+/** A regex for any UUID-like identifier: 8-4-4-4-12 hex pattern */
+var guid = /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/;
+/** Returns a regex for validating an RFC 9562/4122 UUID.
+*
+* @param version Optionally specify a version 1-8. If no version is specified, all versions are supported. */
+var uuid = (version) => {
+	if (!version) return /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/;
+	return new RegExp(`^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-${version}[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$`);
+};
+/** Practical email validation */
+var email = /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
+var _emoji$1 = `^(\\p{Extended_Pictographic}|\\p{Emoji_Component})+$`;
+function emoji() {
+	return new RegExp(_emoji$1, "u");
+}
+var ipv4 = /^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$/;
+var ipv6 = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$/;
+var cidrv4 = /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\/([0-9]|[1-2][0-9]|3[0-2])$/;
+var cidrv6 = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|::|([0-9a-fA-F]{1,4})?::([0-9a-fA-F]{1,4}:?){0,6})\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/;
+var base64 = /^$|^(?:[0-9a-zA-Z+/]{4})*(?:(?:[0-9a-zA-Z+/]{2}==)|(?:[0-9a-zA-Z+/]{3}=))?$/;
+var base64url = /^[A-Za-z0-9_-]*$/;
+var httpProtocol = /^https?$/;
+var e164 = /^\+[1-9]\d{6,14}$/;
+var dateSource = `(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))`;
+var date$1 = /*@__PURE__*/ new RegExp(`^${dateSource}$`);
+function timeSource(args) {
+	const hhmm = `(?:[01]\\d|2[0-3]):[0-5]\\d`;
+	return typeof args.precision === "number" ? args.precision === -1 ? `${hhmm}` : args.precision === 0 ? `${hhmm}:[0-5]\\d` : `${hhmm}:[0-5]\\d\\.\\d{${args.precision}}` : `${hhmm}(?::[0-5]\\d(?:\\.\\d+)?)?`;
+}
+function time$1(args) {
+	return new RegExp(`^${timeSource(args)}$`);
+}
+function datetime$1(args) {
+	const time = timeSource({ precision: args.precision });
+	const opts = ["Z"];
+	if (args.local) opts.push("");
+	if (args.offset) opts.push(`([+-](?:[01]\\d|2[0-3]):[0-5]\\d)`);
+	const timeRegex = `${time}(?:${opts.join("|")})`;
+	return new RegExp(`^${dateSource}T(?:${timeRegex})$`);
+}
+var string$1 = (params) => {
+	const regex = params ? `[\\s\\S]{${params?.minimum ?? 0},${params?.maximum ?? ""}}` : `[\\s\\S]*`;
+	return new RegExp(`^${regex}$`);
+};
+var lowercase = /^[^A-Z]*$/;
+var uppercase = /^[^a-z]*$/;
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/checks.js
+var $ZodCheck = /*@__PURE__*/ $constructor("$ZodCheck", (inst, def) => {
+	var _a;
+	inst._zod ?? (inst._zod = {});
+	inst._zod.def = def;
+	(_a = inst._zod).onattach ?? (_a.onattach = []);
+});
+var $ZodCheckMaxLength = /*@__PURE__*/ $constructor("$ZodCheckMaxLength", (inst, def) => {
+	var _a;
+	$ZodCheck.init(inst, def);
+	(_a = inst._zod.def).when ?? (_a.when = (payload) => {
+		const val = payload.value;
+		return !nullish(val) && val.length !== void 0;
+	});
+	inst._zod.onattach.push((inst) => {
+		const curr = inst._zod.bag.maximum ?? Number.POSITIVE_INFINITY;
+		if (def.maximum < curr) inst._zod.bag.maximum = def.maximum;
+	});
+	inst._zod.check = (payload) => {
+		const input = payload.value;
+		if (input.length <= def.maximum) return;
+		const origin = getLengthableOrigin(input);
+		payload.issues.push({
+			origin,
+			code: "too_big",
+			maximum: def.maximum,
+			inclusive: true,
+			input,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodCheckMinLength = /*@__PURE__*/ $constructor("$ZodCheckMinLength", (inst, def) => {
+	var _a;
+	$ZodCheck.init(inst, def);
+	(_a = inst._zod.def).when ?? (_a.when = (payload) => {
+		const val = payload.value;
+		return !nullish(val) && val.length !== void 0;
+	});
+	inst._zod.onattach.push((inst) => {
+		const curr = inst._zod.bag.minimum ?? Number.NEGATIVE_INFINITY;
+		if (def.minimum > curr) inst._zod.bag.minimum = def.minimum;
+	});
+	inst._zod.check = (payload) => {
+		const input = payload.value;
+		if (input.length >= def.minimum) return;
+		const origin = getLengthableOrigin(input);
+		payload.issues.push({
+			origin,
+			code: "too_small",
+			minimum: def.minimum,
+			inclusive: true,
+			input,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodCheckLengthEquals = /*@__PURE__*/ $constructor("$ZodCheckLengthEquals", (inst, def) => {
+	var _a;
+	$ZodCheck.init(inst, def);
+	(_a = inst._zod.def).when ?? (_a.when = (payload) => {
+		const val = payload.value;
+		return !nullish(val) && val.length !== void 0;
+	});
+	inst._zod.onattach.push((inst) => {
+		const bag = inst._zod.bag;
+		bag.minimum = def.length;
+		bag.maximum = def.length;
+		bag.length = def.length;
+	});
+	inst._zod.check = (payload) => {
+		const input = payload.value;
+		const length = input.length;
+		if (length === def.length) return;
+		const origin = getLengthableOrigin(input);
+		const tooBig = length > def.length;
+		payload.issues.push({
+			origin,
+			...tooBig ? {
+				code: "too_big",
+				maximum: def.length
+			} : {
+				code: "too_small",
+				minimum: def.length
+			},
+			inclusive: true,
+			exact: true,
+			input: payload.value,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodCheckStringFormat = /*@__PURE__*/ $constructor("$ZodCheckStringFormat", (inst, def) => {
+	var _a, _b;
+	$ZodCheck.init(inst, def);
+	inst._zod.onattach.push((inst) => {
+		const bag = inst._zod.bag;
+		bag.format = def.format;
+		if (def.pattern) {
+			bag.patterns ?? (bag.patterns = /* @__PURE__ */ new Set());
+			bag.patterns.add(def.pattern);
+		}
+	});
+	if (def.pattern) (_a = inst._zod).check ?? (_a.check = (payload) => {
+		def.pattern.lastIndex = 0;
+		if (def.pattern.test(payload.value)) return;
+		payload.issues.push({
+			origin: "string",
+			code: "invalid_format",
+			format: def.format,
+			input: payload.value,
+			...def.pattern ? { pattern: def.pattern.toString() } : {},
+			inst,
+			continue: !def.abort
+		});
+	});
+	else (_b = inst._zod).check ?? (_b.check = () => {});
+});
+var $ZodCheckRegex = /*@__PURE__*/ $constructor("$ZodCheckRegex", (inst, def) => {
+	$ZodCheckStringFormat.init(inst, def);
+	inst._zod.check = (payload) => {
+		def.pattern.lastIndex = 0;
+		if (def.pattern.test(payload.value)) return;
+		payload.issues.push({
+			origin: "string",
+			code: "invalid_format",
+			format: "regex",
+			input: payload.value,
+			pattern: def.pattern.toString(),
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodCheckLowerCase = /*@__PURE__*/ $constructor("$ZodCheckLowerCase", (inst, def) => {
+	def.pattern ?? (def.pattern = lowercase);
+	$ZodCheckStringFormat.init(inst, def);
+});
+var $ZodCheckUpperCase = /*@__PURE__*/ $constructor("$ZodCheckUpperCase", (inst, def) => {
+	def.pattern ?? (def.pattern = uppercase);
+	$ZodCheckStringFormat.init(inst, def);
+});
+var $ZodCheckIncludes = /*@__PURE__*/ $constructor("$ZodCheckIncludes", (inst, def) => {
+	$ZodCheck.init(inst, def);
+	const escapedRegex = escapeRegex(def.includes);
+	const pattern = new RegExp(typeof def.position === "number" ? `^.{${def.position}}${escapedRegex}` : escapedRegex);
+	def.pattern = pattern;
+	inst._zod.onattach.push((inst) => {
+		const bag = inst._zod.bag;
+		bag.patterns ?? (bag.patterns = /* @__PURE__ */ new Set());
+		bag.patterns.add(pattern);
+	});
+	inst._zod.check = (payload) => {
+		if (payload.value.includes(def.includes, def.position)) return;
+		payload.issues.push({
+			origin: "string",
+			code: "invalid_format",
+			format: "includes",
+			includes: def.includes,
+			input: payload.value,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodCheckStartsWith = /*@__PURE__*/ $constructor("$ZodCheckStartsWith", (inst, def) => {
+	$ZodCheck.init(inst, def);
+	const pattern = new RegExp(`^${escapeRegex(def.prefix)}.*`);
+	def.pattern ?? (def.pattern = pattern);
+	inst._zod.onattach.push((inst) => {
+		const bag = inst._zod.bag;
+		bag.patterns ?? (bag.patterns = /* @__PURE__ */ new Set());
+		bag.patterns.add(pattern);
+	});
+	inst._zod.check = (payload) => {
+		if (payload.value.startsWith(def.prefix)) return;
+		payload.issues.push({
+			origin: "string",
+			code: "invalid_format",
+			format: "starts_with",
+			prefix: def.prefix,
+			input: payload.value,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodCheckEndsWith = /*@__PURE__*/ $constructor("$ZodCheckEndsWith", (inst, def) => {
+	$ZodCheck.init(inst, def);
+	const pattern = new RegExp(`.*${escapeRegex(def.suffix)}$`);
+	def.pattern ?? (def.pattern = pattern);
+	inst._zod.onattach.push((inst) => {
+		const bag = inst._zod.bag;
+		bag.patterns ?? (bag.patterns = /* @__PURE__ */ new Set());
+		bag.patterns.add(pattern);
+	});
+	inst._zod.check = (payload) => {
+		if (payload.value.endsWith(def.suffix)) return;
+		payload.issues.push({
+			origin: "string",
+			code: "invalid_format",
+			format: "ends_with",
+			suffix: def.suffix,
+			input: payload.value,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodCheckOverwrite = /*@__PURE__*/ $constructor("$ZodCheckOverwrite", (inst, def) => {
+	$ZodCheck.init(inst, def);
+	inst._zod.check = (payload) => {
+		payload.value = def.tx(payload.value);
+	};
+});
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/doc.js
+var Doc = class {
+	constructor(args = []) {
+		this.content = [];
+		this.indent = 0;
+		if (this) this.args = args;
+	}
+	indented(fn) {
+		this.indent += 1;
+		fn(this);
+		this.indent -= 1;
+	}
+	write(arg) {
+		if (typeof arg === "function") {
+			arg(this, { execution: "sync" });
+			arg(this, { execution: "async" });
+			return;
+		}
+		const lines = arg.split("\n").filter((x) => x);
+		const minIndent = Math.min(...lines.map((x) => x.length - x.trimStart().length));
+		const dedented = lines.map((x) => x.slice(minIndent)).map((x) => " ".repeat(this.indent * 2) + x);
+		for (const line of dedented) this.content.push(line);
+	}
+	compile() {
+		const F = Function;
+		const args = this?.args;
+		const lines = [...(this?.content ?? [``]).map((x) => `  ${x}`)];
+		return new F(...args, lines.join("\n"));
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/versions.js
+var version$1 = {
+	major: 4,
+	minor: 4,
+	patch: 3
+};
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/schemas.js
+var $ZodType = /*@__PURE__*/ $constructor("$ZodType", (inst, def) => {
+	var _a;
+	inst ?? (inst = {});
+	inst._zod.def = def;
+	inst._zod.bag = inst._zod.bag || {};
+	inst._zod.version = version$1;
+	const checks = [...inst._zod.def.checks ?? []];
+	if (inst._zod.traits.has("$ZodCheck")) checks.unshift(inst);
+	for (const ch of checks) for (const fn of ch._zod.onattach) fn(inst);
+	if (checks.length === 0) {
+		(_a = inst._zod).deferred ?? (_a.deferred = []);
+		inst._zod.deferred?.push(() => {
+			inst._zod.run = inst._zod.parse;
+		});
+	} else {
+		const runChecks = (payload, checks, ctx) => {
+			let isAborted = aborted(payload);
+			let asyncResult;
+			for (const ch of checks) {
+				if (ch._zod.def.when) {
+					if (explicitlyAborted(payload)) continue;
+					if (!ch._zod.def.when(payload)) continue;
+				} else if (isAborted) continue;
+				const currLen = payload.issues.length;
+				const _ = ch._zod.check(payload);
+				if (_ instanceof Promise && ctx?.async === false) throw new $ZodAsyncError();
+				if (asyncResult || _ instanceof Promise) asyncResult = (asyncResult ?? Promise.resolve()).then(async () => {
+					await _;
+					if (payload.issues.length === currLen) return;
+					if (!isAborted) isAborted = aborted(payload, currLen);
+				});
+				else {
+					if (payload.issues.length === currLen) continue;
+					if (!isAborted) isAborted = aborted(payload, currLen);
+				}
+			}
+			if (asyncResult) return asyncResult.then(() => {
+				return payload;
+			});
+			return payload;
+		};
+		const handleCanaryResult = (canary, payload, ctx) => {
+			if (aborted(canary)) {
+				canary.aborted = true;
+				return canary;
+			}
+			const checkResult = runChecks(payload, checks, ctx);
+			if (checkResult instanceof Promise) {
+				if (ctx.async === false) throw new $ZodAsyncError();
+				return checkResult.then((checkResult) => inst._zod.parse(checkResult, ctx));
+			}
+			return inst._zod.parse(checkResult, ctx);
+		};
+		inst._zod.run = (payload, ctx) => {
+			if (ctx.skipChecks) return inst._zod.parse(payload, ctx);
+			if (ctx.direction === "backward") {
+				const canary = inst._zod.parse({
+					value: payload.value,
+					issues: []
+				}, {
+					...ctx,
+					skipChecks: true
+				});
+				if (canary instanceof Promise) return canary.then((canary) => {
+					return handleCanaryResult(canary, payload, ctx);
+				});
+				return handleCanaryResult(canary, payload, ctx);
+			}
+			const result = inst._zod.parse(payload, ctx);
+			if (result instanceof Promise) {
+				if (ctx.async === false) throw new $ZodAsyncError();
+				return result.then((result) => runChecks(result, checks, ctx));
+			}
+			return runChecks(result, checks, ctx);
+		};
+	}
+	defineLazy(inst, "~standard", () => ({
+		validate: (value) => {
+			try {
+				const r = safeParse$1(inst, value);
+				return r.success ? { value: r.data } : { issues: r.error?.issues };
+			} catch (_) {
+				return safeParseAsync$1(inst, value).then((r) => r.success ? { value: r.data } : { issues: r.error?.issues });
+			}
+		},
+		vendor: "zod",
+		version: 1
+	}));
+});
+var $ZodString = /*@__PURE__*/ $constructor("$ZodString", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.pattern = [...inst?._zod.bag?.patterns ?? []].pop() ?? string$1(inst._zod.bag);
+	inst._zod.parse = (payload, _) => {
+		if (def.coerce) try {
+			payload.value = String(payload.value);
+		} catch (_) {}
+		if (typeof payload.value === "string") return payload;
+		payload.issues.push({
+			expected: "string",
+			code: "invalid_type",
+			input: payload.value,
+			inst
+		});
+		return payload;
+	};
+});
+var $ZodStringFormat = /*@__PURE__*/ $constructor("$ZodStringFormat", (inst, def) => {
+	$ZodCheckStringFormat.init(inst, def);
+	$ZodString.init(inst, def);
+});
+var $ZodGUID = /*@__PURE__*/ $constructor("$ZodGUID", (inst, def) => {
+	def.pattern ?? (def.pattern = guid);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodUUID = /*@__PURE__*/ $constructor("$ZodUUID", (inst, def) => {
+	if (def.version) {
+		const v = {
+			v1: 1,
+			v2: 2,
+			v3: 3,
+			v4: 4,
+			v5: 5,
+			v6: 6,
+			v7: 7,
+			v8: 8
+		}[def.version];
+		if (v === void 0) throw new Error(`Invalid UUID version: "${def.version}"`);
+		def.pattern ?? (def.pattern = uuid(v));
+	} else def.pattern ?? (def.pattern = uuid());
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodEmail = /*@__PURE__*/ $constructor("$ZodEmail", (inst, def) => {
+	def.pattern ?? (def.pattern = email);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodURL = /*@__PURE__*/ $constructor("$ZodURL", (inst, def) => {
+	$ZodStringFormat.init(inst, def);
+	inst._zod.check = (payload) => {
+		try {
+			const trimmed = payload.value.trim();
+			if (!def.normalize && def.protocol?.source === httpProtocol.source) {
+				if (!/^https?:\/\//i.test(trimmed)) {
+					payload.issues.push({
+						code: "invalid_format",
+						format: "url",
+						note: "Invalid URL format",
+						input: payload.value,
+						inst,
+						continue: !def.abort
+					});
+					return;
+				}
+			}
+			const url = new URL(trimmed);
+			if (def.hostname) {
+				def.hostname.lastIndex = 0;
+				if (!def.hostname.test(url.hostname)) payload.issues.push({
+					code: "invalid_format",
+					format: "url",
+					note: "Invalid hostname",
+					pattern: def.hostname.source,
+					input: payload.value,
+					inst,
+					continue: !def.abort
+				});
+			}
+			if (def.protocol) {
+				def.protocol.lastIndex = 0;
+				if (!def.protocol.test(url.protocol.endsWith(":") ? url.protocol.slice(0, -1) : url.protocol)) payload.issues.push({
+					code: "invalid_format",
+					format: "url",
+					note: "Invalid protocol",
+					pattern: def.protocol.source,
+					input: payload.value,
+					inst,
+					continue: !def.abort
+				});
+			}
+			if (def.normalize) payload.value = url.href;
+			else payload.value = trimmed;
+			return;
+		} catch (_) {
+			payload.issues.push({
+				code: "invalid_format",
+				format: "url",
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		}
+	};
+});
+var $ZodEmoji = /*@__PURE__*/ $constructor("$ZodEmoji", (inst, def) => {
+	def.pattern ?? (def.pattern = emoji());
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodNanoID = /*@__PURE__*/ $constructor("$ZodNanoID", (inst, def) => {
+	def.pattern ?? (def.pattern = nanoid);
+	$ZodStringFormat.init(inst, def);
+});
+/**
+* @deprecated CUID v1 is deprecated by its authors due to information leakage
+* (timestamps embedded in the id). Use {@link $ZodCUID2} instead.
+* See https://github.com/paralleldrive/cuid.
+*/
+var $ZodCUID = /*@__PURE__*/ $constructor("$ZodCUID", (inst, def) => {
+	def.pattern ?? (def.pattern = cuid);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodCUID2 = /*@__PURE__*/ $constructor("$ZodCUID2", (inst, def) => {
+	def.pattern ?? (def.pattern = cuid2);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodULID = /*@__PURE__*/ $constructor("$ZodULID", (inst, def) => {
+	def.pattern ?? (def.pattern = ulid);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodXID = /*@__PURE__*/ $constructor("$ZodXID", (inst, def) => {
+	def.pattern ?? (def.pattern = xid);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodKSUID = /*@__PURE__*/ $constructor("$ZodKSUID", (inst, def) => {
+	def.pattern ?? (def.pattern = ksuid);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodISODateTime = /*@__PURE__*/ $constructor("$ZodISODateTime", (inst, def) => {
+	def.pattern ?? (def.pattern = datetime$1(def));
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodISODate = /*@__PURE__*/ $constructor("$ZodISODate", (inst, def) => {
+	def.pattern ?? (def.pattern = date$1);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodISOTime = /*@__PURE__*/ $constructor("$ZodISOTime", (inst, def) => {
+	def.pattern ?? (def.pattern = time$1(def));
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodISODuration = /*@__PURE__*/ $constructor("$ZodISODuration", (inst, def) => {
+	def.pattern ?? (def.pattern = duration$1);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodIPv4 = /*@__PURE__*/ $constructor("$ZodIPv4", (inst, def) => {
+	def.pattern ?? (def.pattern = ipv4);
+	$ZodStringFormat.init(inst, def);
+	inst._zod.bag.format = `ipv4`;
+});
+var $ZodIPv6 = /*@__PURE__*/ $constructor("$ZodIPv6", (inst, def) => {
+	def.pattern ?? (def.pattern = ipv6);
+	$ZodStringFormat.init(inst, def);
+	inst._zod.bag.format = `ipv6`;
+	inst._zod.check = (payload) => {
+		try {
+			new URL(`http://[${payload.value}]`);
+		} catch {
+			payload.issues.push({
+				code: "invalid_format",
+				format: "ipv6",
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		}
+	};
+});
+var $ZodCIDRv4 = /*@__PURE__*/ $constructor("$ZodCIDRv4", (inst, def) => {
+	def.pattern ?? (def.pattern = cidrv4);
+	$ZodStringFormat.init(inst, def);
+});
+var $ZodCIDRv6 = /*@__PURE__*/ $constructor("$ZodCIDRv6", (inst, def) => {
+	def.pattern ?? (def.pattern = cidrv6);
+	$ZodStringFormat.init(inst, def);
+	inst._zod.check = (payload) => {
+		const parts = payload.value.split("/");
+		try {
+			if (parts.length !== 2) throw new Error();
+			const [address, prefix] = parts;
+			if (!prefix) throw new Error();
+			const prefixNum = Number(prefix);
+			if (`${prefixNum}` !== prefix) throw new Error();
+			if (prefixNum < 0 || prefixNum > 128) throw new Error();
+			new URL(`http://[${address}]`);
+		} catch {
+			payload.issues.push({
+				code: "invalid_format",
+				format: "cidrv6",
+				input: payload.value,
+				inst,
+				continue: !def.abort
+			});
+		}
+	};
+});
+function isValidBase64(data) {
+	if (data === "") return true;
+	if (/\s/.test(data)) return false;
+	if (data.length % 4 !== 0) return false;
+	try {
+		atob(data);
+		return true;
+	} catch {
+		return false;
+	}
+}
+var $ZodBase64 = /*@__PURE__*/ $constructor("$ZodBase64", (inst, def) => {
+	def.pattern ?? (def.pattern = base64);
+	$ZodStringFormat.init(inst, def);
+	inst._zod.bag.contentEncoding = "base64";
+	inst._zod.check = (payload) => {
+		if (isValidBase64(payload.value)) return;
+		payload.issues.push({
+			code: "invalid_format",
+			format: "base64",
+			input: payload.value,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+function isValidBase64URL(data) {
+	if (!base64url.test(data)) return false;
+	const base64 = data.replace(/[-_]/g, (c) => c === "-" ? "+" : "/");
+	return isValidBase64(base64.padEnd(Math.ceil(base64.length / 4) * 4, "="));
+}
+var $ZodBase64URL = /*@__PURE__*/ $constructor("$ZodBase64URL", (inst, def) => {
+	def.pattern ?? (def.pattern = base64url);
+	$ZodStringFormat.init(inst, def);
+	inst._zod.bag.contentEncoding = "base64url";
+	inst._zod.check = (payload) => {
+		if (isValidBase64URL(payload.value)) return;
+		payload.issues.push({
+			code: "invalid_format",
+			format: "base64url",
+			input: payload.value,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodE164 = /*@__PURE__*/ $constructor("$ZodE164", (inst, def) => {
+	def.pattern ?? (def.pattern = e164);
+	$ZodStringFormat.init(inst, def);
+});
+function isValidJWT(token, algorithm = null) {
+	try {
+		const tokensParts = token.split(".");
+		if (tokensParts.length !== 3) return false;
+		const [header] = tokensParts;
+		if (!header) return false;
+		const parsedHeader = JSON.parse(atob(header));
+		if ("typ" in parsedHeader && parsedHeader?.typ !== "JWT") return false;
+		if (!parsedHeader.alg) return false;
+		if (algorithm && (!("alg" in parsedHeader) || parsedHeader.alg !== algorithm)) return false;
+		return true;
+	} catch {
+		return false;
+	}
+}
+var $ZodJWT = /*@__PURE__*/ $constructor("$ZodJWT", (inst, def) => {
+	$ZodStringFormat.init(inst, def);
+	inst._zod.check = (payload) => {
+		if (isValidJWT(payload.value, def.alg)) return;
+		payload.issues.push({
+			code: "invalid_format",
+			format: "jwt",
+			input: payload.value,
+			inst,
+			continue: !def.abort
+		});
+	};
+});
+var $ZodUnknown = /*@__PURE__*/ $constructor("$ZodUnknown", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.parse = (payload) => payload;
+});
+var $ZodNever = /*@__PURE__*/ $constructor("$ZodNever", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.parse = (payload, _ctx) => {
+		payload.issues.push({
+			expected: "never",
+			code: "invalid_type",
+			input: payload.value,
+			inst
+		});
+		return payload;
+	};
+});
+function handleArrayResult(result, final, index) {
+	if (result.issues.length) final.issues.push(...prefixIssues(index, result.issues));
+	final.value[index] = result.value;
+}
+var $ZodArray = /*@__PURE__*/ $constructor("$ZodArray", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.parse = (payload, ctx) => {
+		const input = payload.value;
+		if (!Array.isArray(input)) {
+			payload.issues.push({
+				expected: "array",
+				code: "invalid_type",
+				input,
+				inst
+			});
+			return payload;
+		}
+		payload.value = Array(input.length);
+		const proms = [];
+		for (let i = 0; i < input.length; i++) {
+			const item = input[i];
+			const result = def.element._zod.run({
+				value: item,
+				issues: []
+			}, ctx);
+			if (result instanceof Promise) proms.push(result.then((result) => handleArrayResult(result, payload, i)));
+			else handleArrayResult(result, payload, i);
+		}
+		if (proms.length) return Promise.all(proms).then(() => payload);
+		return payload;
+	};
+});
+function handlePropertyResult(result, final, key, input, isOptionalIn, isOptionalOut) {
+	const isPresent = key in input;
+	if (result.issues.length) {
+		if (isOptionalIn && isOptionalOut && !isPresent) return;
+		final.issues.push(...prefixIssues(key, result.issues));
+	}
+	if (!isPresent && !isOptionalIn) {
+		if (!result.issues.length) final.issues.push({
+			code: "invalid_type",
+			expected: "nonoptional",
+			input: void 0,
+			path: [key]
+		});
+		return;
+	}
+	if (result.value === void 0) {
+		if (isPresent) final.value[key] = void 0;
+	} else final.value[key] = result.value;
+}
+function normalizeDef(def) {
+	const keys = Object.keys(def.shape);
+	for (const k of keys) if (!def.shape?.[k]?._zod?.traits?.has("$ZodType")) throw new Error(`Invalid element at key "${k}": expected a Zod schema`);
+	const okeys = optionalKeys(def.shape);
+	return {
+		...def,
+		keys,
+		keySet: new Set(keys),
+		numKeys: keys.length,
+		optionalKeys: new Set(okeys)
+	};
+}
+function handleCatchall(proms, input, payload, ctx, def, inst) {
+	const unrecognized = [];
+	const keySet = def.keySet;
+	const _catchall = def.catchall._zod;
+	const t = _catchall.def.type;
+	const isOptionalIn = _catchall.optin === "optional";
+	const isOptionalOut = _catchall.optout === "optional";
+	for (const key in input) {
+		if (key === "__proto__") continue;
+		if (keySet.has(key)) continue;
+		if (t === "never") {
+			unrecognized.push(key);
+			continue;
+		}
+		const r = _catchall.run({
+			value: input[key],
+			issues: []
+		}, ctx);
+		if (r instanceof Promise) proms.push(r.then((r) => handlePropertyResult(r, payload, key, input, isOptionalIn, isOptionalOut)));
+		else handlePropertyResult(r, payload, key, input, isOptionalIn, isOptionalOut);
+	}
+	if (unrecognized.length) payload.issues.push({
+		code: "unrecognized_keys",
+		keys: unrecognized,
+		input,
+		inst
+	});
+	if (!proms.length) return payload;
+	return Promise.all(proms).then(() => {
+		return payload;
+	});
+}
+var $ZodObject = /*@__PURE__*/ $constructor("$ZodObject", (inst, def) => {
+	$ZodType.init(inst, def);
+	if (!Object.getOwnPropertyDescriptor(def, "shape")?.get) {
+		const sh = def.shape;
+		Object.defineProperty(def, "shape", { get: () => {
+			const newSh = { ...sh };
+			Object.defineProperty(def, "shape", { value: newSh });
+			return newSh;
+		} });
+	}
+	const _normalized = cached(() => normalizeDef(def));
+	defineLazy(inst._zod, "propValues", () => {
+		const shape = def.shape;
+		const propValues = {};
+		for (const key in shape) {
+			const field = shape[key]._zod;
+			if (field.values) {
+				propValues[key] ?? (propValues[key] = /* @__PURE__ */ new Set());
+				for (const v of field.values) propValues[key].add(v);
+			}
+		}
+		return propValues;
+	});
+	const isObject$2 = isObject;
+	const catchall = def.catchall;
+	let value;
+	inst._zod.parse = (payload, ctx) => {
+		value ?? (value = _normalized.value);
+		const input = payload.value;
+		if (!isObject$2(input)) {
+			payload.issues.push({
+				expected: "object",
+				code: "invalid_type",
+				input,
+				inst
+			});
+			return payload;
+		}
+		payload.value = {};
+		const proms = [];
+		const shape = value.shape;
+		for (const key of value.keys) {
+			const el = shape[key];
+			const isOptionalIn = el._zod.optin === "optional";
+			const isOptionalOut = el._zod.optout === "optional";
+			const r = el._zod.run({
+				value: input[key],
+				issues: []
+			}, ctx);
+			if (r instanceof Promise) proms.push(r.then((r) => handlePropertyResult(r, payload, key, input, isOptionalIn, isOptionalOut)));
+			else handlePropertyResult(r, payload, key, input, isOptionalIn, isOptionalOut);
+		}
+		if (!catchall) return proms.length ? Promise.all(proms).then(() => payload) : payload;
+		return handleCatchall(proms, input, payload, ctx, _normalized.value, inst);
+	};
+});
+var $ZodObjectJIT = /*@__PURE__*/ $constructor("$ZodObjectJIT", (inst, def) => {
+	$ZodObject.init(inst, def);
+	const superParse = inst._zod.parse;
+	const _normalized = cached(() => normalizeDef(def));
+	const generateFastpass = (shape) => {
+		const doc = new Doc([
+			"shape",
+			"payload",
+			"ctx"
+		]);
+		const normalized = _normalized.value;
+		const parseStr = (key) => {
+			const k = esc(key);
+			return `shape[${k}]._zod.run({ value: input[${k}], issues: [] }, ctx)`;
+		};
+		doc.write(`const input = payload.value;`);
+		const ids = Object.create(null);
+		let counter = 0;
+		for (const key of normalized.keys) ids[key] = `key_${counter++}`;
+		doc.write(`const newResult = {};`);
+		for (const key of normalized.keys) {
+			const id = ids[key];
+			const k = esc(key);
+			const schema = shape[key];
+			const isOptionalIn = schema?._zod?.optin === "optional";
+			const isOptionalOut = schema?._zod?.optout === "optional";
+			doc.write(`const ${id} = ${parseStr(key)};`);
+			if (isOptionalIn && isOptionalOut) doc.write(`
+        if (${id}.issues.length) {
+          if (${k} in input) {
+            payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
+              ...iss,
+              path: iss.path ? [${k}, ...iss.path] : [${k}]
+            })));
+          }
+        }
+        
+        if (${id}.value === undefined) {
+          if (${k} in input) {
+            newResult[${k}] = undefined;
+          }
+        } else {
+          newResult[${k}] = ${id}.value;
+        }
+        
+      `);
+			else if (!isOptionalIn) doc.write(`
+        const ${id}_present = ${k} in input;
+        if (${id}.issues.length) {
+          payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
+            ...iss,
+            path: iss.path ? [${k}, ...iss.path] : [${k}]
+          })));
+        }
+        if (!${id}_present && !${id}.issues.length) {
+          payload.issues.push({
+            code: "invalid_type",
+            expected: "nonoptional",
+            input: undefined,
+            path: [${k}]
+          });
+        }
+
+        if (${id}_present) {
+          if (${id}.value === undefined) {
+            newResult[${k}] = undefined;
+          } else {
+            newResult[${k}] = ${id}.value;
+          }
+        }
+
+      `);
+			else doc.write(`
+        if (${id}.issues.length) {
+          payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
+            ...iss,
+            path: iss.path ? [${k}, ...iss.path] : [${k}]
+          })));
+        }
+        
+        if (${id}.value === undefined) {
+          if (${k} in input) {
+            newResult[${k}] = undefined;
+          }
+        } else {
+          newResult[${k}] = ${id}.value;
+        }
+        
+      `);
+		}
+		doc.write(`payload.value = newResult;`);
+		doc.write(`return payload;`);
+		const fn = doc.compile();
+		return (payload, ctx) => fn(shape, payload, ctx);
+	};
+	let fastpass;
+	const isObject$1 = isObject;
+	const jit = !globalConfig.jitless;
+	const fastEnabled = jit && allowsEval.value;
+	const catchall = def.catchall;
+	let value;
+	inst._zod.parse = (payload, ctx) => {
+		value ?? (value = _normalized.value);
+		const input = payload.value;
+		if (!isObject$1(input)) {
+			payload.issues.push({
+				expected: "object",
+				code: "invalid_type",
+				input,
+				inst
+			});
+			return payload;
+		}
+		if (jit && fastEnabled && ctx?.async === false && ctx.jitless !== true) {
+			if (!fastpass) fastpass = generateFastpass(def.shape);
+			payload = fastpass(payload, ctx);
+			if (!catchall) return payload;
+			return handleCatchall([], input, payload, ctx, value, inst);
+		}
+		return superParse(payload, ctx);
+	};
+});
+function handleUnionResults(results, final, inst, ctx) {
+	for (const result of results) if (result.issues.length === 0) {
+		final.value = result.value;
+		return final;
+	}
+	const nonaborted = results.filter((r) => !aborted(r));
+	if (nonaborted.length === 1) {
+		final.value = nonaborted[0].value;
+		return nonaborted[0];
+	}
+	final.issues.push({
+		code: "invalid_union",
+		input: final.value,
+		inst,
+		errors: results.map((result) => result.issues.map((iss) => finalizeIssue(iss, ctx, config())))
+	});
+	return final;
+}
+var $ZodUnion = /*@__PURE__*/ $constructor("$ZodUnion", (inst, def) => {
+	$ZodType.init(inst, def);
+	defineLazy(inst._zod, "optin", () => def.options.some((o) => o._zod.optin === "optional") ? "optional" : void 0);
+	defineLazy(inst._zod, "optout", () => def.options.some((o) => o._zod.optout === "optional") ? "optional" : void 0);
+	defineLazy(inst._zod, "values", () => {
+		if (def.options.every((o) => o._zod.values)) return new Set(def.options.flatMap((option) => Array.from(option._zod.values)));
+	});
+	defineLazy(inst._zod, "pattern", () => {
+		if (def.options.every((o) => o._zod.pattern)) {
+			const patterns = def.options.map((o) => o._zod.pattern);
+			return new RegExp(`^(${patterns.map((p) => cleanRegex(p.source)).join("|")})$`);
+		}
+	});
+	const first = def.options.length === 1 ? def.options[0]._zod.run : null;
+	inst._zod.parse = (payload, ctx) => {
+		if (first) return first(payload, ctx);
+		let async = false;
+		const results = [];
+		for (const option of def.options) {
+			const result = option._zod.run({
+				value: payload.value,
+				issues: []
+			}, ctx);
+			if (result instanceof Promise) {
+				results.push(result);
+				async = true;
+			} else {
+				if (result.issues.length === 0) return result;
+				results.push(result);
+			}
+		}
+		if (!async) return handleUnionResults(results, payload, inst, ctx);
+		return Promise.all(results).then((results) => {
+			return handleUnionResults(results, payload, inst, ctx);
+		});
+	};
+});
+var $ZodIntersection = /*@__PURE__*/ $constructor("$ZodIntersection", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.parse = (payload, ctx) => {
+		const input = payload.value;
+		const left = def.left._zod.run({
+			value: input,
+			issues: []
+		}, ctx);
+		const right = def.right._zod.run({
+			value: input,
+			issues: []
+		}, ctx);
+		if (left instanceof Promise || right instanceof Promise) return Promise.all([left, right]).then(([left, right]) => {
+			return handleIntersectionResults(payload, left, right);
+		});
+		return handleIntersectionResults(payload, left, right);
+	};
+});
+function mergeValues(a, b) {
+	if (a === b) return {
+		valid: true,
+		data: a
+	};
+	if (a instanceof Date && b instanceof Date && +a === +b) return {
+		valid: true,
+		data: a
+	};
+	if (isPlainObject(a) && isPlainObject(b)) {
+		const bKeys = Object.keys(b);
+		const sharedKeys = Object.keys(a).filter((key) => bKeys.indexOf(key) !== -1);
+		const newObj = {
+			...a,
+			...b
+		};
+		for (const key of sharedKeys) {
+			const sharedValue = mergeValues(a[key], b[key]);
+			if (!sharedValue.valid) return {
+				valid: false,
+				mergeErrorPath: [key, ...sharedValue.mergeErrorPath]
+			};
+			newObj[key] = sharedValue.data;
+		}
+		return {
+			valid: true,
+			data: newObj
+		};
+	}
+	if (Array.isArray(a) && Array.isArray(b)) {
+		if (a.length !== b.length) return {
+			valid: false,
+			mergeErrorPath: []
+		};
+		const newArray = [];
+		for (let index = 0; index < a.length; index++) {
+			const itemA = a[index];
+			const itemB = b[index];
+			const sharedValue = mergeValues(itemA, itemB);
+			if (!sharedValue.valid) return {
+				valid: false,
+				mergeErrorPath: [index, ...sharedValue.mergeErrorPath]
+			};
+			newArray.push(sharedValue.data);
+		}
+		return {
+			valid: true,
+			data: newArray
+		};
+	}
+	return {
+		valid: false,
+		mergeErrorPath: []
+	};
+}
+function handleIntersectionResults(result, left, right) {
+	const unrecKeys = /* @__PURE__ */ new Map();
+	let unrecIssue;
+	for (const iss of left.issues) if (iss.code === "unrecognized_keys") {
+		unrecIssue ?? (unrecIssue = iss);
+		for (const k of iss.keys) {
+			if (!unrecKeys.has(k)) unrecKeys.set(k, {});
+			unrecKeys.get(k).l = true;
+		}
+	} else result.issues.push(iss);
+	for (const iss of right.issues) if (iss.code === "unrecognized_keys") for (const k of iss.keys) {
+		if (!unrecKeys.has(k)) unrecKeys.set(k, {});
+		unrecKeys.get(k).r = true;
+	}
+	else result.issues.push(iss);
+	const bothKeys = [...unrecKeys].filter(([, f]) => f.l && f.r).map(([k]) => k);
+	if (bothKeys.length && unrecIssue) result.issues.push({
+		...unrecIssue,
+		keys: bothKeys
+	});
+	if (aborted(result)) return result;
+	const merged = mergeValues(left.value, right.value);
+	if (!merged.valid) throw new Error(`Unmergable intersection. Error path: ${JSON.stringify(merged.mergeErrorPath)}`);
+	result.value = merged.data;
+	return result;
+}
+var $ZodEnum = /*@__PURE__*/ $constructor("$ZodEnum", (inst, def) => {
+	$ZodType.init(inst, def);
+	const values = getEnumValues(def.entries);
+	const valuesSet = new Set(values);
+	inst._zod.values = valuesSet;
+	inst._zod.pattern = new RegExp(`^(${values.filter((k) => propertyKeyTypes.has(typeof k)).map((o) => typeof o === "string" ? escapeRegex(o) : o.toString()).join("|")})$`);
+	inst._zod.parse = (payload, _ctx) => {
+		const input = payload.value;
+		if (valuesSet.has(input)) return payload;
+		payload.issues.push({
+			code: "invalid_value",
+			values,
+			input,
+			inst
+		});
+		return payload;
+	};
+});
+var $ZodTransform = /*@__PURE__*/ $constructor("$ZodTransform", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.optin = "optional";
+	inst._zod.parse = (payload, ctx) => {
+		if (ctx.direction === "backward") throw new $ZodEncodeError(inst.constructor.name);
+		const _out = def.transform(payload.value, payload);
+		if (ctx.async) return (_out instanceof Promise ? _out : Promise.resolve(_out)).then((output) => {
+			payload.value = output;
+			payload.fallback = true;
+			return payload;
+		});
+		if (_out instanceof Promise) throw new $ZodAsyncError();
+		payload.value = _out;
+		payload.fallback = true;
+		return payload;
+	};
+});
+function handleOptionalResult(result, input) {
+	if (input === void 0 && (result.issues.length || result.fallback)) return {
+		issues: [],
+		value: void 0
+	};
+	return result;
+}
+var $ZodOptional = /*@__PURE__*/ $constructor("$ZodOptional", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.optin = "optional";
+	inst._zod.optout = "optional";
+	defineLazy(inst._zod, "values", () => {
+		return def.innerType._zod.values ? /* @__PURE__ */ new Set([...def.innerType._zod.values, void 0]) : void 0;
+	});
+	defineLazy(inst._zod, "pattern", () => {
+		const pattern = def.innerType._zod.pattern;
+		return pattern ? new RegExp(`^(${cleanRegex(pattern.source)})?$`) : void 0;
+	});
+	inst._zod.parse = (payload, ctx) => {
+		if (def.innerType._zod.optin === "optional") {
+			const input = payload.value;
+			const result = def.innerType._zod.run(payload, ctx);
+			if (result instanceof Promise) return result.then((r) => handleOptionalResult(r, input));
+			return handleOptionalResult(result, input);
+		}
+		if (payload.value === void 0) return payload;
+		return def.innerType._zod.run(payload, ctx);
+	};
+});
+var $ZodExactOptional = /*@__PURE__*/ $constructor("$ZodExactOptional", (inst, def) => {
+	$ZodOptional.init(inst, def);
+	defineLazy(inst._zod, "values", () => def.innerType._zod.values);
+	defineLazy(inst._zod, "pattern", () => def.innerType._zod.pattern);
+	inst._zod.parse = (payload, ctx) => {
+		return def.innerType._zod.run(payload, ctx);
+	};
+});
+var $ZodNullable = /*@__PURE__*/ $constructor("$ZodNullable", (inst, def) => {
+	$ZodType.init(inst, def);
+	defineLazy(inst._zod, "optin", () => def.innerType._zod.optin);
+	defineLazy(inst._zod, "optout", () => def.innerType._zod.optout);
+	defineLazy(inst._zod, "pattern", () => {
+		const pattern = def.innerType._zod.pattern;
+		return pattern ? new RegExp(`^(${cleanRegex(pattern.source)}|null)$`) : void 0;
+	});
+	defineLazy(inst._zod, "values", () => {
+		return def.innerType._zod.values ? /* @__PURE__ */ new Set([...def.innerType._zod.values, null]) : void 0;
+	});
+	inst._zod.parse = (payload, ctx) => {
+		if (payload.value === null) return payload;
+		return def.innerType._zod.run(payload, ctx);
+	};
+});
+var $ZodDefault = /*@__PURE__*/ $constructor("$ZodDefault", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.optin = "optional";
+	defineLazy(inst._zod, "values", () => def.innerType._zod.values);
+	inst._zod.parse = (payload, ctx) => {
+		if (ctx.direction === "backward") return def.innerType._zod.run(payload, ctx);
+		if (payload.value === void 0) {
+			payload.value = def.defaultValue;
+			/**
+			* $ZodDefault returns the default value immediately in forward direction.
+			* It doesn't pass the default value into the validator ("prefault"). There's no reason to pass the default value through validation. The validity of the default is enforced by TypeScript statically. Otherwise, it's the responsibility of the user to ensure the default is valid. In the case of pipes with divergent in/out types, you can specify the default on the `in` schema of your ZodPipe to set a "prefault" for the pipe.   */
+			return payload;
+		}
+		const result = def.innerType._zod.run(payload, ctx);
+		if (result instanceof Promise) return result.then((result) => handleDefaultResult(result, def));
+		return handleDefaultResult(result, def);
+	};
+});
+function handleDefaultResult(payload, def) {
+	if (payload.value === void 0) payload.value = def.defaultValue;
+	return payload;
+}
+var $ZodPrefault = /*@__PURE__*/ $constructor("$ZodPrefault", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.optin = "optional";
+	defineLazy(inst._zod, "values", () => def.innerType._zod.values);
+	inst._zod.parse = (payload, ctx) => {
+		if (ctx.direction === "backward") return def.innerType._zod.run(payload, ctx);
+		if (payload.value === void 0) payload.value = def.defaultValue;
+		return def.innerType._zod.run(payload, ctx);
+	};
+});
+var $ZodNonOptional = /*@__PURE__*/ $constructor("$ZodNonOptional", (inst, def) => {
+	$ZodType.init(inst, def);
+	defineLazy(inst._zod, "values", () => {
+		const v = def.innerType._zod.values;
+		return v ? new Set([...v].filter((x) => x !== void 0)) : void 0;
+	});
+	inst._zod.parse = (payload, ctx) => {
+		const result = def.innerType._zod.run(payload, ctx);
+		if (result instanceof Promise) return result.then((result) => handleNonOptionalResult(result, inst));
+		return handleNonOptionalResult(result, inst);
+	};
+});
+function handleNonOptionalResult(payload, inst) {
+	if (!payload.issues.length && payload.value === void 0) payload.issues.push({
+		code: "invalid_type",
+		expected: "nonoptional",
+		input: payload.value,
+		inst
+	});
+	return payload;
+}
+var $ZodCatch = /*@__PURE__*/ $constructor("$ZodCatch", (inst, def) => {
+	$ZodType.init(inst, def);
+	inst._zod.optin = "optional";
+	defineLazy(inst._zod, "optout", () => def.innerType._zod.optout);
+	defineLazy(inst._zod, "values", () => def.innerType._zod.values);
+	inst._zod.parse = (payload, ctx) => {
+		if (ctx.direction === "backward") return def.innerType._zod.run(payload, ctx);
+		const result = def.innerType._zod.run(payload, ctx);
+		if (result instanceof Promise) return result.then((result) => {
+			payload.value = result.value;
+			if (result.issues.length) {
+				payload.value = def.catchValue({
+					...payload,
+					error: { issues: result.issues.map((iss) => finalizeIssue(iss, ctx, config())) },
+					input: payload.value
+				});
+				payload.issues = [];
+				payload.fallback = true;
+			}
+			return payload;
+		});
+		payload.value = result.value;
+		if (result.issues.length) {
+			payload.value = def.catchValue({
+				...payload,
+				error: { issues: result.issues.map((iss) => finalizeIssue(iss, ctx, config())) },
+				input: payload.value
+			});
+			payload.issues = [];
+			payload.fallback = true;
+		}
+		return payload;
+	};
+});
+var $ZodPipe = /*@__PURE__*/ $constructor("$ZodPipe", (inst, def) => {
+	$ZodType.init(inst, def);
+	defineLazy(inst._zod, "values", () => def.in._zod.values);
+	defineLazy(inst._zod, "optin", () => def.in._zod.optin);
+	defineLazy(inst._zod, "optout", () => def.out._zod.optout);
+	defineLazy(inst._zod, "propValues", () => def.in._zod.propValues);
+	inst._zod.parse = (payload, ctx) => {
+		if (ctx.direction === "backward") {
+			const right = def.out._zod.run(payload, ctx);
+			if (right instanceof Promise) return right.then((right) => handlePipeResult(right, def.in, ctx));
+			return handlePipeResult(right, def.in, ctx);
+		}
+		const left = def.in._zod.run(payload, ctx);
+		if (left instanceof Promise) return left.then((left) => handlePipeResult(left, def.out, ctx));
+		return handlePipeResult(left, def.out, ctx);
+	};
+});
+function handlePipeResult(left, next, ctx) {
+	if (left.issues.length) {
+		left.aborted = true;
+		return left;
+	}
+	return next._zod.run({
+		value: left.value,
+		issues: left.issues,
+		fallback: left.fallback
+	}, ctx);
+}
+var $ZodReadonly = /*@__PURE__*/ $constructor("$ZodReadonly", (inst, def) => {
+	$ZodType.init(inst, def);
+	defineLazy(inst._zod, "propValues", () => def.innerType._zod.propValues);
+	defineLazy(inst._zod, "values", () => def.innerType._zod.values);
+	defineLazy(inst._zod, "optin", () => def.innerType?._zod?.optin);
+	defineLazy(inst._zod, "optout", () => def.innerType?._zod?.optout);
+	inst._zod.parse = (payload, ctx) => {
+		if (ctx.direction === "backward") return def.innerType._zod.run(payload, ctx);
+		const result = def.innerType._zod.run(payload, ctx);
+		if (result instanceof Promise) return result.then(handleReadonlyResult);
+		return handleReadonlyResult(result);
+	};
+});
+function handleReadonlyResult(payload) {
+	payload.value = Object.freeze(payload.value);
+	return payload;
+}
+var $ZodCustom = /*@__PURE__*/ $constructor("$ZodCustom", (inst, def) => {
+	$ZodCheck.init(inst, def);
+	$ZodType.init(inst, def);
+	inst._zod.parse = (payload, _) => {
+		return payload;
+	};
+	inst._zod.check = (payload) => {
+		const input = payload.value;
+		const r = def.fn(input);
+		if (r instanceof Promise) return r.then((r) => handleRefineResult(r, payload, input, inst));
+		handleRefineResult(r, payload, input, inst);
+	};
+});
+function handleRefineResult(result, payload, input, inst) {
+	if (!result) {
+		const _iss = {
+			code: "custom",
+			input,
+			inst,
+			path: [...inst._zod.def.path ?? []],
+			continue: !inst._zod.def.abort
+		};
+		if (inst._zod.def.params) _iss.params = inst._zod.def.params;
+		payload.issues.push(issue(_iss));
+	}
+}
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/registries.js
+var _a;
+var $ZodRegistry = class {
+	constructor() {
+		this._map = /* @__PURE__ */ new WeakMap();
+		this._idmap = /* @__PURE__ */ new Map();
+	}
+	add(schema, ..._meta) {
+		const meta = _meta[0];
+		this._map.set(schema, meta);
+		if (meta && typeof meta === "object" && "id" in meta) this._idmap.set(meta.id, schema);
+		return this;
+	}
+	clear() {
+		this._map = /* @__PURE__ */ new WeakMap();
+		this._idmap = /* @__PURE__ */ new Map();
+		return this;
+	}
+	remove(schema) {
+		const meta = this._map.get(schema);
+		if (meta && typeof meta === "object" && "id" in meta) this._idmap.delete(meta.id);
+		this._map.delete(schema);
+		return this;
+	}
+	get(schema) {
+		const p = schema._zod.parent;
+		if (p) {
+			const pm = { ...this.get(p) ?? {} };
+			delete pm.id;
+			const f = {
+				...pm,
+				...this._map.get(schema)
+			};
+			return Object.keys(f).length ? f : void 0;
+		}
+		return this._map.get(schema);
+	}
+	has(schema) {
+		return this._map.has(schema);
+	}
+};
+function registry() {
+	return new $ZodRegistry();
+}
+(_a = globalThis).__zod_globalRegistry ?? (_a.__zod_globalRegistry = registry());
+var globalRegistry = globalThis.__zod_globalRegistry;
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/api.js
+// @__NO_SIDE_EFFECTS__
+function _string(Class, params) {
+	return new Class({
+		type: "string",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _email(Class, params) {
+	return new Class({
+		type: "string",
+		format: "email",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _guid(Class, params) {
+	return new Class({
+		type: "string",
+		format: "guid",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _uuid(Class, params) {
+	return new Class({
+		type: "string",
+		format: "uuid",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _uuidv4(Class, params) {
+	return new Class({
+		type: "string",
+		format: "uuid",
+		check: "string_format",
+		abort: false,
+		version: "v4",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _uuidv6(Class, params) {
+	return new Class({
+		type: "string",
+		format: "uuid",
+		check: "string_format",
+		abort: false,
+		version: "v6",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _uuidv7(Class, params) {
+	return new Class({
+		type: "string",
+		format: "uuid",
+		check: "string_format",
+		abort: false,
+		version: "v7",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _url(Class, params) {
+	return new Class({
+		type: "string",
+		format: "url",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _emoji(Class, params) {
+	return new Class({
+		type: "string",
+		format: "emoji",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _nanoid(Class, params) {
+	return new Class({
+		type: "string",
+		format: "nanoid",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+/**
+* @deprecated CUID v1 is deprecated by its authors due to information leakage
+* (timestamps embedded in the id). Use {@link _cuid2} instead.
+* See https://github.com/paralleldrive/cuid.
+*/
+// @__NO_SIDE_EFFECTS__
+function _cuid(Class, params) {
+	return new Class({
+		type: "string",
+		format: "cuid",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _cuid2(Class, params) {
+	return new Class({
+		type: "string",
+		format: "cuid2",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _ulid(Class, params) {
+	return new Class({
+		type: "string",
+		format: "ulid",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _xid(Class, params) {
+	return new Class({
+		type: "string",
+		format: "xid",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _ksuid(Class, params) {
+	return new Class({
+		type: "string",
+		format: "ksuid",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _ipv4(Class, params) {
+	return new Class({
+		type: "string",
+		format: "ipv4",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _ipv6(Class, params) {
+	return new Class({
+		type: "string",
+		format: "ipv6",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _cidrv4(Class, params) {
+	return new Class({
+		type: "string",
+		format: "cidrv4",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _cidrv6(Class, params) {
+	return new Class({
+		type: "string",
+		format: "cidrv6",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _base64(Class, params) {
+	return new Class({
+		type: "string",
+		format: "base64",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _base64url(Class, params) {
+	return new Class({
+		type: "string",
+		format: "base64url",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _e164(Class, params) {
+	return new Class({
+		type: "string",
+		format: "e164",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _jwt(Class, params) {
+	return new Class({
+		type: "string",
+		format: "jwt",
+		check: "string_format",
+		abort: false,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _isoDateTime(Class, params) {
+	return new Class({
+		type: "string",
+		format: "datetime",
+		check: "string_format",
+		offset: false,
+		local: false,
+		precision: null,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _isoDate(Class, params) {
+	return new Class({
+		type: "string",
+		format: "date",
+		check: "string_format",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _isoTime(Class, params) {
+	return new Class({
+		type: "string",
+		format: "time",
+		check: "string_format",
+		precision: null,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _isoDuration(Class, params) {
+	return new Class({
+		type: "string",
+		format: "duration",
+		check: "string_format",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _unknown(Class) {
+	return new Class({ type: "unknown" });
+}
+// @__NO_SIDE_EFFECTS__
+function _never(Class, params) {
+	return new Class({
+		type: "never",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _maxLength(maximum, params) {
+	return new $ZodCheckMaxLength({
+		check: "max_length",
+		...normalizeParams(params),
+		maximum
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _minLength(minimum, params) {
+	return new $ZodCheckMinLength({
+		check: "min_length",
+		...normalizeParams(params),
+		minimum
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _length(length, params) {
+	return new $ZodCheckLengthEquals({
+		check: "length_equals",
+		...normalizeParams(params),
+		length
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _regex(pattern, params) {
+	return new $ZodCheckRegex({
+		check: "string_format",
+		format: "regex",
+		...normalizeParams(params),
+		pattern
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _lowercase(params) {
+	return new $ZodCheckLowerCase({
+		check: "string_format",
+		format: "lowercase",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _uppercase(params) {
+	return new $ZodCheckUpperCase({
+		check: "string_format",
+		format: "uppercase",
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _includes(includes, params) {
+	return new $ZodCheckIncludes({
+		check: "string_format",
+		format: "includes",
+		...normalizeParams(params),
+		includes
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _startsWith(prefix, params) {
+	return new $ZodCheckStartsWith({
+		check: "string_format",
+		format: "starts_with",
+		...normalizeParams(params),
+		prefix
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _endsWith(suffix, params) {
+	return new $ZodCheckEndsWith({
+		check: "string_format",
+		format: "ends_with",
+		...normalizeParams(params),
+		suffix
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _overwrite(tx) {
+	return new $ZodCheckOverwrite({
+		check: "overwrite",
+		tx
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _normalize(form) {
+	return /* @__PURE__ */ _overwrite((input) => input.normalize(form));
+}
+// @__NO_SIDE_EFFECTS__
+function _trim() {
+	return /* @__PURE__ */ _overwrite((input) => input.trim());
+}
+// @__NO_SIDE_EFFECTS__
+function _toLowerCase() {
+	return /* @__PURE__ */ _overwrite((input) => input.toLowerCase());
+}
+// @__NO_SIDE_EFFECTS__
+function _toUpperCase() {
+	return /* @__PURE__ */ _overwrite((input) => input.toUpperCase());
+}
+// @__NO_SIDE_EFFECTS__
+function _slugify() {
+	return /* @__PURE__ */ _overwrite((input) => slugify(input));
+}
+// @__NO_SIDE_EFFECTS__
+function _array(Class, element, params) {
+	return new Class({
+		type: "array",
+		element,
+		...normalizeParams(params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _refine(Class, fn, _params) {
+	return new Class({
+		type: "custom",
+		check: "custom",
+		fn,
+		...normalizeParams(_params)
+	});
+}
+// @__NO_SIDE_EFFECTS__
+function _superRefine(fn, params) {
+	const ch = /* @__PURE__ */ _check((payload) => {
+		payload.addIssue = (issue$2) => {
+			if (typeof issue$2 === "string") payload.issues.push(issue(issue$2, payload.value, ch._zod.def));
+			else {
+				const _issue = issue$2;
+				if (_issue.fatal) _issue.continue = false;
+				_issue.code ?? (_issue.code = "custom");
+				_issue.input ?? (_issue.input = payload.value);
+				_issue.inst ?? (_issue.inst = ch);
+				_issue.continue ?? (_issue.continue = !ch._zod.def.abort);
+				payload.issues.push(issue(_issue));
+			}
+		};
+		return fn(payload.value, payload);
+	}, params);
+	return ch;
+}
+// @__NO_SIDE_EFFECTS__
+function _check(fn, params) {
+	const ch = new $ZodCheck({
+		check: "custom",
+		...normalizeParams(params)
+	});
+	ch._zod.check = fn;
+	return ch;
+}
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/to-json-schema.js
+function initializeContext(params) {
+	let target = params?.target ?? "draft-2020-12";
+	if (target === "draft-4") target = "draft-04";
+	if (target === "draft-7") target = "draft-07";
+	return {
+		processors: params.processors ?? {},
+		metadataRegistry: params?.metadata ?? globalRegistry,
+		target,
+		unrepresentable: params?.unrepresentable ?? "throw",
+		override: params?.override ?? (() => {}),
+		io: params?.io ?? "output",
+		counter: 0,
+		seen: /* @__PURE__ */ new Map(),
+		cycles: params?.cycles ?? "ref",
+		reused: params?.reused ?? "inline",
+		external: params?.external ?? void 0
+	};
+}
+function process$1(schema, ctx, _params = {
+	path: [],
+	schemaPath: []
+}) {
+	var _a;
+	const def = schema._zod.def;
+	const seen = ctx.seen.get(schema);
+	if (seen) {
+		seen.count++;
+		if (_params.schemaPath.includes(schema)) seen.cycle = _params.path;
+		return seen.schema;
+	}
+	const result = {
+		schema: {},
+		count: 1,
+		cycle: void 0,
+		path: _params.path
+	};
+	ctx.seen.set(schema, result);
+	const overrideSchema = schema._zod.toJSONSchema?.();
+	if (overrideSchema) result.schema = overrideSchema;
+	else {
+		const params = {
+			..._params,
+			schemaPath: [..._params.schemaPath, schema],
+			path: _params.path
+		};
+		if (schema._zod.processJSONSchema) schema._zod.processJSONSchema(ctx, result.schema, params);
+		else {
+			const _json = result.schema;
+			const processor = ctx.processors[def.type];
+			if (!processor) throw new Error(`[toJSONSchema]: Non-representable type encountered: ${def.type}`);
+			processor(schema, ctx, _json, params);
+		}
+		const parent = schema._zod.parent;
+		if (parent) {
+			if (!result.ref) result.ref = parent;
+			process$1(parent, ctx, params);
+			ctx.seen.get(parent).isParent = true;
+		}
+	}
+	const meta = ctx.metadataRegistry.get(schema);
+	if (meta) Object.assign(result.schema, meta);
+	if (ctx.io === "input" && isTransforming(schema)) {
+		delete result.schema.examples;
+		delete result.schema.default;
+	}
+	if (ctx.io === "input" && "_prefault" in result.schema) (_a = result.schema).default ?? (_a.default = result.schema._prefault);
+	delete result.schema._prefault;
+	return ctx.seen.get(schema).schema;
+}
+function extractDefs(ctx, schema) {
+	const root = ctx.seen.get(schema);
+	if (!root) throw new Error("Unprocessed schema. This is a bug in Zod.");
+	const idToSchema = /* @__PURE__ */ new Map();
+	for (const entry of ctx.seen.entries()) {
+		const id = ctx.metadataRegistry.get(entry[0])?.id;
+		if (id) {
+			const existing = idToSchema.get(id);
+			if (existing && existing !== entry[0]) throw new Error(`Duplicate schema id "${id}" detected during JSON Schema conversion. Two different schemas cannot share the same id when converted together.`);
+			idToSchema.set(id, entry[0]);
+		}
+	}
+	const makeURI = (entry) => {
+		const defsSegment = ctx.target === "draft-2020-12" ? "$defs" : "definitions";
+		if (ctx.external) {
+			const externalId = ctx.external.registry.get(entry[0])?.id;
+			const uriGenerator = ctx.external.uri ?? ((id) => id);
+			if (externalId) return { ref: uriGenerator(externalId) };
+			const id = entry[1].defId ?? entry[1].schema.id ?? `schema${ctx.counter++}`;
+			entry[1].defId = id;
+			return {
+				defId: id,
+				ref: `${uriGenerator("__shared")}#/${defsSegment}/${id}`
+			};
+		}
+		if (entry[1] === root) return { ref: "#" };
+		const defUriPrefix = `#/${defsSegment}/`;
+		const defId = entry[1].schema.id ?? `__schema${ctx.counter++}`;
+		return {
+			defId,
+			ref: defUriPrefix + defId
+		};
+	};
+	const extractToDef = (entry) => {
+		if (entry[1].schema.$ref) return;
+		const seen = entry[1];
+		const { ref, defId } = makeURI(entry);
+		seen.def = { ...seen.schema };
+		if (defId) seen.defId = defId;
+		const schema = seen.schema;
+		for (const key in schema) delete schema[key];
+		schema.$ref = ref;
+	};
+	if (ctx.cycles === "throw") for (const entry of ctx.seen.entries()) {
+		const seen = entry[1];
+		if (seen.cycle) throw new Error(`Cycle detected: #/${seen.cycle?.join("/")}/<root>
+
+Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.`);
+	}
+	for (const entry of ctx.seen.entries()) {
+		const seen = entry[1];
+		if (schema === entry[0]) {
+			extractToDef(entry);
+			continue;
+		}
+		if (ctx.external) {
+			const ext = ctx.external.registry.get(entry[0])?.id;
+			if (schema !== entry[0] && ext) {
+				extractToDef(entry);
+				continue;
+			}
+		}
+		if (ctx.metadataRegistry.get(entry[0])?.id) {
+			extractToDef(entry);
+			continue;
+		}
+		if (seen.cycle) {
+			extractToDef(entry);
+			continue;
+		}
+		if (seen.count > 1) {
+			if (ctx.reused === "ref") {
+				extractToDef(entry);
+				continue;
+			}
+		}
+	}
+}
+function finalize(ctx, schema) {
+	const root = ctx.seen.get(schema);
+	if (!root) throw new Error("Unprocessed schema. This is a bug in Zod.");
+	const flattenRef = (zodSchema) => {
+		const seen = ctx.seen.get(zodSchema);
+		if (seen.ref === null) return;
+		const schema = seen.def ?? seen.schema;
+		const _cached = { ...schema };
+		const ref = seen.ref;
+		seen.ref = null;
+		if (ref) {
+			flattenRef(ref);
+			const refSeen = ctx.seen.get(ref);
+			const refSchema = refSeen.schema;
+			if (refSchema.$ref && (ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0")) {
+				schema.allOf = schema.allOf ?? [];
+				schema.allOf.push(refSchema);
+			} else Object.assign(schema, refSchema);
+			Object.assign(schema, _cached);
+			if (zodSchema._zod.parent === ref) for (const key in schema) {
+				if (key === "$ref" || key === "allOf") continue;
+				if (!(key in _cached)) delete schema[key];
+			}
+			if (refSchema.$ref && refSeen.def) for (const key in schema) {
+				if (key === "$ref" || key === "allOf") continue;
+				if (key in refSeen.def && JSON.stringify(schema[key]) === JSON.stringify(refSeen.def[key])) delete schema[key];
+			}
+		}
+		const parent = zodSchema._zod.parent;
+		if (parent && parent !== ref) {
+			flattenRef(parent);
+			const parentSeen = ctx.seen.get(parent);
+			if (parentSeen?.schema.$ref) {
+				schema.$ref = parentSeen.schema.$ref;
+				if (parentSeen.def) for (const key in schema) {
+					if (key === "$ref" || key === "allOf") continue;
+					if (key in parentSeen.def && JSON.stringify(schema[key]) === JSON.stringify(parentSeen.def[key])) delete schema[key];
+				}
+			}
+		}
+		ctx.override({
+			zodSchema,
+			jsonSchema: schema,
+			path: seen.path ?? []
+		});
+	};
+	for (const entry of [...ctx.seen.entries()].reverse()) flattenRef(entry[0]);
+	const result = {};
+	if (ctx.target === "draft-2020-12") result.$schema = "https://json-schema.org/draft/2020-12/schema";
+	else if (ctx.target === "draft-07") result.$schema = "http://json-schema.org/draft-07/schema#";
+	else if (ctx.target === "draft-04") result.$schema = "http://json-schema.org/draft-04/schema#";
+	else if (ctx.target === "openapi-3.0") {}
+	if (ctx.external?.uri) {
+		const id = ctx.external.registry.get(schema)?.id;
+		if (!id) throw new Error("Schema is missing an `id` property");
+		result.$id = ctx.external.uri(id);
+	}
+	Object.assign(result, root.def ?? root.schema);
+	const rootMetaId = ctx.metadataRegistry.get(schema)?.id;
+	if (rootMetaId !== void 0 && result.id === rootMetaId) delete result.id;
+	const defs = ctx.external?.defs ?? {};
+	for (const entry of ctx.seen.entries()) {
+		const seen = entry[1];
+		if (seen.def && seen.defId) {
+			if (seen.def.id === seen.defId) delete seen.def.id;
+			defs[seen.defId] = seen.def;
+		}
+	}
+	if (ctx.external) {} else if (Object.keys(defs).length > 0) if (ctx.target === "draft-2020-12") result.$defs = defs;
+	else result.definitions = defs;
+	try {
+		const finalized = JSON.parse(JSON.stringify(result));
+		Object.defineProperty(finalized, "~standard", {
+			value: {
+				...schema["~standard"],
+				jsonSchema: {
+					input: createStandardJSONSchemaMethod(schema, "input", ctx.processors),
+					output: createStandardJSONSchemaMethod(schema, "output", ctx.processors)
+				}
+			},
+			enumerable: false,
+			writable: false
+		});
+		return finalized;
+	} catch (_err) {
+		throw new Error("Error converting schema to JSON.");
+	}
+}
+function isTransforming(_schema, _ctx) {
+	const ctx = _ctx ?? { seen: /* @__PURE__ */ new Set() };
+	if (ctx.seen.has(_schema)) return false;
+	ctx.seen.add(_schema);
+	const def = _schema._zod.def;
+	if (def.type === "transform") return true;
+	if (def.type === "array") return isTransforming(def.element, ctx);
+	if (def.type === "set") return isTransforming(def.valueType, ctx);
+	if (def.type === "lazy") return isTransforming(def.getter(), ctx);
+	if (def.type === "promise" || def.type === "optional" || def.type === "nonoptional" || def.type === "nullable" || def.type === "readonly" || def.type === "default" || def.type === "prefault") return isTransforming(def.innerType, ctx);
+	if (def.type === "intersection") return isTransforming(def.left, ctx) || isTransforming(def.right, ctx);
+	if (def.type === "record" || def.type === "map") return isTransforming(def.keyType, ctx) || isTransforming(def.valueType, ctx);
+	if (def.type === "pipe") {
+		if (_schema._zod.traits.has("$ZodCodec")) return true;
+		return isTransforming(def.in, ctx) || isTransforming(def.out, ctx);
+	}
+	if (def.type === "object") {
+		for (const key in def.shape) if (isTransforming(def.shape[key], ctx)) return true;
+		return false;
+	}
+	if (def.type === "union") {
+		for (const option of def.options) if (isTransforming(option, ctx)) return true;
+		return false;
+	}
+	if (def.type === "tuple") {
+		for (const item of def.items) if (isTransforming(item, ctx)) return true;
+		if (def.rest && isTransforming(def.rest, ctx)) return true;
+		return false;
+	}
+	return false;
+}
+/**
+* Creates a toJSONSchema method for a schema instance.
+* This encapsulates the logic of initializing context, processing, extracting defs, and finalizing.
+*/
+var createToJSONSchemaMethod = (schema, processors = {}) => (params) => {
+	const ctx = initializeContext({
+		...params,
+		processors
+	});
+	process$1(schema, ctx);
+	extractDefs(ctx, schema);
+	return finalize(ctx, schema);
+};
+var createStandardJSONSchemaMethod = (schema, io, processors = {}) => (params) => {
+	const { libraryOptions, target } = params ?? {};
+	const ctx = initializeContext({
+		...libraryOptions ?? {},
+		target,
+		io,
+		processors
+	});
+	process$1(schema, ctx);
+	extractDefs(ctx, schema);
+	return finalize(ctx, schema);
+};
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/json-schema-processors.js
+var formatMap = {
+	guid: "uuid",
+	url: "uri",
+	datetime: "date-time",
+	json_string: "json-string",
+	regex: ""
+};
+var stringProcessor = (schema, ctx, _json, _params) => {
+	const json = _json;
+	json.type = "string";
+	const { minimum, maximum, format, patterns, contentEncoding } = schema._zod.bag;
+	if (typeof minimum === "number") json.minLength = minimum;
+	if (typeof maximum === "number") json.maxLength = maximum;
+	if (format) {
+		json.format = formatMap[format] ?? format;
+		if (json.format === "") delete json.format;
+		if (format === "time") delete json.format;
+	}
+	if (contentEncoding) json.contentEncoding = contentEncoding;
+	if (patterns && patterns.size > 0) {
+		const regexes = [...patterns];
+		if (regexes.length === 1) json.pattern = regexes[0].source;
+		else if (regexes.length > 1) json.allOf = [...regexes.map((regex) => ({
+			...ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0" ? { type: "string" } : {},
+			pattern: regex.source
+		}))];
+	}
+};
+var neverProcessor = (_schema, _ctx, json, _params) => {
+	json.not = {};
+};
+var enumProcessor = (schema, _ctx, json, _params) => {
+	const def = schema._zod.def;
+	const values = getEnumValues(def.entries);
+	if (values.every((v) => typeof v === "number")) json.type = "number";
+	if (values.every((v) => typeof v === "string")) json.type = "string";
+	json.enum = values;
+};
+var customProcessor = (_schema, ctx, _json, _params) => {
+	if (ctx.unrepresentable === "throw") throw new Error("Custom types cannot be represented in JSON Schema");
+};
+var transformProcessor = (_schema, ctx, _json, _params) => {
+	if (ctx.unrepresentable === "throw") throw new Error("Transforms cannot be represented in JSON Schema");
+};
+var arrayProcessor = (schema, ctx, _json, params) => {
+	const json = _json;
+	const def = schema._zod.def;
+	const { minimum, maximum } = schema._zod.bag;
+	if (typeof minimum === "number") json.minItems = minimum;
+	if (typeof maximum === "number") json.maxItems = maximum;
+	json.type = "array";
+	json.items = process$1(def.element, ctx, {
+		...params,
+		path: [...params.path, "items"]
+	});
+};
+var objectProcessor = (schema, ctx, _json, params) => {
+	const json = _json;
+	const def = schema._zod.def;
+	json.type = "object";
+	json.properties = {};
+	const shape = def.shape;
+	for (const key in shape) json.properties[key] = process$1(shape[key], ctx, {
+		...params,
+		path: [
+			...params.path,
+			"properties",
+			key
+		]
+	});
+	const allKeys = new Set(Object.keys(shape));
+	const requiredKeys = new Set([...allKeys].filter((key) => {
+		const v = def.shape[key]._zod;
+		if (ctx.io === "input") return v.optin === void 0;
+		else return v.optout === void 0;
+	}));
+	if (requiredKeys.size > 0) json.required = Array.from(requiredKeys);
+	if (def.catchall?._zod.def.type === "never") json.additionalProperties = false;
+	else if (!def.catchall) {
+		if (ctx.io === "output") json.additionalProperties = false;
+	} else if (def.catchall) json.additionalProperties = process$1(def.catchall, ctx, {
+		...params,
+		path: [...params.path, "additionalProperties"]
+	});
+};
+var unionProcessor = (schema, ctx, json, params) => {
+	const def = schema._zod.def;
+	const isExclusive = def.inclusive === false;
+	const options = def.options.map((x, i) => process$1(x, ctx, {
+		...params,
+		path: [
+			...params.path,
+			isExclusive ? "oneOf" : "anyOf",
+			i
+		]
+	}));
+	if (isExclusive) json.oneOf = options;
+	else json.anyOf = options;
+};
+var intersectionProcessor = (schema, ctx, json, params) => {
+	const def = schema._zod.def;
+	const a = process$1(def.left, ctx, {
+		...params,
+		path: [
+			...params.path,
+			"allOf",
+			0
+		]
+	});
+	const b = process$1(def.right, ctx, {
+		...params,
+		path: [
+			...params.path,
+			"allOf",
+			1
+		]
+	});
+	const isSimpleIntersection = (val) => "allOf" in val && Object.keys(val).length === 1;
+	json.allOf = [...isSimpleIntersection(a) ? a.allOf : [a], ...isSimpleIntersection(b) ? b.allOf : [b]];
+};
+var nullableProcessor = (schema, ctx, json, params) => {
+	const def = schema._zod.def;
+	const inner = process$1(def.innerType, ctx, params);
+	const seen = ctx.seen.get(schema);
+	if (ctx.target === "openapi-3.0") {
+		seen.ref = def.innerType;
+		json.nullable = true;
+	} else json.anyOf = [inner, { type: "null" }];
+};
+var nonoptionalProcessor = (schema, ctx, _json, params) => {
+	const def = schema._zod.def;
+	process$1(def.innerType, ctx, params);
+	const seen = ctx.seen.get(schema);
+	seen.ref = def.innerType;
+};
+var defaultProcessor = (schema, ctx, json, params) => {
+	const def = schema._zod.def;
+	process$1(def.innerType, ctx, params);
+	const seen = ctx.seen.get(schema);
+	seen.ref = def.innerType;
+	json.default = JSON.parse(JSON.stringify(def.defaultValue));
+};
+var prefaultProcessor = (schema, ctx, json, params) => {
+	const def = schema._zod.def;
+	process$1(def.innerType, ctx, params);
+	const seen = ctx.seen.get(schema);
+	seen.ref = def.innerType;
+	if (ctx.io === "input") json._prefault = JSON.parse(JSON.stringify(def.defaultValue));
+};
+var catchProcessor = (schema, ctx, json, params) => {
+	const def = schema._zod.def;
+	process$1(def.innerType, ctx, params);
+	const seen = ctx.seen.get(schema);
+	seen.ref = def.innerType;
+	let catchValue;
+	try {
+		catchValue = def.catchValue(void 0);
+	} catch {
+		throw new Error("Dynamic catch values are not supported in JSON Schema");
+	}
+	json.default = catchValue;
+};
+var pipeProcessor = (schema, ctx, _json, params) => {
+	const def = schema._zod.def;
+	const inIsTransform = def.in._zod.traits.has("$ZodTransform");
+	const innerType = ctx.io === "input" ? inIsTransform ? def.out : def.in : def.out;
+	process$1(innerType, ctx, params);
+	const seen = ctx.seen.get(schema);
+	seen.ref = innerType;
+};
+var readonlyProcessor = (schema, ctx, json, params) => {
+	const def = schema._zod.def;
+	process$1(def.innerType, ctx, params);
+	const seen = ctx.seen.get(schema);
+	seen.ref = def.innerType;
+	json.readOnly = true;
+};
+var optionalProcessor = (schema, ctx, _json, params) => {
+	const def = schema._zod.def;
+	process$1(def.innerType, ctx, params);
+	const seen = ctx.seen.get(schema);
+	seen.ref = def.innerType;
+};
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/classic/iso.js
+var ZodISODateTime = /*@__PURE__*/ $constructor("ZodISODateTime", (inst, def) => {
+	$ZodISODateTime.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+function datetime(params) {
+	return /* @__PURE__ */ _isoDateTime(ZodISODateTime, params);
+}
+var ZodISODate = /*@__PURE__*/ $constructor("ZodISODate", (inst, def) => {
+	$ZodISODate.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+function date(params) {
+	return /* @__PURE__ */ _isoDate(ZodISODate, params);
+}
+var ZodISOTime = /*@__PURE__*/ $constructor("ZodISOTime", (inst, def) => {
+	$ZodISOTime.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+function time(params) {
+	return /* @__PURE__ */ _isoTime(ZodISOTime, params);
+}
+var ZodISODuration = /*@__PURE__*/ $constructor("ZodISODuration", (inst, def) => {
+	$ZodISODuration.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+function duration(params) {
+	return /* @__PURE__ */ _isoDuration(ZodISODuration, params);
+}
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/classic/errors.js
+var initializer = (inst, issues) => {
+	$ZodError.init(inst, issues);
+	inst.name = "ZodError";
+	Object.defineProperties(inst, {
+		format: { value: (mapper) => formatError(inst, mapper) },
+		flatten: { value: (mapper) => flattenError(inst, mapper) },
+		addIssue: { value: (issue) => {
+			inst.issues.push(issue);
+			inst.message = JSON.stringify(inst.issues, jsonStringifyReplacer, 2);
+		} },
+		addIssues: { value: (issues) => {
+			inst.issues.push(...issues);
+			inst.message = JSON.stringify(inst.issues, jsonStringifyReplacer, 2);
+		} },
+		isEmpty: { get() {
+			return inst.issues.length === 0;
+		} }
+	});
+};
+var ZodRealError = /*@__PURE__*/ $constructor("ZodError", initializer, { Parent: Error });
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/classic/parse.js
+var parse = /* @__PURE__ */ _parse(ZodRealError);
+var parseAsync = /* @__PURE__ */ _parseAsync(ZodRealError);
+var safeParse = /* @__PURE__ */ _safeParse(ZodRealError);
+var safeParseAsync = /* @__PURE__ */ _safeParseAsync(ZodRealError);
+var encode = /* @__PURE__ */ _encode(ZodRealError);
+var decode = /* @__PURE__ */ _decode(ZodRealError);
+var encodeAsync = /* @__PURE__ */ _encodeAsync(ZodRealError);
+var decodeAsync = /* @__PURE__ */ _decodeAsync(ZodRealError);
+var safeEncode = /* @__PURE__ */ _safeEncode(ZodRealError);
+var safeDecode = /* @__PURE__ */ _safeDecode(ZodRealError);
+var safeEncodeAsync = /* @__PURE__ */ _safeEncodeAsync(ZodRealError);
+var safeDecodeAsync = /* @__PURE__ */ _safeDecodeAsync(ZodRealError);
+//#endregion
+//#region node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/classic/schemas.js
+var _installedGroups = /* @__PURE__ */ new WeakMap();
+function _installLazyMethods(inst, group, methods) {
+	const proto = Object.getPrototypeOf(inst);
+	let installed = _installedGroups.get(proto);
+	if (!installed) {
+		installed = /* @__PURE__ */ new Set();
+		_installedGroups.set(proto, installed);
+	}
+	if (installed.has(group)) return;
+	installed.add(group);
+	for (const key in methods) {
+		const fn = methods[key];
+		Object.defineProperty(proto, key, {
+			configurable: true,
+			enumerable: false,
+			get() {
+				const bound = fn.bind(this);
+				Object.defineProperty(this, key, {
+					configurable: true,
+					writable: true,
+					enumerable: true,
+					value: bound
+				});
+				return bound;
+			},
+			set(v) {
+				Object.defineProperty(this, key, {
+					configurable: true,
+					writable: true,
+					enumerable: true,
+					value: v
+				});
+			}
+		});
+	}
+}
+var ZodType = /*@__PURE__*/ $constructor("ZodType", (inst, def) => {
+	$ZodType.init(inst, def);
+	Object.assign(inst["~standard"], { jsonSchema: {
+		input: createStandardJSONSchemaMethod(inst, "input"),
+		output: createStandardJSONSchemaMethod(inst, "output")
+	} });
+	inst.toJSONSchema = createToJSONSchemaMethod(inst, {});
+	inst.def = def;
+	inst.type = def.type;
+	Object.defineProperty(inst, "_def", { value: def });
+	inst.parse = (data, params) => parse(inst, data, params, { callee: inst.parse });
+	inst.safeParse = (data, params) => safeParse(inst, data, params);
+	inst.parseAsync = async (data, params) => parseAsync(inst, data, params, { callee: inst.parseAsync });
+	inst.safeParseAsync = async (data, params) => safeParseAsync(inst, data, params);
+	inst.spa = inst.safeParseAsync;
+	inst.encode = (data, params) => encode(inst, data, params);
+	inst.decode = (data, params) => decode(inst, data, params);
+	inst.encodeAsync = async (data, params) => encodeAsync(inst, data, params);
+	inst.decodeAsync = async (data, params) => decodeAsync(inst, data, params);
+	inst.safeEncode = (data, params) => safeEncode(inst, data, params);
+	inst.safeDecode = (data, params) => safeDecode(inst, data, params);
+	inst.safeEncodeAsync = async (data, params) => safeEncodeAsync(inst, data, params);
+	inst.safeDecodeAsync = async (data, params) => safeDecodeAsync(inst, data, params);
+	_installLazyMethods(inst, "ZodType", {
+		check(...chks) {
+			const def = this.def;
+			return this.clone(mergeDefs(def, { checks: [...def.checks ?? [], ...chks.map((ch) => typeof ch === "function" ? { _zod: {
+				check: ch,
+				def: { check: "custom" },
+				onattach: []
+			} } : ch)] }), { parent: true });
+		},
+		with(...chks) {
+			return this.check(...chks);
+		},
+		clone(def, params) {
+			return clone(this, def, params);
+		},
+		brand() {
+			return this;
+		},
+		register(reg, meta) {
+			reg.add(this, meta);
+			return this;
+		},
+		refine(check, params) {
+			return this.check(refine(check, params));
+		},
+		superRefine(refinement, params) {
+			return this.check(superRefine(refinement, params));
+		},
+		overwrite(fn) {
+			return this.check(/* @__PURE__ */ _overwrite(fn));
+		},
+		optional() {
+			return optional(this);
+		},
+		exactOptional() {
+			return exactOptional(this);
+		},
+		nullable() {
+			return nullable(this);
+		},
+		nullish() {
+			return optional(nullable(this));
+		},
+		nonoptional(params) {
+			return nonoptional(this, params);
+		},
+		array() {
+			return array(this);
+		},
+		or(arg) {
+			return union([this, arg]);
+		},
+		and(arg) {
+			return intersection(this, arg);
+		},
+		transform(tx) {
+			return pipe(this, transform(tx));
+		},
+		default(d) {
+			return _default(this, d);
+		},
+		prefault(d) {
+			return prefault(this, d);
+		},
+		catch(params) {
+			return _catch(this, params);
+		},
+		pipe(target) {
+			return pipe(this, target);
+		},
+		readonly() {
+			return readonly(this);
+		},
+		describe(description) {
+			const cl = this.clone();
+			globalRegistry.add(cl, { description });
+			return cl;
+		},
+		meta(...args) {
+			if (args.length === 0) return globalRegistry.get(this);
+			const cl = this.clone();
+			globalRegistry.add(cl, args[0]);
+			return cl;
+		},
+		isOptional() {
+			return this.safeParse(void 0).success;
+		},
+		isNullable() {
+			return this.safeParse(null).success;
+		},
+		apply(fn) {
+			return fn(this);
+		}
+	});
+	Object.defineProperty(inst, "description", {
+		get() {
+			return globalRegistry.get(inst)?.description;
+		},
+		configurable: true
+	});
+	return inst;
+});
+/** @internal */
+var _ZodString = /*@__PURE__*/ $constructor("_ZodString", (inst, def) => {
+	$ZodString.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => stringProcessor(inst, ctx, json, params);
+	const bag = inst._zod.bag;
+	inst.format = bag.format ?? null;
+	inst.minLength = bag.minimum ?? null;
+	inst.maxLength = bag.maximum ?? null;
+	_installLazyMethods(inst, "_ZodString", {
+		regex(...args) {
+			return this.check(/* @__PURE__ */ _regex(...args));
+		},
+		includes(...args) {
+			return this.check(/* @__PURE__ */ _includes(...args));
+		},
+		startsWith(...args) {
+			return this.check(/* @__PURE__ */ _startsWith(...args));
+		},
+		endsWith(...args) {
+			return this.check(/* @__PURE__ */ _endsWith(...args));
+		},
+		min(...args) {
+			return this.check(/* @__PURE__ */ _minLength(...args));
+		},
+		max(...args) {
+			return this.check(/* @__PURE__ */ _maxLength(...args));
+		},
+		length(...args) {
+			return this.check(/* @__PURE__ */ _length(...args));
+		},
+		nonempty(...args) {
+			return this.check(/* @__PURE__ */ _minLength(1, ...args));
+		},
+		lowercase(params) {
+			return this.check(/* @__PURE__ */ _lowercase(params));
+		},
+		uppercase(params) {
+			return this.check(/* @__PURE__ */ _uppercase(params));
+		},
+		trim() {
+			return this.check(/* @__PURE__ */ _trim());
+		},
+		normalize(...args) {
+			return this.check(/* @__PURE__ */ _normalize(...args));
+		},
+		toLowerCase() {
+			return this.check(/* @__PURE__ */ _toLowerCase());
+		},
+		toUpperCase() {
+			return this.check(/* @__PURE__ */ _toUpperCase());
+		},
+		slugify() {
+			return this.check(/* @__PURE__ */ _slugify());
+		}
+	});
+});
+var ZodString = /*@__PURE__*/ $constructor("ZodString", (inst, def) => {
+	$ZodString.init(inst, def);
+	_ZodString.init(inst, def);
+	inst.email = (params) => inst.check(/* @__PURE__ */ _email(ZodEmail, params));
+	inst.url = (params) => inst.check(/* @__PURE__ */ _url(ZodURL, params));
+	inst.jwt = (params) => inst.check(/* @__PURE__ */ _jwt(ZodJWT, params));
+	inst.emoji = (params) => inst.check(/* @__PURE__ */ _emoji(ZodEmoji, params));
+	inst.guid = (params) => inst.check(/* @__PURE__ */ _guid(ZodGUID, params));
+	inst.uuid = (params) => inst.check(/* @__PURE__ */ _uuid(ZodUUID, params));
+	inst.uuidv4 = (params) => inst.check(/* @__PURE__ */ _uuidv4(ZodUUID, params));
+	inst.uuidv6 = (params) => inst.check(/* @__PURE__ */ _uuidv6(ZodUUID, params));
+	inst.uuidv7 = (params) => inst.check(/* @__PURE__ */ _uuidv7(ZodUUID, params));
+	inst.nanoid = (params) => inst.check(/* @__PURE__ */ _nanoid(ZodNanoID, params));
+	inst.guid = (params) => inst.check(/* @__PURE__ */ _guid(ZodGUID, params));
+	inst.cuid = (params) => inst.check(/* @__PURE__ */ _cuid(ZodCUID, params));
+	inst.cuid2 = (params) => inst.check(/* @__PURE__ */ _cuid2(ZodCUID2, params));
+	inst.ulid = (params) => inst.check(/* @__PURE__ */ _ulid(ZodULID, params));
+	inst.base64 = (params) => inst.check(/* @__PURE__ */ _base64(ZodBase64, params));
+	inst.base64url = (params) => inst.check(/* @__PURE__ */ _base64url(ZodBase64URL, params));
+	inst.xid = (params) => inst.check(/* @__PURE__ */ _xid(ZodXID, params));
+	inst.ksuid = (params) => inst.check(/* @__PURE__ */ _ksuid(ZodKSUID, params));
+	inst.ipv4 = (params) => inst.check(/* @__PURE__ */ _ipv4(ZodIPv4, params));
+	inst.ipv6 = (params) => inst.check(/* @__PURE__ */ _ipv6(ZodIPv6, params));
+	inst.cidrv4 = (params) => inst.check(/* @__PURE__ */ _cidrv4(ZodCIDRv4, params));
+	inst.cidrv6 = (params) => inst.check(/* @__PURE__ */ _cidrv6(ZodCIDRv6, params));
+	inst.e164 = (params) => inst.check(/* @__PURE__ */ _e164(ZodE164, params));
+	inst.datetime = (params) => inst.check(datetime(params));
+	inst.date = (params) => inst.check(date(params));
+	inst.time = (params) => inst.check(time(params));
+	inst.duration = (params) => inst.check(duration(params));
+});
+function string(params) {
+	return /* @__PURE__ */ _string(ZodString, params);
+}
+var ZodStringFormat = /*@__PURE__*/ $constructor("ZodStringFormat", (inst, def) => {
+	$ZodStringFormat.init(inst, def);
+	_ZodString.init(inst, def);
+});
+var ZodEmail = /*@__PURE__*/ $constructor("ZodEmail", (inst, def) => {
+	$ZodEmail.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodGUID = /*@__PURE__*/ $constructor("ZodGUID", (inst, def) => {
+	$ZodGUID.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodUUID = /*@__PURE__*/ $constructor("ZodUUID", (inst, def) => {
+	$ZodUUID.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodURL = /*@__PURE__*/ $constructor("ZodURL", (inst, def) => {
+	$ZodURL.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodEmoji = /*@__PURE__*/ $constructor("ZodEmoji", (inst, def) => {
+	$ZodEmoji.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodNanoID = /*@__PURE__*/ $constructor("ZodNanoID", (inst, def) => {
+	$ZodNanoID.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+/**
+* @deprecated CUID v1 is deprecated by its authors due to information leakage
+* (timestamps embedded in the id). Use {@link ZodCUID2} instead.
+* See https://github.com/paralleldrive/cuid.
+*/
+var ZodCUID = /*@__PURE__*/ $constructor("ZodCUID", (inst, def) => {
+	$ZodCUID.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodCUID2 = /*@__PURE__*/ $constructor("ZodCUID2", (inst, def) => {
+	$ZodCUID2.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodULID = /*@__PURE__*/ $constructor("ZodULID", (inst, def) => {
+	$ZodULID.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodXID = /*@__PURE__*/ $constructor("ZodXID", (inst, def) => {
+	$ZodXID.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodKSUID = /*@__PURE__*/ $constructor("ZodKSUID", (inst, def) => {
+	$ZodKSUID.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodIPv4 = /*@__PURE__*/ $constructor("ZodIPv4", (inst, def) => {
+	$ZodIPv4.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodIPv6 = /*@__PURE__*/ $constructor("ZodIPv6", (inst, def) => {
+	$ZodIPv6.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodCIDRv4 = /*@__PURE__*/ $constructor("ZodCIDRv4", (inst, def) => {
+	$ZodCIDRv4.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodCIDRv6 = /*@__PURE__*/ $constructor("ZodCIDRv6", (inst, def) => {
+	$ZodCIDRv6.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodBase64 = /*@__PURE__*/ $constructor("ZodBase64", (inst, def) => {
+	$ZodBase64.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodBase64URL = /*@__PURE__*/ $constructor("ZodBase64URL", (inst, def) => {
+	$ZodBase64URL.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodE164 = /*@__PURE__*/ $constructor("ZodE164", (inst, def) => {
+	$ZodE164.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodJWT = /*@__PURE__*/ $constructor("ZodJWT", (inst, def) => {
+	$ZodJWT.init(inst, def);
+	ZodStringFormat.init(inst, def);
+});
+var ZodUnknown = /*@__PURE__*/ $constructor("ZodUnknown", (inst, def) => {
+	$ZodUnknown.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => void 0;
+});
+function unknown() {
+	return /* @__PURE__ */ _unknown(ZodUnknown);
+}
+var ZodNever = /*@__PURE__*/ $constructor("ZodNever", (inst, def) => {
+	$ZodNever.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => neverProcessor(inst, ctx, json, params);
+});
+function never(params) {
+	return /* @__PURE__ */ _never(ZodNever, params);
+}
+var ZodArray = /*@__PURE__*/ $constructor("ZodArray", (inst, def) => {
+	$ZodArray.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => arrayProcessor(inst, ctx, json, params);
+	inst.element = def.element;
+	_installLazyMethods(inst, "ZodArray", {
+		min(n, params) {
+			return this.check(/* @__PURE__ */ _minLength(n, params));
+		},
+		nonempty(params) {
+			return this.check(/* @__PURE__ */ _minLength(1, params));
+		},
+		max(n, params) {
+			return this.check(/* @__PURE__ */ _maxLength(n, params));
+		},
+		length(n, params) {
+			return this.check(/* @__PURE__ */ _length(n, params));
+		},
+		unwrap() {
+			return this.element;
+		}
+	});
+});
+function array(element, params) {
+	return /* @__PURE__ */ _array(ZodArray, element, params);
+}
+var ZodObject = /*@__PURE__*/ $constructor("ZodObject", (inst, def) => {
+	$ZodObjectJIT.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => objectProcessor(inst, ctx, json, params);
+	defineLazy(inst, "shape", () => {
+		return def.shape;
+	});
+	_installLazyMethods(inst, "ZodObject", {
+		keyof() {
+			return _enum(Object.keys(this._zod.def.shape));
+		},
+		catchall(catchall) {
+			return this.clone({
+				...this._zod.def,
+				catchall
+			});
+		},
+		passthrough() {
+			return this.clone({
+				...this._zod.def,
+				catchall: unknown()
+			});
+		},
+		loose() {
+			return this.clone({
+				...this._zod.def,
+				catchall: unknown()
+			});
+		},
+		strict() {
+			return this.clone({
+				...this._zod.def,
+				catchall: never()
+			});
+		},
+		strip() {
+			return this.clone({
+				...this._zod.def,
+				catchall: void 0
+			});
+		},
+		extend(incoming) {
+			return extend(this, incoming);
+		},
+		safeExtend(incoming) {
+			return safeExtend(this, incoming);
+		},
+		merge(other) {
+			return merge(this, other);
+		},
+		pick(mask) {
+			return pick(this, mask);
+		},
+		omit(mask) {
+			return omit(this, mask);
+		},
+		partial(...args) {
+			return partial(ZodOptional, this, args[0]);
+		},
+		required(...args) {
+			return required(ZodNonOptional, this, args[0]);
+		}
+	});
+});
+function object(shape, params) {
+	return new ZodObject({
+		type: "object",
+		shape: shape ?? {},
+		...normalizeParams(params)
+	});
+}
+var ZodUnion = /*@__PURE__*/ $constructor("ZodUnion", (inst, def) => {
+	$ZodUnion.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => unionProcessor(inst, ctx, json, params);
+	inst.options = def.options;
+});
+function union(options, params) {
+	return new ZodUnion({
+		type: "union",
+		options,
+		...normalizeParams(params)
+	});
+}
+var ZodIntersection = /*@__PURE__*/ $constructor("ZodIntersection", (inst, def) => {
+	$ZodIntersection.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => intersectionProcessor(inst, ctx, json, params);
+});
+function intersection(left, right) {
+	return new ZodIntersection({
+		type: "intersection",
+		left,
+		right
+	});
+}
+var ZodEnum = /*@__PURE__*/ $constructor("ZodEnum", (inst, def) => {
+	$ZodEnum.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => enumProcessor(inst, ctx, json, params);
+	inst.enum = def.entries;
+	inst.options = Object.values(def.entries);
+	const keys = new Set(Object.keys(def.entries));
+	inst.extract = (values, params) => {
+		const newEntries = {};
+		for (const value of values) if (keys.has(value)) newEntries[value] = def.entries[value];
+		else throw new Error(`Key ${value} not found in enum`);
+		return new ZodEnum({
+			...def,
+			checks: [],
+			...normalizeParams(params),
+			entries: newEntries
+		});
+	};
+	inst.exclude = (values, params) => {
+		const newEntries = { ...def.entries };
+		for (const value of values) if (keys.has(value)) delete newEntries[value];
+		else throw new Error(`Key ${value} not found in enum`);
+		return new ZodEnum({
+			...def,
+			checks: [],
+			...normalizeParams(params),
+			entries: newEntries
+		});
+	};
+});
+function _enum(values, params) {
+	return new ZodEnum({
+		type: "enum",
+		entries: Array.isArray(values) ? Object.fromEntries(values.map((v) => [v, v])) : values,
+		...normalizeParams(params)
+	});
+}
+var ZodTransform = /*@__PURE__*/ $constructor("ZodTransform", (inst, def) => {
+	$ZodTransform.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => transformProcessor(inst, ctx, json, params);
+	inst._zod.parse = (payload, _ctx) => {
+		if (_ctx.direction === "backward") throw new $ZodEncodeError(inst.constructor.name);
+		payload.addIssue = (issue$1) => {
+			if (typeof issue$1 === "string") payload.issues.push(issue(issue$1, payload.value, def));
+			else {
+				const _issue = issue$1;
+				if (_issue.fatal) _issue.continue = false;
+				_issue.code ?? (_issue.code = "custom");
+				_issue.input ?? (_issue.input = payload.value);
+				_issue.inst ?? (_issue.inst = inst);
+				payload.issues.push(issue(_issue));
+			}
+		};
+		const output = def.transform(payload.value, payload);
+		if (output instanceof Promise) return output.then((output) => {
+			payload.value = output;
+			payload.fallback = true;
+			return payload;
+		});
+		payload.value = output;
+		payload.fallback = true;
+		return payload;
+	};
+});
+function transform(fn) {
+	return new ZodTransform({
+		type: "transform",
+		transform: fn
+	});
+}
+var ZodOptional = /*@__PURE__*/ $constructor("ZodOptional", (inst, def) => {
+	$ZodOptional.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => optionalProcessor(inst, ctx, json, params);
+	inst.unwrap = () => inst._zod.def.innerType;
+});
+function optional(innerType) {
+	return new ZodOptional({
+		type: "optional",
+		innerType
+	});
+}
+var ZodExactOptional = /*@__PURE__*/ $constructor("ZodExactOptional", (inst, def) => {
+	$ZodExactOptional.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => optionalProcessor(inst, ctx, json, params);
+	inst.unwrap = () => inst._zod.def.innerType;
+});
+function exactOptional(innerType) {
+	return new ZodExactOptional({
+		type: "optional",
+		innerType
+	});
+}
+var ZodNullable = /*@__PURE__*/ $constructor("ZodNullable", (inst, def) => {
+	$ZodNullable.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => nullableProcessor(inst, ctx, json, params);
+	inst.unwrap = () => inst._zod.def.innerType;
+});
+function nullable(innerType) {
+	return new ZodNullable({
+		type: "nullable",
+		innerType
+	});
+}
+var ZodDefault = /*@__PURE__*/ $constructor("ZodDefault", (inst, def) => {
+	$ZodDefault.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => defaultProcessor(inst, ctx, json, params);
+	inst.unwrap = () => inst._zod.def.innerType;
+	inst.removeDefault = inst.unwrap;
+});
+function _default(innerType, defaultValue) {
+	return new ZodDefault({
+		type: "default",
+		innerType,
+		get defaultValue() {
+			return typeof defaultValue === "function" ? defaultValue() : shallowClone(defaultValue);
+		}
+	});
+}
+var ZodPrefault = /*@__PURE__*/ $constructor("ZodPrefault", (inst, def) => {
+	$ZodPrefault.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => prefaultProcessor(inst, ctx, json, params);
+	inst.unwrap = () => inst._zod.def.innerType;
+});
+function prefault(innerType, defaultValue) {
+	return new ZodPrefault({
+		type: "prefault",
+		innerType,
+		get defaultValue() {
+			return typeof defaultValue === "function" ? defaultValue() : shallowClone(defaultValue);
+		}
+	});
+}
+var ZodNonOptional = /*@__PURE__*/ $constructor("ZodNonOptional", (inst, def) => {
+	$ZodNonOptional.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => nonoptionalProcessor(inst, ctx, json, params);
+	inst.unwrap = () => inst._zod.def.innerType;
+});
+function nonoptional(innerType, params) {
+	return new ZodNonOptional({
+		type: "nonoptional",
+		innerType,
+		...normalizeParams(params)
+	});
+}
+var ZodCatch = /*@__PURE__*/ $constructor("ZodCatch", (inst, def) => {
+	$ZodCatch.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => catchProcessor(inst, ctx, json, params);
+	inst.unwrap = () => inst._zod.def.innerType;
+	inst.removeCatch = inst.unwrap;
+});
+function _catch(innerType, catchValue) {
+	return new ZodCatch({
+		type: "catch",
+		innerType,
+		catchValue: typeof catchValue === "function" ? catchValue : () => catchValue
+	});
+}
+var ZodPipe = /*@__PURE__*/ $constructor("ZodPipe", (inst, def) => {
+	$ZodPipe.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => pipeProcessor(inst, ctx, json, params);
+	inst.in = def.in;
+	inst.out = def.out;
+});
+function pipe(in_, out) {
+	return new ZodPipe({
+		type: "pipe",
+		in: in_,
+		out
+	});
+}
+var ZodReadonly = /*@__PURE__*/ $constructor("ZodReadonly", (inst, def) => {
+	$ZodReadonly.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => readonlyProcessor(inst, ctx, json, params);
+	inst.unwrap = () => inst._zod.def.innerType;
+});
+function readonly(innerType) {
+	return new ZodReadonly({
+		type: "readonly",
+		innerType
+	});
+}
+var ZodCustom = /*@__PURE__*/ $constructor("ZodCustom", (inst, def) => {
+	$ZodCustom.init(inst, def);
+	ZodType.init(inst, def);
+	inst._zod.processJSONSchema = (ctx, json, params) => customProcessor(inst, ctx, json, params);
+});
+function refine(fn, _params = {}) {
+	return /* @__PURE__ */ _refine(ZodCustom, fn, _params);
+}
+function superRefine(fn, params) {
+	return /* @__PURE__ */ _superRefine(fn, params);
+}
 //#endregion
 //#region node_modules/.pnpm/@radix-ui+react-visually-hidden@1.2.7_@types+react-dom@19.2.3_@types+react@19.2.17__@ty_5c9a2e5554327bb90be9977ab54b6749/node_modules/@radix-ui/react-visually-hidden/dist/index.mjs
 var VISUALLY_HIDDEN_STYLES = Object.freeze({
@@ -37234,7 +40916,7 @@ var Trigger = TooltipTrigger;
 var Portal = TooltipPortal;
 var Content2 = TooltipContent;
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/use-session.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/use-session.js
 /**
 * Client-side hook to get the current auth session.
 *
@@ -37295,7 +40977,7 @@ function useSession() {
 	};
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/DefaultSpinner.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/DefaultSpinner.js
 /**
 * Full-screen loading spinner rendered during SSR and initial hydration.
 * Uses inline SVG + styles because Tailwind may not be loaded yet on the server.
@@ -37342,7 +41024,7 @@ function DefaultSpinner() {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/active-run-state.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/active-run-state.js
 var STORAGE_KEY = "agent-chat-active-run";
 function getActiveRun() {
 	try {
@@ -37354,7 +41036,7 @@ function getActiveRun() {
 	}
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/client-surface.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/client-surface.js
 /**
 * Best-effort, side-effect-free detection of the current client surface.
 * Returns "web" during SSR and in any plain browser.
@@ -37372,7 +41054,7 @@ function getClientSurface() {
 	return "web";
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/feedback-context.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/feedback-context.js
 var ACTIVE_THREAD_KEY_PREFIX = "agent-chat-active-thread";
 var MAX_CHAT_SESSION_IDS = 5;
 function isThreadStorageKey(key, storageKey) {
@@ -37435,7 +41117,7 @@ function getFeedbackClientContext(options = {}) {
 	return context;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/error-reporting.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/error-reporting.js
 var GITHUB_ISSUE_URL = "https://github.com/BuilderIO/agent-native/issues/new";
 function cleanText(value) {
 	if (value === null || value === void 0) return null;
@@ -37489,7 +41171,7 @@ function buildGitHubIssueUrl(options) {
 	return url.toString();
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/FeedbackButton.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/FeedbackButton.js
 var DEFAULT_FEEDBACK_URL = "https://forms.agent-native.com/f/agent-native-feedback/_16ewV";
 function isSyntheticAgentNativeAnonymousEmail(value) {
 	return /^anon-[^\s@]+@agent-native\.com$/i.test(value ?? "");
@@ -37886,7 +41568,7 @@ function FeedbackButton({ variant = "sidebar", label, url = DEFAULT_FEEDBACK_URL
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/ErrorReportActions.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/ErrorReportActions.js
 function ErrorReportActions({ feedbackLabel = "Send feedback", feedbackPlaceholder = "Describe what happened before this error appeared.", githubLabel = "Open GitHub issue", className, feedbackClassName, githubClassName, side = "top", align = "center", ...report }) {
 	const template = buildErrorReportTemplate({
 		...report,
@@ -37913,7 +41595,7 @@ function ErrorReportActions({ feedbackLabel = "Send feedback", feedbackPlacehold
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/ErrorBoundary.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/ErrorBoundary.js
 var primaryActionClassName = "inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 cursor-pointer";
 var secondaryActionClassName = "inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-background px-4 text-sm font-medium text-foreground shadow-sm hover:bg-accent";
 var errorCopy = {
@@ -38199,7 +41881,7 @@ function ErrorBoundary() {
 	return (0, import_jsx_runtime.jsx)(RoutedErrorScreen, {});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/ClientOnly.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/ClientOnly.js
 /**
 * Renders children only on the client (after hydration).
 *
@@ -38215,7 +41897,7 @@ function ClientOnly({ children, fallback }) {
 	return children;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/vite-dev-recovery-script.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/vite-dev-recovery-script.js
 /**
 * Synchronous dev-only browser recovery for Vite optimized-dependency races.
 *
@@ -38431,7 +42113,7 @@ function shouldInlineViteDevRecoveryScript() {
 	return true;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/theme.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/theme.js
 function normalizeDefaultTheme(theme) {
 	if (theme === "light" || theme === "dark" || theme === "system") return theme;
 	return "system";
@@ -38445,7 +42127,7 @@ function getThemeInitScript(defaultTheme = "system", enableSystem = true) {
 }
 getThemeInitScript();
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/create-query-client.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/create-query-client.js
 /**
 * Shared QueryClient factory for agent-native apps.
 *
@@ -38504,7 +42186,7 @@ function createAgentNativeQueryClient(overrides) {
 }
 //#endregion
 //#region node_modules/.pnpm/next-themes@0.4.6_react-dom@19.2.7_react@19.2.7__react@19.2.7/node_modules/next-themes/dist/index.mjs
-var M = (e, i, s, u, m, a, l, h) => {
+var M$2 = (e, i, s, u, m, a, l, h) => {
 	let d = document.documentElement, w = ["light", "dark"];
 	function p(n) {
 		(Array.isArray(e) ? e : [e]).forEach((y) => {
@@ -38523,16 +42205,16 @@ var M = (e, i, s, u, m, a, l, h) => {
 		let n = localStorage.getItem(i) || s;
 		p(l && n === "system" ? c() : n);
 	} catch (n) {}
-}, b = ["light", "dark"], I = "(prefers-color-scheme: dark)", O = typeof window == "undefined", x = import_react.createContext(void 0), J = (e) => import_react.useContext(x) ? import_react.createElement(import_react.Fragment, null, e.children) : import_react.createElement(V, { ...e }), N = ["light", "dark"], V = ({ forcedTheme: e, disableTransitionOnChange: i = !1, enableSystem: s = !0, enableColorScheme: u = !0, storageKey: m = "theme", themes: a = N, defaultTheme: l = s ? "system" : "light", attribute: h = "data-theme", value: d, children: w, nonce: p, scriptProps: R }) => {
-	let [c, n] = import_react.useState(() => H(m, l)), [T, y] = import_react.useState(() => c === "system" ? E() : c), k = d ? Object.values(d) : a, S = import_react.useCallback((o) => {
+}, b$1 = ["light", "dark"], I$1 = "(prefers-color-scheme: dark)", O$1 = typeof window == "undefined", x$1 = import_react.createContext(void 0), J$1 = (e) => import_react.useContext(x$1) ? import_react.createElement(import_react.Fragment, null, e.children) : import_react.createElement(V$1, { ...e }), N$1 = ["light", "dark"], V$1 = ({ forcedTheme: e, disableTransitionOnChange: i = !1, enableSystem: s = !0, enableColorScheme: u = !0, storageKey: m = "theme", themes: a = N$1, defaultTheme: l = s ? "system" : "light", attribute: h = "data-theme", value: d, children: w, nonce: p, scriptProps: R }) => {
+	let [c, n] = import_react.useState(() => H$1(m, l)), [T, y] = import_react.useState(() => c === "system" ? E$1() : c), k = d ? Object.values(d) : a, S = import_react.useCallback((o) => {
 		let r = o;
 		if (!r) return;
-		o === "system" && s && (r = E());
-		let v = d ? d[r] : r, C = i ? W(p) : null, P = document.documentElement, L = (g) => {
+		o === "system" && s && (r = E$1());
+		let v = d ? d[r] : r, C = i ? W$1(p) : null, P = document.documentElement, L = (g) => {
 			g === "class" ? (P.classList.remove(...k), v && P.classList.add(v)) : g.startsWith("data-") && (v ? P.setAttribute(g, v) : P.removeAttribute(g));
 		};
 		if (Array.isArray(h) ? h.forEach(L) : L(h), u) {
-			let g = b.includes(l) ? l : null, D = b.includes(r) ? r : g;
+			let g = b$1.includes(l) ? l : null, D = b$1.includes(r) ? r : g;
 			P.style.colorScheme = D;
 		}
 		C?.();
@@ -38543,11 +42225,11 @@ var M = (e, i, s, u, m, a, l, h) => {
 			localStorage.setItem(m, r);
 		} catch (v) {}
 	}, [c]), A = import_react.useCallback((o) => {
-		let r = E(o);
+		let r = E$1(o);
 		y(r), c === "system" && s && !e && S("system");
 	}, [c, e]);
 	import_react.useEffect(() => {
-		let o = window.matchMedia(I);
+		let o = window.matchMedia(I$1);
 		return o.addListener(A), A(o), () => o.removeListener(A);
 	}, [A]), import_react.useEffect(() => {
 		let o = (r) => {
@@ -38572,7 +42254,7 @@ var M = (e, i, s, u, m, a, l, h) => {
 		s,
 		a
 	]);
-	return import_react.createElement(x.Provider, { value: Q }, import_react.createElement(_, {
+	return import_react.createElement(x$1.Provider, { value: Q }, import_react.createElement(_, {
 		forcedTheme: e,
 		storageKey: m,
 		attribute: h,
@@ -38599,23 +42281,23 @@ var M = (e, i, s, u, m, a, l, h) => {
 		...w,
 		suppressHydrationWarning: !0,
 		nonce: typeof window == "undefined" ? d : "",
-		dangerouslySetInnerHTML: { __html: `(${M.toString()})(${p})` }
+		dangerouslySetInnerHTML: { __html: `(${M$2.toString()})(${p})` }
 	});
-}), H = (e, i) => {
-	if (O) return;
+}), H$1 = (e, i) => {
+	if (O$1) return;
 	let s;
 	try {
 		s = localStorage.getItem(e) || void 0;
 	} catch (u) {}
 	return s || i;
-}, W = (e) => {
+}, W$1 = (e) => {
 	let i = document.createElement("style");
 	return e && i.setAttribute("nonce", e), i.appendChild(document.createTextNode("*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}")), document.head.appendChild(i), () => {
 		window.getComputedStyle(document.body), setTimeout(() => {
 			document.head.removeChild(i);
 		}, 1);
 	};
-}, E = (e) => (e || (e = window.matchMedia(I)), e.matches ? "dark" : "light");
+}, E$1 = (e) => (e || (e = window.matchMedia(I$1)), e.matches ? "dark" : "light");
 //#endregion
 //#region node_modules/.pnpm/sonner@2.0.7_react-dom@19.2.7_react@19.2.7__react@19.2.7/node_modules/sonner/dist/index.mjs
 function __insertCSS(code) {
@@ -39520,7 +43202,7 @@ var Toaster = /*#__PURE__*/ import_react.forwardRef(function Toaster(props, ref)
 	}));
 });
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/client/app-providers.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/client/app-providers.js
 /**
 * Shared provider shell for agent-native template roots.
 *
@@ -39575,7 +43257,7 @@ var DEFAULT_TOASTER = (0, import_jsx_runtime.jsx)(Toaster, {
 function ProvidersInner({ queryClient, defaultTheme = "system", themeAttribute = "class", tooltipDelayDuration, toaster = DEFAULT_TOASTER, disableThemeTransitions = true, i18n, children }) {
 	return (0, import_jsx_runtime.jsx)(QueryClientProvider, {
 		client: queryClient,
-		children: (0, import_jsx_runtime.jsx)(J, {
+		children: (0, import_jsx_runtime.jsx)(J$1, {
 			attribute: themeAttribute,
 			defaultTheme,
 			enableSystem: true,
@@ -39618,7 +43300,7 @@ function AppProviders({ queryClient, isPublicPath = false, clientOnlyFallback, d
 }
 //#endregion
 //#region app/global.css?url
-var global_default = "/assets/global-DxBCoDkt.css";
+var global_default = "/assets/global-DP7CI0Vs.css";
 //#endregion
 //#region app/root.tsx
 var root_exports = /* @__PURE__ */ __exportAll({
@@ -39862,7 +43544,7 @@ function drizzle(client, config = {}) {
 	return db;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/db/client.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/db/client.js
 /**
 * Central database client abstraction.
 *
@@ -39918,10 +43600,10 @@ function pgliteDataDirFromUrl(url) {
 }
 function pgliteRuntimeDataDir(dataDir) {
 	if (dataDir === "memory://") return dataDir;
-	if (!isServerlessRuntime() || path.isAbsolute(dataDir)) return dataDir;
+	if (!isServerlessRuntime() || path$1.isAbsolute(dataDir)) return dataDir;
 	const safeParts = dataDir.split(/[\\/]+/).filter((part) => part && part !== "." && part !== "..");
-	const safeRelative = safeParts.length > 0 ? path.join(...safeParts) : path.join("data", "pglite");
-	return path.join("/tmp", safeRelative);
+	const safeRelative = safeParts.length > 0 ? path$1.join(...safeParts) : path$1.join("data", "pglite");
+	return path$1.join("/tmp", safeRelative);
 }
 async function preparePgliteDataDir(dataDir) {
 	const runtimeDataDir = pgliteRuntimeDataDir(dataDir);
@@ -39978,7 +43660,7 @@ async function prepareLocalSqliteUrl(url) {
 			fs.mkdirSync("/tmp/data", { recursive: true });
 			return "file:///tmp/data/app.db";
 		}
-		fs.mkdirSync(path.join(process.cwd(), "data"), { recursive: true });
+		fs.mkdirSync(path$1.join(process.cwd(), "data"), { recursive: true });
 	} catch {}
 	return url;
 }
@@ -40210,10 +43892,10 @@ function attachNeonPoolErrorLogger(pool, label = "db/neon") {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/db/create-get-db.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/db/create-get-db.js
 var _pgDrizzle;
 function getPgDrizzle() {
-	if (!_pgDrizzle) _pgDrizzle = Promise.all([import("./assets/postgres-js-Du92iFhQ.js"), import("./assets/src-BwMurMV_.js").then((n) => n.n)]).then(([drizzleMod, pgMod]) => ({
+	if (!_pgDrizzle) _pgDrizzle = Promise.all([import("./assets/postgres-js-e_ov9dWZ.js"), import("./assets/src-BwMurMV_.js").then((n) => n.n)]).then(([drizzleMod, pgMod]) => ({
 		drizzle: drizzleMod.drizzle,
 		postgres: pgMod.default
 	}));
@@ -40221,7 +43903,7 @@ function getPgDrizzle() {
 }
 var _neonServerlessDrizzle;
 function getNeonServerlessDrizzle() {
-	if (!_neonServerlessDrizzle) _neonServerlessDrizzle = Promise.all([import("./assets/neon-serverless-C4z8cG-z.js"), import("./assets/serverless-skz0BDJt.js").then((n) => n.i)]).then(([drizzleMod, neonMod]) => ({
+	if (!_neonServerlessDrizzle) _neonServerlessDrizzle = Promise.all([import("./assets/neon-serverless-CqVGr7Cn.js"), import("./assets/serverless-skz0BDJt.js").then((n) => n.i)]).then(([drizzleMod, neonMod]) => ({
 		drizzle: drizzleMod.drizzle,
 		Pool: neonMod.Pool
 	}));
@@ -40365,12 +44047,12 @@ function isNeonUrl(url) {
 }
 var _libsqlWebDrizzle;
 function getLibsqlWebDrizzle() {
-	if (!_libsqlWebDrizzle) _libsqlWebDrizzle = import("./assets/web-BXz8sPJA.js").then((mod) => ({ drizzle: mod.drizzle }));
+	if (!_libsqlWebDrizzle) _libsqlWebDrizzle = import("./assets/web-a3azDfuV.js").then((mod) => ({ drizzle: mod.drizzle }));
 	return _libsqlWebDrizzle;
 }
 var _betterSqliteDrizzle;
 function getBetterSqliteDrizzle() {
-	if (!_betterSqliteDrizzle) _betterSqliteDrizzle = Promise.all([import("./assets/better-sqlite3-DJm5crLo.js"), import("better-sqlite3")]).then(([drizzleMod, sqliteMod]) => ({
+	if (!_betterSqliteDrizzle) _betterSqliteDrizzle = Promise.all([import("./assets/better-sqlite3-CrLV1wFi.js"), import("better-sqlite3")]).then(([drizzleMod, sqliteMod]) => ({
 		drizzle: drizzleMod.drizzle,
 		Database: sqliteMod.default
 	}));
@@ -40559,7 +44241,7 @@ function createGetDb(schema) {
 	return getDb;
 }
 //#endregion
-//#region node_modules/.pnpm/@agent-native+core@0.90.2_52cdee81a035b701171fa4491cbf5f1f/node_modules/@agent-native/core/dist/db/schema.js
+//#region node_modules/.pnpm/@agent-native+core@0.90.2_d094e2d998e9160ea947271984bb0f24/node_modules/@agent-native/core/dist/db/schema.js
 function pg() {
 	return getDialect() === "postgres";
 }
@@ -40588,18 +44270,39 @@ var integer = ((...args) => {
 var schema_exports = /* @__PURE__ */ __exportAll({
 	authorizedUsers: () => authorizedUsers,
 	ideTechSessions: () => ideTechSessions,
+	organizationMemberships: () => organizationMemberships,
+	organizations: () => organizations,
+	rppArtifacts: () => rppArtifacts,
 	rppDocuments: () => rppDocuments,
+	rppExportJobs: () => rppExportJobs,
+	schoolDocumentTemplates: () => schoolDocumentTemplates,
+	webPortalSessions: () => webPortalSessions,
 	webSessions: () => webSessions
 });
 var authorizedUsers = table("authorized_users", {
 	telegramUserId: text("telegram_user_id").primaryKey(),
 	name: text("name").notNull(),
 	role: text("role").default("user").notNull(),
+	organizationId: text("organization_id").notNull().default("default"),
+	createdAt: integer("created_at").notNull()
+});
+var organizations = table("rpp_organizations", {
+	id: text("id").primaryKey(),
+	name: text("name").notNull(),
+	slug: text("slug").notNull().unique(),
+	createdAt: integer("created_at").notNull()
+});
+var organizationMemberships = table("rpp_organization_memberships", {
+	id: text("id").primaryKey(),
+	organizationId: text("organization_id").notNull(),
+	telegramUserId: text("telegram_user_id").notNull(),
+	role: text("role").notNull(),
 	createdAt: integer("created_at").notNull()
 });
 var rppDocuments = table("rpp_documents", {
 	id: text("id").primaryKey(),
 	telegramUserId: text("telegram_user_id").notNull(),
+	organizationId: text("organization_id").notNull().default("default"),
 	teacherName: text("teacher_name").notNull(),
 	headmasterName: text("headmaster_name").notNull(),
 	schoolName: text("school_name").notNull(),
@@ -40608,13 +44311,62 @@ var rppDocuments = table("rpp_documents", {
 	grade: text("grade").notNull(),
 	topic: text("topic").notNull(),
 	content: text("content").notNull(),
+	contentJson: text("content_json"),
+	status: text("status").notNull().default("draft"),
+	version: integer("version").notNull().default(1),
+	approvedAt: integer("approved_at"),
 	pdfPath: text("pdf_path").notNull(),
 	createdAt: integer("created_at").notNull()
 });
+var rppArtifacts = table("rpp_artifacts", {
+	id: text("id").primaryKey(),
+	rppDocumentId: text("rpp_document_id").notNull(),
+	organizationId: text("organization_id").notNull().default("default"),
+	format: text("format").notNull(),
+	storageKey: text("storage_key").notNull(),
+	sizeBytes: integer("size_bytes").notNull(),
+	checksum: text("checksum").notNull(),
+	status: text("status").notNull(),
+	createdAt: integer("created_at").notNull()
+});
+var rppExportJobs = table("rpp_export_jobs", {
+	id: text("id").primaryKey(),
+	rppDocumentId: text("rpp_document_id").notNull(),
+	organizationId: text("organization_id").notNull().default("default"),
+	format: text("format").notNull(),
+	status: text("status").notNull(),
+	attempts: integer("attempts").notNull().default(0),
+	error: text("error"),
+	nextAttemptAt: integer("next_attempt_at").notNull(),
+	leaseExpiresAt: integer("lease_expires_at"),
+	startedAt: integer("started_at"),
+	completedAt: integer("completed_at"),
+	createdAt: integer("created_at").notNull(),
+	updatedAt: integer("updated_at").notNull()
+});
+var schoolDocumentTemplates = table("school_document_templates", {
+	id: text("id").primaryKey(),
+	organizationId: text("organization_id").notNull(),
+	schoolName: text("school_name").notNull(),
+	letterheadText: text("letterhead_text"),
+	city: text("city").notNull().default("Jakarta"),
+	headmasterNip: text("headmaster_nip"),
+	teacherNip: text("teacher_nip"),
+	updatedAt: integer("updated_at").notNull()
+});
 var webSessions = table("web_sessions", {
-	token: text("token").primaryKey(),
+	tokenHash: text("token").primaryKey(),
 	telegramUserId: text("telegram_user_id").notNull(),
 	expiresAt: integer("expires_at").notNull()
+});
+var webPortalSessions = table("web_portal_sessions", {
+	id: text("id").primaryKey(),
+	sessionTokenHash: text("session_token_hash").notNull().unique(),
+	telegramUserId: text("telegram_user_id").notNull(),
+	activeOrganizationId: text("active_organization_id").notNull().default("default"),
+	createdAt: integer("created_at").notNull(),
+	expiresAt: integer("expires_at").notNull(),
+	revokedAt: integer("revoked_at")
 });
 var ideTechSessions = table("ide_tech_sessions", {
 	id: text("id").primaryKey(),
@@ -40629,10 +44381,6468 @@ var ideTechSessions = table("ide_tech_sessions", {
 //#region server/db/index.ts
 var getDb = createGetDb(schema_exports);
 //#endregion
+//#region server/auth/web-session.ts
+var COOKIE_NAME = "rpp_portal_session";
+var SESSION_TTL_MS = 720 * 60 * 60 * 1e3;
+function hashToken(token) {
+	return crypto.createHash("sha256").update(token).digest("hex");
+}
+function newToken() {
+	return crypto.randomBytes(32).toString("base64url");
+}
+function cookieAttributes(maxAge) {
+	return `Path=/; HttpOnly; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}${maxAge === void 0 ? "" : `; Max-Age=${maxAge}`}`;
+}
+function readCookie(request, name) {
+	const cookies = request.headers.get("Cookie")?.split(";") ?? [];
+	const prefix = `${name}=`;
+	const value = cookies.find((cookie) => cookie.trim().startsWith(prefix));
+	return value ? value.trim().slice(prefix.length) : null;
+}
+async function consumeMagicLinkToken(token) {
+	const [magicLink] = await getDb().delete(webSessions).where(and(eq(webSessions.tokenHash, hashToken(token)), gt(webSessions.expiresAt, Date.now()))).returning({ telegramUserId: webSessions.telegramUserId });
+	return magicLink?.telegramUserId ?? null;
+}
+async function createWebSession(telegramUserId) {
+	const db = getDb();
+	const sessionToken = newToken();
+	const now = Date.now();
+	await db.insert(webPortalSessions).values({
+		id: crypto.randomUUID(),
+		sessionTokenHash: hashToken(sessionToken),
+		telegramUserId,
+		createdAt: now,
+		expiresAt: now + SESSION_TTL_MS,
+		revokedAt: null
+	});
+	return sessionToken;
+}
+async function getWebSessionUserId(request) {
+	return (await getWebSessionContext(request))?.telegramUserId ?? null;
+}
+async function getWebSessionContext(request) {
+	const sessionToken = readCookie(request, COOKIE_NAME);
+	if (!sessionToken) return null;
+	const [session] = await getDb().select({
+		telegramUserId: webPortalSessions.telegramUserId,
+		activeOrganizationId: webPortalSessions.activeOrganizationId
+	}).from(webPortalSessions).where(and(eq(webPortalSessions.sessionTokenHash, hashToken(sessionToken)), gt(webPortalSessions.expiresAt, Date.now()), isNull(webPortalSessions.revokedAt))).limit(1);
+	return session ?? null;
+}
+async function revokeWebSession(request) {
+	const sessionToken = readCookie(request, COOKIE_NAME);
+	if (!sessionToken) return;
+	await getDb().update(webPortalSessions).set({ revokedAt: Date.now() }).where(eq(webPortalSessions.sessionTokenHash, hashToken(sessionToken)));
+}
+async function setActiveOrganization(request, organizationId) {
+	const sessionToken = readCookie(request, COOKIE_NAME);
+	if (!sessionToken) throw new Error("No active web session.");
+	const context = await getWebSessionContext(request);
+	if (!context) throw new Error("Invalid web session.");
+	const [membership] = await getDb().select().from(organizationMemberships).where(and(eq(organizationMemberships.organizationId, organizationId), eq(organizationMemberships.telegramUserId, context.telegramUserId))).limit(1);
+	if (!membership) throw new Error("You are not a member of this organization.");
+	await getDb().update(webPortalSessions).set({ activeOrganizationId: organizationId }).where(eq(webPortalSessions.sessionTokenHash, hashToken(sessionToken)));
+}
+function sessionCookie(sessionToken) {
+	return `${COOKIE_NAME}=${sessionToken}; ${cookieAttributes(Math.floor(SESSION_TTL_MS / 1e3))}`;
+}
+function clearSessionCookie() {
+	return `${COOKIE_NAME}=; ${cookieAttributes(0)}`;
+}
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/constants.js
+var RequestChecksumCalculation = {
+	WHEN_SUPPORTED: "WHEN_SUPPORTED",
+	WHEN_REQUIRED: "WHEN_REQUIRED"
+};
+var DEFAULT_REQUEST_CHECKSUM_CALCULATION = RequestChecksumCalculation.WHEN_SUPPORTED;
+var ResponseChecksumValidation = {
+	WHEN_SUPPORTED: "WHEN_SUPPORTED",
+	WHEN_REQUIRED: "WHEN_REQUIRED"
+};
+var DEFAULT_RESPONSE_CHECKSUM_VALIDATION = RequestChecksumCalculation.WHEN_SUPPORTED;
+var ChecksumAlgorithm;
+(function(ChecksumAlgorithm) {
+	ChecksumAlgorithm["MD5"] = "MD5";
+	ChecksumAlgorithm["CRC32"] = "CRC32";
+	ChecksumAlgorithm["CRC32C"] = "CRC32C";
+	ChecksumAlgorithm["CRC64NVME"] = "CRC64NVME";
+	ChecksumAlgorithm["SHA1"] = "SHA1";
+	ChecksumAlgorithm["SHA256"] = "SHA256";
+})(ChecksumAlgorithm || (ChecksumAlgorithm = {}));
+var ChecksumLocation;
+(function(ChecksumLocation) {
+	ChecksumLocation["HEADER"] = "header";
+	ChecksumLocation["TRAILER"] = "trailer";
+})(ChecksumLocation || (ChecksumLocation = {}));
+var DEFAULT_CHECKSUM_ALGORITHM = ChecksumAlgorithm.CRC32;
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/stringUnionSelector.js
+var SelectorType;
+(function(SelectorType) {
+	SelectorType["ENV"] = "env";
+	SelectorType["CONFIG"] = "shared config entry";
+})(SelectorType || (SelectorType = {}));
+var stringUnionSelector = (obj, key, union, type) => {
+	if (!(key in obj)) return void 0;
+	const value = obj[key].toUpperCase();
+	if (!Object.values(union).includes(value)) throw new TypeError(`Cannot load ${type} '${key}'. Expected one of ${Object.values(union)}, got '${obj[key]}'.`);
+	return value;
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS.js
+var ENV_REQUEST_CHECKSUM_CALCULATION = "AWS_REQUEST_CHECKSUM_CALCULATION";
+var CONFIG_REQUEST_CHECKSUM_CALCULATION = "request_checksum_calculation";
+var NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS = {
+	environmentVariableSelector: (env) => stringUnionSelector(env, ENV_REQUEST_CHECKSUM_CALCULATION, RequestChecksumCalculation, SelectorType.ENV),
+	configFileSelector: (profile) => stringUnionSelector(profile, CONFIG_REQUEST_CHECKSUM_CALCULATION, RequestChecksumCalculation, SelectorType.CONFIG),
+	default: DEFAULT_REQUEST_CHECKSUM_CALCULATION
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS.js
+var ENV_RESPONSE_CHECKSUM_VALIDATION = "AWS_RESPONSE_CHECKSUM_VALIDATION";
+var CONFIG_RESPONSE_CHECKSUM_VALIDATION = "response_checksum_validation";
+var NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS = {
+	environmentVariableSelector: (env) => stringUnionSelector(env, ENV_RESPONSE_CHECKSUM_VALIDATION, ResponseChecksumValidation, SelectorType.ENV),
+	configFileSelector: (profile) => stringUnionSelector(profile, CONFIG_RESPONSE_CHECKSUM_VALIDATION, ResponseChecksumValidation, SelectorType.CONFIG),
+	default: DEFAULT_RESPONSE_CHECKSUM_VALIDATION
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/getChecksumAlgorithmForRequest.js
+var getChecksumAlgorithmForRequest = (input, { requestChecksumRequired, requestAlgorithmMember, requestChecksumCalculation }) => {
+	if (!requestAlgorithmMember) return requestChecksumCalculation === RequestChecksumCalculation.WHEN_SUPPORTED || requestChecksumRequired ? DEFAULT_CHECKSUM_ALGORITHM : void 0;
+	if (!input[requestAlgorithmMember]) return;
+	return input[requestAlgorithmMember];
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/getChecksumLocationName.js
+var getChecksumLocationName = (algorithm) => algorithm === ChecksumAlgorithm.MD5 ? "content-md5" : `x-amz-checksum-${algorithm.toLowerCase()}`;
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/hasHeader.js
+var hasHeader = (header, headers) => {
+	const soughtHeader = header.toLowerCase();
+	for (const headerName of Object.keys(headers)) if (soughtHeader === headerName.toLowerCase()) return true;
+	return false;
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/hasHeaderWithPrefix.js
+var hasHeaderWithPrefix = (headerPrefix, headers) => {
+	const soughtHeaderPrefix = headerPrefix.toLowerCase();
+	for (const headerName of Object.keys(headers)) if (headerName.toLowerCase().startsWith(soughtHeaderPrefix)) return true;
+	return false;
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/isStreaming.js
+var isStreaming = (body) => body !== void 0 && typeof body !== "string" && !ArrayBuffer.isView(body) && !isArrayBuffer(body);
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/crc/crc32c/Crc32cJs.js
+var T$2 = /* @__PURE__ */ new Uint32Array(256);
+for (let i = 0; i < 256; ++i) {
+	let c = i;
+	for (let j = 0; j < 8; ++j) c = c & 1 ? 2197175160 ^ c >>> 1 : c >>> 1;
+	T$2[i] = c >>> 0;
+}
+var Crc32cJs = class {
+	digestLength = 4;
+	crc = 4294967295;
+	update(data) {
+		let crc = this.crc;
+		for (let i = 0; i < data.length; ++i) crc = crc >>> 8 ^ T$2[(crc ^ data[i]) & 255];
+		this.crc = crc;
+	}
+	async digest() {
+		const value = (this.crc ^ 4294967295) >>> 0;
+		const out = /* @__PURE__ */ new Uint8Array(4);
+		out[0] = value >>> 24;
+		out[1] = value >>> 16 & 255;
+		out[2] = value >>> 8 & 255;
+		out[3] = value & 255;
+		return out;
+	}
+	reset() {
+		this.crc = 4294967295;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/crc/crc32c/Crc32cNode.js
+var Crc32cNode = Crc32cJs;
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/crc/crc64-nvme/crc64-nvme-crt-container.js
+var crc64NvmeCrtContainer = { CrtCrc64Nvme: null };
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/crc/crc64-nvme/Crc64NvmeJs.js
+var generateCRC64NVMETable = () => {
+	const sliceLength = 8;
+	const tables = new Array(sliceLength);
+	for (let slice = 0; slice < sliceLength; slice++) {
+		const table = new Array(512);
+		for (let i = 0; i < 256; i++) {
+			let crc = BigInt(i);
+			for (let j = 0; j < 8 * (slice + 1); j++) if (crc & 1n) crc = crc >> 1n ^ 11127430586519243189n;
+			else crc = crc >> 1n;
+			table[i * 2] = Number(crc >> 32n & 4294967295n);
+			table[i * 2 + 1] = Number(crc & 4294967295n);
+		}
+		tables[slice] = new Uint32Array(table);
+	}
+	return tables;
+};
+var CRC64_NVME_REVERSED_TABLE;
+var t0, t1, t2, t3;
+var t4, t5, t6, t7;
+var ensureTablesInitialized = () => {
+	if (!CRC64_NVME_REVERSED_TABLE) {
+		CRC64_NVME_REVERSED_TABLE = generateCRC64NVMETable();
+		[t0, t1, t2, t3, t4, t5, t6, t7] = CRC64_NVME_REVERSED_TABLE;
+	}
+};
+var Crc64NvmeJs = class {
+	c1 = 0;
+	c2 = 0;
+	constructor() {
+		ensureTablesInitialized();
+		this.reset();
+	}
+	update(data) {
+		const len = data.length;
+		let i = 0;
+		let crc1 = this.c1;
+		let crc2 = this.c2;
+		while (i + 8 <= len) {
+			const idx0 = ((crc2 ^ data[i++]) & 255) << 1;
+			const idx1 = ((crc2 >>> 8 ^ data[i++]) & 255) << 1;
+			const idx2 = ((crc2 >>> 16 ^ data[i++]) & 255) << 1;
+			const idx3 = ((crc2 >>> 24 ^ data[i++]) & 255) << 1;
+			const idx4 = ((crc1 ^ data[i++]) & 255) << 1;
+			const idx5 = ((crc1 >>> 8 ^ data[i++]) & 255) << 1;
+			const idx6 = ((crc1 >>> 16 ^ data[i++]) & 255) << 1;
+			const idx7 = ((crc1 >>> 24 ^ data[i++]) & 255) << 1;
+			crc1 = t7[idx0] ^ t6[idx1] ^ t5[idx2] ^ t4[idx3] ^ t3[idx4] ^ t2[idx5] ^ t1[idx6] ^ t0[idx7];
+			crc2 = t7[idx0 + 1] ^ t6[idx1 + 1] ^ t5[idx2 + 1] ^ t4[idx3 + 1] ^ t3[idx4 + 1] ^ t2[idx5 + 1] ^ t1[idx6 + 1] ^ t0[idx7 + 1];
+		}
+		while (i < len) {
+			const idx = ((crc2 ^ data[i]) & 255) << 1;
+			crc2 = (crc2 >>> 8 | (crc1 & 255) << 24) >>> 0;
+			crc1 = crc1 >>> 8 ^ t0[idx];
+			crc2 ^= t0[idx + 1];
+			++i;
+		}
+		this.c1 = crc1;
+		this.c2 = crc2;
+	}
+	async digest() {
+		const c1 = this.c1 ^ 4294967295;
+		const c2 = this.c2 ^ 4294967295;
+		return new Uint8Array([
+			c1 >>> 24,
+			c1 >>> 16 & 255,
+			c1 >>> 8 & 255,
+			c1 & 255,
+			c2 >>> 24,
+			c2 >>> 16 & 255,
+			c2 >>> 8 & 255,
+			c2 & 255
+		]);
+	}
+	reset() {
+		this.c1 = 4294967295;
+		this.c2 = 4294967295;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/crc/crc64-nvme/Crc64Nvme.js
+var Crc64Nvme = class {
+	impl;
+	constructor() {
+		const Crt = crc64NvmeCrtContainer.CrtCrc64Nvme;
+		this.impl = Crt ? new Crt() : new Crc64NvmeJs();
+	}
+	update(data) {
+		this.impl.update(data);
+	}
+	async digest() {
+		return this.impl.digest();
+	}
+	reset() {
+		this.impl.reset();
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/checksum/hash-stream-node/HashCalculator.js
+var HashCalculator = class extends Writable {
+	hash;
+	constructor(hash, options) {
+		super(options);
+		this.hash = hash;
+	}
+	_write(chunk, encoding, callback) {
+		try {
+			this.hash.update(toUint8Array(chunk));
+		} catch (err) {
+			return callback(err);
+		}
+		callback();
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/checksum/hash-stream-node/readableStreamHasher.js
+var readableStreamHasher = (hashCtor, readableStream) => {
+	if (readableStream.readableFlowing !== null) throw new Error("Unable to calculate hash for flowing readable stream");
+	const hash = new hashCtor();
+	const hashCalculator = new HashCalculator(hash);
+	readableStream.pipe(hashCalculator);
+	return new Promise((resolve, reject) => {
+		readableStream.on("error", (err) => {
+			hashCalculator.end();
+			reject(err);
+		});
+		hashCalculator.on("error", reject);
+		hashCalculator.on("finish", () => {
+			hash.digest().then(resolve).catch(reject);
+		});
+	});
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/checksum/md5/Md5Js.js
+var Md5Js = class {
+	digestLength = 16;
+	state = Uint32Array.from(INIT$1);
+	writeBuffer = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(64));
+	bufferLength = 0;
+	bytesHashed = 0;
+	update(sourceData) {
+		const data = toUint8Array(sourceData);
+		let pos = 0;
+		let len = data.byteLength;
+		this.bytesHashed += len;
+		while (len > 0) {
+			this.writeBuffer.setUint8(this.bufferLength++, data[pos++]);
+			--len;
+			if (this.bufferLength === 64) {
+				compress(this.state, this.writeBuffer);
+				this.bufferLength = 0;
+			}
+		}
+	}
+	async digest() {
+		const state = Uint32Array.from(this.state);
+		const buf = new DataView(this.writeBuffer.buffer.slice(0));
+		let bufLen = this.bufferLength;
+		const bits = this.bytesHashed * 8;
+		buf.setUint8(bufLen++, 128);
+		if (this.bufferLength % 64 >= 56) {
+			for (let i = bufLen; i < 64; ++i) buf.setUint8(i, 0);
+			compress(state, buf);
+			bufLen = 0;
+		}
+		for (let i = bufLen; i < 56; ++i) buf.setUint8(i, 0);
+		buf.setUint32(56, bits >>> 0, true);
+		buf.setUint32(60, Math.floor(bits / 2 ** 32), true);
+		compress(state, buf);
+		const out = /* @__PURE__ */ new Uint8Array(16);
+		const view = new DataView(out.buffer);
+		for (let i = 0; i < 4; ++i) view.setUint32(i * 4, state[i], true);
+		return out;
+	}
+	reset() {
+		this.state.set(INIT$1);
+		this.writeBuffer = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(64));
+		this.bufferLength = 0;
+		this.bytesHashed = 0;
+	}
+};
+var INIT$1 = [
+	1732584193,
+	4023233417,
+	2562383102,
+	271733878
+];
+var M$1 = 4294967295;
+var S$1 = Uint8Array.of(7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21);
+var T$1 = Array.from({ length: 64 }, (_, i) => Math.abs(Math.sin(i + 1)) * 2 ** 32 >>> 0);
+function compress(state, block) {
+	let a = state[0], b = state[1], c = state[2], d = state[3];
+	for (let i = 0; i < 64; ++i) {
+		let f, g;
+		if (i < 16) {
+			f = b & c | ~b & d;
+			g = i;
+		} else if (i < 32) {
+			f = d & b | c & ~d;
+			g = (5 * i + 1) % 16;
+		} else if (i < 48) {
+			f = b ^ c ^ d;
+			g = (3 * i + 5) % 16;
+		} else {
+			f = c ^ (b | ~d);
+			g = 7 * i % 16;
+		}
+		const x = block.getUint32(g * 4, true);
+		const tmp = d;
+		d = c;
+		c = b;
+		const s = S$1[(i >> 4) * 4 + (i & 3)];
+		const sum = (a + f & M$1) + (x + T$1[i] & M$1) & M$1;
+		b = b + ((sum << s | sum >>> 32 - s) >>> 0) & M$1;
+		a = tmp;
+	}
+	state[0] = state[0] + a & M$1;
+	state[1] = state[1] + b & M$1;
+	state[2] = state[2] + c & M$1;
+	state[3] = state[3] + d & M$1;
+}
+var Md5Node = (() => {
+	try {
+		createHash("md5");
+		return true;
+	} catch {
+		return false;
+	}
+})() ? buildNativeClass$2() : Md5Js;
+function buildNativeClass$2() {
+	return class Md5Node {
+		digestLength = 16;
+		hash = createHash("md5");
+		update(data) {
+			this.hash.update(toUint8Array(data));
+		}
+		async digest() {
+			const buf = this.hash.copy().digest();
+			return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+		}
+		reset() {
+			this.hash = createHash("md5");
+		}
+	};
+}
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/checksum/crc32/Crc32Js.js
+var CRC32_TABLE = /* @__PURE__ */ new Uint32Array(256);
+for (let i = 0; i < 256; ++i) {
+	let c = i;
+	for (let j = 0; j < 8; ++j) c = c & 1 ? 3988292384 ^ c >>> 1 : c >>> 1;
+	CRC32_TABLE[i] = c >>> 0;
+}
+var ONES = 4294967295;
+var Crc32Js = class {
+	digestLength = 4;
+	checksum = ONES;
+	update(data) {
+		for (let i = 0; i < data.length; ++i) this.checksum = this.checksum >>> 8 ^ CRC32_TABLE[(this.checksum ^ data[i]) & 255];
+	}
+	digestSync() {
+		return (this.checksum ^ ONES) >>> 0;
+	}
+	async digest() {
+		const value = this.digestSync();
+		const out = /* @__PURE__ */ new Uint8Array(4);
+		new DataView(out.buffer).setUint32(0, value, false);
+		return out;
+	}
+	reset() {
+		this.checksum = ONES;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/checksum/crc32/Crc32Node.js
+var zlibCrc32 = typeof zlib.crc32 === "function" ? zlib.crc32 : void 0;
+var Crc32Node = zlibCrc32 ? buildNativeClass$1(zlibCrc32) : Crc32Js;
+function buildNativeClass$1(nativeCrc32) {
+	return class Crc32Node {
+		digestLength = 4;
+		value = 0;
+		update(data) {
+			this.value = nativeCrc32(data, this.value);
+		}
+		digestSync() {
+			return this.value >>> 0;
+		}
+		async digest() {
+			const out = /* @__PURE__ */ new Uint8Array(4);
+			new DataView(out.buffer).setUint32(0, this.digestSync(), false);
+			return out;
+		}
+		reset() {
+			this.value = 0;
+		}
+	};
+}
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/types.js
+var CLIENT_SUPPORTED_ALGORITHMS = [
+	ChecksumAlgorithm.CRC32,
+	ChecksumAlgorithm.CRC32C,
+	ChecksumAlgorithm.CRC64NVME,
+	ChecksumAlgorithm.SHA1,
+	ChecksumAlgorithm.SHA256
+];
+var PRIORITY_ORDER_ALGORITHMS = [
+	ChecksumAlgorithm.SHA256,
+	ChecksumAlgorithm.SHA1,
+	ChecksumAlgorithm.CRC32,
+	ChecksumAlgorithm.CRC32C,
+	ChecksumAlgorithm.CRC64NVME
+];
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/selectChecksumAlgorithmFunction.js
+var selectChecksumAlgorithmFunction = (checksumAlgorithm, config) => {
+	const { checksumAlgorithms = {} } = config;
+	switch (checksumAlgorithm) {
+		case ChecksumAlgorithm.MD5: return checksumAlgorithms?.MD5 ?? config.md5;
+		case ChecksumAlgorithm.CRC32: return checksumAlgorithms?.CRC32 ?? Crc32Node;
+		case ChecksumAlgorithm.CRC32C: return checksumAlgorithms?.CRC32C ?? Crc32cNode;
+		case ChecksumAlgorithm.CRC64NVME: return checksumAlgorithms?.CRC64NVME ?? Crc64Nvme;
+		case ChecksumAlgorithm.SHA1: return checksumAlgorithms?.SHA1 ?? config.sha1;
+		case ChecksumAlgorithm.SHA256: return checksumAlgorithms?.SHA256 ?? config.sha256;
+		default:
+			if (checksumAlgorithms?.[checksumAlgorithm]) return checksumAlgorithms[checksumAlgorithm];
+			throw new Error(`The checksum algorithm "${checksumAlgorithm}" is not supported by the client. Select one of ${CLIENT_SUPPORTED_ALGORITHMS}, or provide an implementation to  the client constructor checksums field.`);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/stringHasher.js
+var stringHasher = (checksumAlgorithmFn, body) => {
+	const hash = new checksumAlgorithmFn();
+	hash.update(toUint8Array(body || ""));
+	return hash.digest();
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/flexibleChecksumsMiddleware.js
+var flexibleChecksumsMiddlewareOptions = {
+	name: "flexibleChecksumsMiddleware",
+	step: "build",
+	tags: ["BODY_CHECKSUM"],
+	override: true
+};
+var flexibleChecksumsMiddleware = (config, middlewareConfig) => (next, context) => async (args) => {
+	if (!HttpRequest.isInstance(args.request)) return next(args);
+	if (hasHeaderWithPrefix("x-amz-checksum-", args.request.headers)) return next(args);
+	const { request, input } = args;
+	const { body: requestBody, headers } = request;
+	const { base64Encoder, streamHasher } = config;
+	const { requestChecksumRequired, requestAlgorithmMember } = middlewareConfig;
+	const requestChecksumCalculation = await config.requestChecksumCalculation();
+	const requestAlgorithmMemberName = requestAlgorithmMember?.name;
+	const requestAlgorithmMemberHttpHeader = requestAlgorithmMember?.httpHeader;
+	if (requestAlgorithmMemberName && !input[requestAlgorithmMemberName]) {
+		if (requestChecksumCalculation === RequestChecksumCalculation.WHEN_SUPPORTED || requestChecksumRequired) {
+			input[requestAlgorithmMemberName] = DEFAULT_CHECKSUM_ALGORITHM;
+			if (requestAlgorithmMemberHttpHeader) headers[requestAlgorithmMemberHttpHeader] = DEFAULT_CHECKSUM_ALGORITHM;
+		}
+	}
+	const checksumAlgorithm = getChecksumAlgorithmForRequest(input, {
+		requestChecksumRequired,
+		requestAlgorithmMember: requestAlgorithmMember?.name,
+		requestChecksumCalculation
+	});
+	let updatedBody = requestBody;
+	let updatedHeaders = headers;
+	if (checksumAlgorithm) {
+		switch (checksumAlgorithm) {
+			case ChecksumAlgorithm.CRC32:
+				setFeature(context, "FLEXIBLE_CHECKSUMS_REQ_CRC32", "U");
+				break;
+			case ChecksumAlgorithm.CRC32C:
+				setFeature(context, "FLEXIBLE_CHECKSUMS_REQ_CRC32C", "V");
+				break;
+			case ChecksumAlgorithm.CRC64NVME:
+				setFeature(context, "FLEXIBLE_CHECKSUMS_REQ_CRC64", "W");
+				break;
+			case ChecksumAlgorithm.SHA1:
+				setFeature(context, "FLEXIBLE_CHECKSUMS_REQ_SHA1", "X");
+				break;
+			case ChecksumAlgorithm.SHA256:
+				setFeature(context, "FLEXIBLE_CHECKSUMS_REQ_SHA256", "Y");
+				break;
+		}
+		const checksumLocationName = getChecksumLocationName(checksumAlgorithm);
+		const checksumAlgorithmFn = selectChecksumAlgorithmFunction(checksumAlgorithm, config);
+		if (isStreaming(requestBody)) {
+			const { getAwsChunkedEncodingStream, bodyLengthChecker } = config;
+			updatedBody = getAwsChunkedEncodingStream(typeof config.requestStreamBufferSize === "number" && config.requestStreamBufferSize >= 8 * 1024 ? createBufferedReadable(requestBody, config.requestStreamBufferSize, context.logger) : requestBody, {
+				base64Encoder,
+				bodyLengthChecker,
+				checksumLocationName,
+				checksumAlgorithmFn,
+				streamHasher
+			});
+			updatedHeaders = {
+				...headers,
+				"content-encoding": headers["content-encoding"] ? `${headers["content-encoding"]},aws-chunked` : "aws-chunked",
+				"transfer-encoding": "chunked",
+				"x-amz-decoded-content-length": headers["content-length"],
+				"x-amz-content-sha256": "STREAMING-UNSIGNED-PAYLOAD-TRAILER",
+				"x-amz-trailer": checksumLocationName
+			};
+			delete updatedHeaders["content-length"];
+		} else if (!hasHeader(checksumLocationName, headers)) {
+			const rawChecksum = await stringHasher(checksumAlgorithmFn, requestBody);
+			updatedHeaders = {
+				...headers,
+				[checksumLocationName]: base64Encoder(rawChecksum)
+			};
+		}
+	}
+	try {
+		return await next({
+			...args,
+			request: {
+				...request,
+				headers: updatedHeaders,
+				body: updatedBody
+			}
+		});
+	} catch (e) {
+		if (e instanceof Error && e.name === "InvalidChunkSizeError") try {
+			if (!e.message.endsWith(".")) e.message += ".";
+			e.message += " Set [requestStreamBufferSize=number e.g. 65_536] in client constructor to instruct AWS SDK to buffer your input stream.";
+		} catch (ignored) {}
+		throw e;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/flexibleChecksumsInputMiddleware.js
+var flexibleChecksumsInputMiddlewareOptions = {
+	name: "flexibleChecksumsInputMiddleware",
+	toMiddleware: "serializerMiddleware",
+	relation: "before",
+	tags: ["BODY_CHECKSUM"],
+	override: true
+};
+var flexibleChecksumsInputMiddleware = (config, middlewareConfig) => (next, context) => async (args) => {
+	const input = args.input;
+	const { requestValidationModeMember } = middlewareConfig;
+	const requestChecksumCalculation = await config.requestChecksumCalculation();
+	const responseChecksumValidation = await config.responseChecksumValidation();
+	switch (requestChecksumCalculation) {
+		case RequestChecksumCalculation.WHEN_REQUIRED:
+			setFeature(context, "FLEXIBLE_CHECKSUMS_REQ_WHEN_REQUIRED", "a");
+			break;
+		case RequestChecksumCalculation.WHEN_SUPPORTED:
+			setFeature(context, "FLEXIBLE_CHECKSUMS_REQ_WHEN_SUPPORTED", "Z");
+			break;
+	}
+	switch (responseChecksumValidation) {
+		case ResponseChecksumValidation.WHEN_REQUIRED:
+			setFeature(context, "FLEXIBLE_CHECKSUMS_RES_WHEN_REQUIRED", "c");
+			break;
+		case ResponseChecksumValidation.WHEN_SUPPORTED:
+			setFeature(context, "FLEXIBLE_CHECKSUMS_RES_WHEN_SUPPORTED", "b");
+			break;
+	}
+	if (requestValidationModeMember && !input[requestValidationModeMember]) {
+		if (responseChecksumValidation === ResponseChecksumValidation.WHEN_SUPPORTED) input[requestValidationModeMember] = "ENABLED";
+	}
+	return next(args);
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/getChecksumAlgorithmListForResponse.js
+var getChecksumAlgorithmListForResponse = (responseAlgorithms = []) => {
+	const validChecksumAlgorithms = [];
+	let i = PRIORITY_ORDER_ALGORITHMS.length;
+	for (const algorithm of responseAlgorithms) {
+		const priority = PRIORITY_ORDER_ALGORITHMS.indexOf(algorithm);
+		if (priority !== -1) validChecksumAlgorithms[priority] = algorithm;
+		else validChecksumAlgorithms[i++] = algorithm;
+	}
+	return validChecksumAlgorithms.filter(Boolean);
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/isChecksumWithPartNumber.js
+var isChecksumWithPartNumber = (checksum) => {
+	const lastHyphenIndex = checksum.lastIndexOf("-");
+	if (lastHyphenIndex !== -1) {
+		const numberPart = checksum.slice(lastHyphenIndex + 1);
+		if (!numberPart.startsWith("0")) {
+			const number = parseInt(numberPart, 10);
+			if (!isNaN(number) && number >= 1 && number <= 1e4) return true;
+		}
+	}
+	return false;
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/getChecksum.js
+var getChecksum = async (body, { checksumAlgorithmFn, base64Encoder }) => base64Encoder(await stringHasher(checksumAlgorithmFn, body));
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/validateChecksumFromResponse.js
+var validateChecksumFromResponse = async (response, { config, responseAlgorithms, logger }) => {
+	const checksumAlgorithms = getChecksumAlgorithmListForResponse(responseAlgorithms);
+	const { body: responseBody, headers: responseHeaders } = response;
+	for (const algorithm of checksumAlgorithms) {
+		const responseHeader = getChecksumLocationName(algorithm);
+		const checksumFromResponse = responseHeaders[responseHeader];
+		if (checksumFromResponse) {
+			let checksumAlgorithmFn;
+			try {
+				checksumAlgorithmFn = selectChecksumAlgorithmFunction(algorithm, config);
+			} catch (error) {
+				if (algorithm === ChecksumAlgorithm.CRC64NVME) {
+					logger?.warn(`Skipping ${ChecksumAlgorithm.CRC64NVME} checksum validation: ${error.message}`);
+					continue;
+				}
+				throw error;
+			}
+			const { base64Encoder } = config;
+			if (isStreaming(responseBody)) {
+				response.body = createChecksumStream({
+					expectedChecksum: checksumFromResponse,
+					checksumSourceLocation: responseHeader,
+					checksum: new checksumAlgorithmFn(),
+					source: responseBody,
+					base64Encoder
+				});
+				return;
+			}
+			const checksum = await getChecksum(responseBody, {
+				checksumAlgorithmFn,
+				base64Encoder
+			});
+			if (checksum === checksumFromResponse) break;
+			throw new Error(`Checksum mismatch: expected "${checksum}" but received "${checksumFromResponse}" in response header "${responseHeader}".`);
+		}
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/flexibleChecksumsResponseMiddleware.js
+var flexibleChecksumsResponseMiddlewareOptions = {
+	name: "flexibleChecksumsResponseMiddleware",
+	toMiddleware: "deserializerMiddleware",
+	relation: "after",
+	tags: ["BODY_CHECKSUM"],
+	override: true
+};
+var flexibleChecksumsResponseMiddleware = (config, middlewareConfig) => (next, context) => async (args) => {
+	if (!HttpRequest.isInstance(args.request)) return next(args);
+	const input = args.input;
+	const result = await next(args);
+	const response = result.response;
+	const { requestValidationModeMember, responseAlgorithms } = middlewareConfig;
+	if (requestValidationModeMember && input[requestValidationModeMember] === "ENABLED") {
+		const { clientName, commandName } = context;
+		const customChecksumAlgorithms = Object.keys(config.checksumAlgorithms ?? {}).filter((algorithm) => {
+			const responseHeader = getChecksumLocationName(algorithm);
+			return response.headers[responseHeader] !== void 0;
+		});
+		const algoList = getChecksumAlgorithmListForResponse([...responseAlgorithms ?? [], ...customChecksumAlgorithms]);
+		if (clientName === "S3Client" && commandName === "GetObjectCommand" && algoList.every((algorithm) => {
+			const responseHeader = getChecksumLocationName(algorithm);
+			const checksumFromResponse = response.headers[responseHeader];
+			return !checksumFromResponse || isChecksumWithPartNumber(checksumFromResponse);
+		})) return result;
+		await validateChecksumFromResponse(response, {
+			config,
+			responseAlgorithms: algoList,
+			logger: context.logger
+		});
+	}
+	return result;
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/getFlexibleChecksumsPlugin.js
+var getFlexibleChecksumsPlugin = (config, middlewareConfig) => ({ applyToStack: (clientStack) => {
+	clientStack.add(flexibleChecksumsMiddleware(config, middlewareConfig), flexibleChecksumsMiddlewareOptions);
+	clientStack.addRelativeTo(flexibleChecksumsInputMiddleware(config, middlewareConfig), flexibleChecksumsInputMiddlewareOptions);
+	clientStack.addRelativeTo(flexibleChecksumsResponseMiddleware(config, middlewareConfig), flexibleChecksumsResponseMiddlewareOptions);
+} });
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/flexible-checksums/resolveFlexibleChecksumsConfig.js
+var resolveFlexibleChecksumsConfig = (input) => {
+	const { requestChecksumCalculation, responseChecksumValidation, requestStreamBufferSize } = input;
+	return Object.assign(input, {
+		requestChecksumCalculation: normalizeProvider(requestChecksumCalculation ?? DEFAULT_REQUEST_CHECKSUM_CALCULATION),
+		responseChecksumValidation: normalizeProvider(responseChecksumValidation ?? DEFAULT_RESPONSE_CHECKSUM_VALIDATION),
+		requestStreamBufferSize: Number(requestStreamBufferSize ?? 0),
+		checksumAlgorithms: input.checksumAlgorithms ?? {}
+	});
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-region-redirect/region-redirect-endpoint-middleware.js
+var regionRedirectEndpointMiddleware = (config) => {
+	return (next, context) => async (args) => {
+		const originalRegion = await config.region();
+		const regionProviderRef = config.region;
+		let unlock = () => {};
+		if (context.__s3RegionRedirect) {
+			Object.defineProperty(config, "region", {
+				writable: false,
+				value: async () => {
+					return context.__s3RegionRedirect;
+				}
+			});
+			unlock = () => Object.defineProperty(config, "region", {
+				writable: true,
+				value: regionProviderRef
+			});
+		}
+		try {
+			const result = await next(args);
+			if (context.__s3RegionRedirect) {
+				unlock();
+				if (originalRegion !== await config.region()) throw new Error("Region was not restored following S3 region redirect.");
+			}
+			return result;
+		} catch (e) {
+			unlock();
+			throw e;
+		}
+	};
+};
+var regionRedirectEndpointMiddlewareOptions = {
+	tags: ["REGION_REDIRECT", "S3"],
+	name: "regionRedirectEndpointMiddleware",
+	override: true,
+	relation: "before",
+	toMiddleware: "endpointV2Middleware"
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-region-redirect/region-redirect-middleware.js
+function regionRedirectMiddleware(clientConfig) {
+	return (next, context) => async (args) => {
+		try {
+			return await next(args);
+		} catch (err) {
+			if (clientConfig.followRegionRedirects) {
+				const statusCode = err?.$metadata?.httpStatusCode;
+				const isHeadBucket = context.commandName === "HeadBucketCommand";
+				const bucketRegionHeader = err?.$response?.headers?.["x-amz-bucket-region"];
+				if (bucketRegionHeader) {
+					if (statusCode === 301 || statusCode === 400 && (err?.name === "IllegalLocationConstraintException" || isHeadBucket)) {
+						try {
+							const actualRegion = bucketRegionHeader;
+							context.logger?.debug(`Redirecting from ${await clientConfig.region()} to ${actualRegion}`);
+							context.__s3RegionRedirect = actualRegion;
+						} catch (e) {
+							throw new Error("Region redirect failed: " + e);
+						}
+						return next(args);
+					}
+				}
+			}
+			throw err;
+		}
+	};
+}
+var regionRedirectMiddlewareOptions = {
+	step: "initialize",
+	tags: ["REGION_REDIRECT", "S3"],
+	name: "regionRedirectMiddleware",
+	override: true
+};
+var getRegionRedirectMiddlewarePlugin = (clientConfig) => ({ applyToStack: (clientStack) => {
+	clientStack.add(regionRedirectMiddleware(clientConfig), regionRedirectMiddlewareOptions);
+	clientStack.addRelativeTo(regionRedirectEndpointMiddleware(clientConfig), regionRedirectEndpointMiddlewareOptions);
+} });
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-s3-express/classes/S3ExpressIdentityCache.js
+var S3ExpressIdentityCache = class S3ExpressIdentityCache {
+	data;
+	lastPurgeTime = Date.now();
+	static EXPIRED_CREDENTIAL_PURGE_INTERVAL_MS = 3e4;
+	constructor(data = {}) {
+		this.data = data;
+	}
+	get(key) {
+		const entry = this.data[key];
+		if (!entry) return;
+		return entry;
+	}
+	set(key, entry) {
+		this.data[key] = entry;
+		return entry;
+	}
+	delete(key) {
+		delete this.data[key];
+	}
+	async purgeExpired() {
+		const now = Date.now();
+		if (this.lastPurgeTime + S3ExpressIdentityCache.EXPIRED_CREDENTIAL_PURGE_INTERVAL_MS > now) return;
+		for (const key in this.data) {
+			const entry = this.data[key];
+			if (!entry.isRefreshing) {
+				const credential = await entry.identity;
+				if (credential.expiration) {
+					if (credential.expiration.getTime() < now) delete this.data[key];
+				}
+			}
+		}
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-s3-express/classes/S3ExpressIdentityCacheEntry.js
+var S3ExpressIdentityCacheEntry = class {
+	_identity;
+	isRefreshing;
+	accessed;
+	constructor(_identity, isRefreshing = false, accessed = Date.now()) {
+		this._identity = _identity;
+		this.isRefreshing = isRefreshing;
+		this.accessed = accessed;
+	}
+	get identity() {
+		this.accessed = Date.now();
+		return this._identity;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-s3-express/classes/S3ExpressIdentityProviderImpl.js
+var S3ExpressIdentityProviderImpl = class S3ExpressIdentityProviderImpl {
+	createSessionFn;
+	cache;
+	static REFRESH_WINDOW_MS = 6e4;
+	constructor(createSessionFn, cache = new S3ExpressIdentityCache()) {
+		this.createSessionFn = createSessionFn;
+		this.cache = cache;
+	}
+	async getS3ExpressIdentity(awsIdentity, identityProperties) {
+		const key = identityProperties.Bucket;
+		const { cache } = this;
+		const entry = cache.get(key);
+		if (entry) return entry.identity.then((identity) => {
+			if ((identity.expiration?.getTime() ?? 0) < Date.now()) return cache.set(key, new S3ExpressIdentityCacheEntry(this.getIdentity(key))).identity;
+			if ((identity.expiration?.getTime() ?? 0) < Date.now() + S3ExpressIdentityProviderImpl.REFRESH_WINDOW_MS && !entry.isRefreshing) {
+				entry.isRefreshing = true;
+				this.getIdentity(key).then((id) => {
+					cache.set(key, new S3ExpressIdentityCacheEntry(Promise.resolve(id)));
+				});
+			}
+			return identity;
+		});
+		return cache.set(key, new S3ExpressIdentityCacheEntry(this.getIdentity(key))).identity;
+	}
+	async getIdentity(key) {
+		await this.cache.purgeExpired().catch((error) => {
+			console.warn("Error while clearing expired entries in S3ExpressIdentityCache: \n" + error);
+		});
+		const session = await this.createSessionFn(key);
+		if (!session.Credentials?.AccessKeyId || !session.Credentials?.SecretAccessKey) throw new Error("s3#createSession response credential missing AccessKeyId or SecretAccessKey.");
+		return {
+			accessKeyId: session.Credentials.AccessKeyId,
+			secretAccessKey: session.Credentials.SecretAccessKey,
+			sessionToken: session.Credentials.SessionToken,
+			expiration: session.Credentials.Expiration ? new Date(session.Credentials.Expiration) : void 0
+		};
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-s3-configuration/s3Configuration.js
+var resolveS3Config = (input, { session }) => {
+	const [s3ClientProvider, CreateSessionCommandCtor] = session;
+	const { forcePathStyle, useAccelerateEndpoint, disableMultiregionAccessPoints, followRegionRedirects, s3ExpressIdentityProvider, bucketEndpoint, expectContinueHeader } = input;
+	return Object.assign(input, {
+		forcePathStyle: forcePathStyle ?? false,
+		useAccelerateEndpoint: useAccelerateEndpoint ?? false,
+		disableMultiregionAccessPoints: disableMultiregionAccessPoints ?? false,
+		followRegionRedirects: followRegionRedirects ?? false,
+		s3ExpressIdentityProvider: s3ExpressIdentityProvider ?? new S3ExpressIdentityProviderImpl(async (key) => s3ClientProvider().send(new CreateSessionCommandCtor({ Bucket: key }))),
+		bucketEndpoint: bucketEndpoint ?? false,
+		expectContinueHeader: expectContinueHeader ?? 2097152
+	});
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-s3-expires/s3-expires-middleware.js
+var s3ExpiresMiddleware = (config) => {
+	return (next, context) => async (args) => {
+		const result = await next(args);
+		const { response } = result;
+		if (HttpResponse.isInstance(response)) {
+			if (response.headers.expires) {
+				response.headers.expiresstring = response.headers.expires;
+				try {
+					parseRfc7231DateTime(response.headers.expires);
+				} catch (e) {
+					context.logger?.warn(`AWS SDK Warning for ${context.clientName}::${context.commandName} response parsing (${response.headers.expires}): ${e}`);
+					delete response.headers.expires;
+				}
+			}
+		}
+		return result;
+	};
+};
+var s3ExpiresMiddlewareOptions = {
+	tags: ["S3"],
+	name: "s3ExpiresMiddleware",
+	override: true,
+	relation: "after",
+	toMiddleware: "deserializerMiddleware"
+};
+var getS3ExpiresMiddlewarePlugin = (clientConfig) => ({ applyToStack: (clientStack) => {
+	clientStack.addRelativeTo(s3ExpiresMiddleware(clientConfig), s3ExpiresMiddlewareOptions);
+} });
+var S3_EXPRESS_AUTH_SCHEME = "sigv4-s3express";
+var SESSION_TOKEN_HEADER = "X-Amz-S3session-Token".toLowerCase();
+var NODE_DISABLE_S3_EXPRESS_SESSION_AUTH_ENV_NAME = "AWS_S3_DISABLE_EXPRESS_SESSION_AUTH";
+var NODE_DISABLE_S3_EXPRESS_SESSION_AUTH_INI_NAME = "s3_disable_express_session_auth";
+var NODE_DISABLE_S3_EXPRESS_SESSION_AUTH_OPTIONS = {
+	environmentVariableSelector: (env) => booleanSelector(env, NODE_DISABLE_S3_EXPRESS_SESSION_AUTH_ENV_NAME, SelectorType$1.ENV),
+	configFileSelector: (profile) => booleanSelector(profile, NODE_DISABLE_S3_EXPRESS_SESSION_AUTH_INI_NAME, SelectorType$1.CONFIG),
+	default: false
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-s3-express/functions/s3ExpressMiddleware.js
+var s3ExpressMiddleware = (options) => {
+	return (next, context) => async (args) => {
+		if (context.endpointV2) {
+			const endpoint = context.endpointV2;
+			const isS3ExpressAuth = endpoint.properties?.authSchemes?.[0]?.name === S3_EXPRESS_AUTH_SCHEME;
+			if (endpoint.properties?.backend === "S3Express" || endpoint.properties?.bucketType === "Directory") {
+				setFeature(context, "S3_EXPRESS_BUCKET", "J");
+				context.isS3ExpressBucket = true;
+			}
+			if (isS3ExpressAuth) {
+				const requestBucket = args.input.Bucket;
+				if (requestBucket) {
+					const s3ExpressIdentity = await options.s3ExpressIdentityProvider.getS3ExpressIdentity(await options.credentials(), { Bucket: requestBucket });
+					context.s3ExpressIdentity = s3ExpressIdentity;
+					if (HttpRequest.isInstance(args.request) && s3ExpressIdentity.sessionToken) args.request.headers[SESSION_TOKEN_HEADER] = s3ExpressIdentity.sessionToken;
+				}
+			}
+		}
+		return next(args);
+	};
+};
+var s3ExpressMiddlewareOptions = {
+	name: "s3ExpressMiddleware",
+	step: "build",
+	tags: ["S3", "S3_EXPRESS"],
+	override: true
+};
+var getS3ExpressPlugin = (options) => ({ applyToStack: (clientStack) => {
+	clientStack.add(s3ExpressMiddleware(options), s3ExpressMiddlewareOptions);
+} });
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-s3-express/functions/signS3Express.js
+var signS3Express = async (s3ExpressIdentity, signingOptions, request, sigV4MultiRegionSigner) => {
+	const signedRequest = await sigV4MultiRegionSigner.signWithCredentials(request, s3ExpressIdentity, {});
+	if (signedRequest.headers["X-Amz-Security-Token"] || signedRequest.headers["x-amz-security-token"]) throw new Error("X-Amz-Security-Token must not be set for s3-express requests.");
+	return signedRequest;
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-s3-express/functions/s3ExpressHttpSigningMiddleware.js
+var defaultErrorHandler = (signingProperties) => (error) => {
+	throw error;
+};
+var defaultSuccessHandler = (httpResponse, signingProperties) => {};
+var s3ExpressHttpSigningMiddleware = (config) => (next, context) => async (args) => {
+	if (!HttpRequest.isInstance(args.request)) return next(args);
+	const scheme = getSmithyContext(context).selectedHttpAuthScheme;
+	if (!scheme) throw new Error(`No HttpAuthScheme was selected: unable to sign request`);
+	const { httpAuthOption: { signingProperties = {} }, identity, signer } = scheme;
+	let request;
+	if (context.s3ExpressIdentity) request = await signS3Express(context.s3ExpressIdentity, signingProperties, args.request, await config.signer());
+	else request = await signer.sign(args.request, identity, signingProperties);
+	const output = await next({
+		...args,
+		request
+	}).catch((signer.errorHandler || defaultErrorHandler)(signingProperties));
+	(signer.successHandler || defaultSuccessHandler)(output.response, signingProperties);
+	return output;
+};
+var getS3ExpressHttpSigningPlugin = (config) => ({ applyToStack: (clientStack) => {
+	clientStack.addRelativeTo(s3ExpressHttpSigningMiddleware(config), httpSigningMiddlewareOptions);
+} });
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/to-stream/toStream.js
+function toStream(bytes) {
+	return Readable.from(Buffer.from(bytes));
+}
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-throw-200-exceptions/throw-200-exceptions.js
+var THROW_IF_EMPTY_BODY = {
+	CopyObjectCommand: true,
+	UploadPartCopyCommand: true,
+	CompleteMultipartUploadCommand: true
+};
+var throw200ExceptionsMiddleware = (config) => (next, context) => async (args) => {
+	const result = await next(args);
+	const { response } = result;
+	if (!HttpResponse.isInstance(response)) return result;
+	const { statusCode, body } = response;
+	if (statusCode < 200 || statusCode >= 300) return result;
+	const bodyBytes = await collectBody(body, config);
+	response.body = toStream(bodyBytes);
+	if (bodyBytes.length === 0 && THROW_IF_EMPTY_BODY[context.commandName]) {
+		const err = /* @__PURE__ */ new Error("S3 aborted request");
+		err.$metadata = { httpStatusCode: 503 };
+		err.name = "InternalError";
+		throw err;
+	}
+	const bodyStringTail = config.utf8Encoder(bodyBytes.subarray(bodyBytes.length - 16));
+	if (bodyStringTail && bodyStringTail.endsWith("</Error>")) response.statusCode = 503;
+	return result;
+};
+var collectBody = (streamBody = /* @__PURE__ */ new Uint8Array(), context) => {
+	if (streamBody instanceof Uint8Array) return Promise.resolve(streamBody);
+	return context.streamCollector(streamBody) || Promise.resolve(/* @__PURE__ */ new Uint8Array());
+};
+var throw200ExceptionsMiddlewareOptions = {
+	relation: "after",
+	toMiddleware: "deserializerMiddleware",
+	tags: ["THROW_200_EXCEPTIONS", "S3"],
+	name: "throw200ExceptionsMiddleware",
+	override: true
+};
+var getThrow200ExceptionsPlugin = (config) => ({ applyToStack: (clientStack) => {
+	clientStack.addRelativeTo(throw200ExceptionsMiddleware(config), throw200ExceptionsMiddlewareOptions);
+} });
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+core@3.975.3/node_modules/@aws-sdk/core/dist-es/submodules/util/util-arn-parser/arn.js
+var validate = (str) => typeof str === "string" && str.indexOf("arn:") === 0 && str.split(":").length >= 6;
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-region-redirect/bucket-endpoint-middleware.js
+function bucketEndpointMiddleware(options) {
+	return (next, context) => async (args) => {
+		if (options.bucketEndpoint) {
+			const endpoint = context.endpointV2;
+			if (endpoint) {
+				const bucket = args.input.Bucket;
+				if (typeof bucket === "string") try {
+					const bucketEndpointUrl = new URL(bucket);
+					context.endpointV2 = {
+						...endpoint,
+						url: bucketEndpointUrl
+					};
+				} catch (e) {
+					const warning = `@aws-sdk/middleware-sdk-s3: bucketEndpoint=true was set but Bucket=${bucket} could not be parsed as URL.`;
+					if (context.logger?.constructor?.name === "NoOpLogger") console.warn(warning);
+					else context.logger?.warn?.(warning);
+					throw e;
+				}
+			}
+		}
+		return next(args);
+	};
+}
+var bucketEndpointMiddlewareOptions = {
+	name: "bucketEndpointMiddleware",
+	override: true,
+	relation: "after",
+	toMiddleware: "endpointV2Middleware"
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-validate-bucket-name/validate-bucket-name.js
+function validateBucketNameMiddleware({ bucketEndpoint }) {
+	return (next) => async (args) => {
+		const { input: { Bucket } } = args;
+		if (!bucketEndpoint && typeof Bucket === "string" && !validate(Bucket) && Bucket.indexOf("/") >= 0) {
+			const err = /* @__PURE__ */ new Error(`Bucket name shouldn't contain '/', received '${Bucket}'`);
+			err.name = "InvalidBucketName";
+			throw err;
+		}
+		return next({ ...args });
+	};
+}
+var validateBucketNameMiddlewareOptions = {
+	step: "initialize",
+	tags: ["VALIDATE_BUCKET_NAME"],
+	name: "validateBucketNameMiddleware",
+	override: true
+};
+var getValidateBucketNamePlugin = (options) => ({ applyToStack: (clientStack) => {
+	clientStack.add(validateBucketNameMiddleware(options), validateBucketNameMiddlewareOptions);
+	clientStack.addRelativeTo(bucketEndpointMiddleware(options), bucketEndpointMiddlewareOptions);
+} });
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+xml-builder@3.972.36/node_modules/@aws-sdk/xml-builder/dist-es/escape-attribute.js
+var ATTR_ESCAPE_RE = /[&<>"]/g;
+var ATTR_ESCAPE_MAP = {
+	"&": "&amp;",
+	"<": "&lt;",
+	">": "&gt;",
+	"\"": "&quot;"
+};
+function escapeAttribute(value) {
+	return value.replace(ATTR_ESCAPE_RE, (ch) => ATTR_ESCAPE_MAP[ch]);
+}
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+xml-builder@3.972.36/node_modules/@aws-sdk/xml-builder/dist-es/escape-element.js
+var ELEMENT_ESCAPE_RE = /[&"'<>\r\n\u0085\u2028]/g;
+var ELEMENT_ESCAPE_MAP = {
+	"&": "&amp;",
+	"\"": "&quot;",
+	"'": "&apos;",
+	"<": "&lt;",
+	">": "&gt;",
+	"\r": "&#x0D;",
+	"\n": "&#x0A;",
+	"": "&#x85;",
+	"\u2028": "&#x2028;"
+};
+function escapeElement(value) {
+	return value.replace(ELEMENT_ESCAPE_RE, (ch) => ELEMENT_ESCAPE_MAP[ch]);
+}
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+xml-builder@3.972.36/node_modules/@aws-sdk/xml-builder/dist-es/XmlText.js
+var XmlText = class {
+	value;
+	constructor(value) {
+		this.value = value;
+	}
+	toString() {
+		return escapeElement("" + this.value);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+xml-builder@3.972.36/node_modules/@aws-sdk/xml-builder/dist-es/XmlNode.js
+var XmlNode = class XmlNode {
+	name;
+	children;
+	attributes = {};
+	static of(name, childText, withName) {
+		const node = new XmlNode(name);
+		if (childText !== void 0) node.addChildNode(new XmlText(childText));
+		if (withName !== void 0) node.withName(withName);
+		return node;
+	}
+	constructor(name, children = []) {
+		this.name = name;
+		this.children = children;
+	}
+	withName(name) {
+		this.name = name;
+		return this;
+	}
+	addAttribute(name, value) {
+		this.attributes[name] = value;
+		return this;
+	}
+	addChildNode(child) {
+		this.children.push(child);
+		return this;
+	}
+	removeAttribute(name) {
+		delete this.attributes[name];
+		return this;
+	}
+	n(name) {
+		this.name = name;
+		return this;
+	}
+	c(child) {
+		this.children.push(child);
+		return this;
+	}
+	a(name, value) {
+		if (value != null) this.attributes[name] = value;
+		return this;
+	}
+	cc(input, field, withName = field) {
+		if (input[field] != null) {
+			const node = XmlNode.of(field, input[field]).withName(withName);
+			this.c(node);
+		}
+	}
+	l(input, listName, memberName, valueProvider) {
+		if (input[listName] != null) valueProvider().map((node) => {
+			node.withName(memberName);
+			this.c(node);
+		});
+	}
+	lc(input, listName, memberName, valueProvider) {
+		if (input[listName] != null) {
+			const nodes = valueProvider();
+			const containerNode = new XmlNode(memberName);
+			nodes.map((node) => {
+				containerNode.c(node);
+			});
+			this.c(containerNode);
+		}
+	}
+	toString() {
+		const hasChildren = Boolean(this.children.length);
+		let xmlText = `<${this.name}`;
+		const attributes = this.attributes;
+		for (const attributeName of Object.keys(attributes)) {
+			const attribute = attributes[attributeName];
+			if (attribute != null) xmlText += ` ${attributeName}="${escapeAttribute("" + attribute)}"`;
+		}
+		return xmlText += !hasChildren ? "/>" : `>${this.children.map((c) => c.toString()).join("")}</${this.name}>`;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+core@3.975.3/node_modules/@aws-sdk/core/dist-es/submodules/protocols/xml/parseXmlBody.js
+var loadRestXmlErrorCode = (output, data) => {
+	if (data?.Error?.Code !== void 0) return data.Error.Code;
+	if (data?.Code !== void 0) return data.Code;
+	if (output.statusCode == 404) return "NotFound";
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+core@3.975.3/node_modules/@aws-sdk/core/dist-es/submodules/protocols/xml/XmlShapeSerializer.js
+var XmlShapeSerializer = class extends SerdeContextConfig {
+	settings;
+	stringBuffer;
+	byteBuffer;
+	buffer;
+	constructor(settings) {
+		super();
+		this.settings = settings;
+	}
+	write(schema, value) {
+		const ns = NormalizedSchema.of(schema);
+		if (ns.isStringSchema() && typeof value === "string") this.stringBuffer = value;
+		else if (ns.isBlobSchema()) this.byteBuffer = "byteLength" in value ? value : (this.serdeContext?.base64Decoder ?? fromBase64)(value);
+		else {
+			this.buffer = this.writeStruct(ns, value, void 0);
+			const traits = ns.getMergedTraits();
+			if (traits.httpPayload && !traits.xmlName) this.buffer.withName(ns.getName());
+		}
+	}
+	flush() {
+		if (this.byteBuffer !== void 0) {
+			const bytes = this.byteBuffer;
+			delete this.byteBuffer;
+			return bytes;
+		}
+		if (this.stringBuffer !== void 0) {
+			const str = this.stringBuffer;
+			delete this.stringBuffer;
+			return str;
+		}
+		const buffer = this.buffer;
+		if (this.settings.xmlNamespace) {
+			if (!buffer?.attributes?.["xmlns"]) buffer.addAttribute("xmlns", this.settings.xmlNamespace);
+		}
+		delete this.buffer;
+		return buffer.toString();
+	}
+	writeStruct(ns, value, parentXmlns) {
+		const traits = ns.getMergedTraits();
+		const name = ns.isMemberSchema() && !traits.httpPayload ? ns.getMemberTraits().xmlName ?? ns.getMemberName() : traits.xmlName ?? ns.getName();
+		if (!name || !ns.isStructSchema()) throw new Error(`@aws-sdk/core/protocols - xml serializer, cannot write struct with empty name or non-struct, schema=${ns.getName(true)}.`);
+		const structXmlNode = XmlNode.of(name);
+		const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(ns, parentXmlns);
+		for (const [memberName, memberSchema] of ns.structIterator()) {
+			const val = value[memberName];
+			if (val != null || memberSchema.isIdempotencyToken()) {
+				if (memberSchema.getMergedTraits().xmlAttribute) {
+					structXmlNode.addAttribute(memberSchema.getMergedTraits().xmlName ?? memberName, this.writeSimple(memberSchema, val));
+					continue;
+				}
+				if (memberSchema.isListSchema()) this.writeList(memberSchema, val, structXmlNode, xmlns);
+				else if (memberSchema.isMapSchema()) this.writeMap(memberSchema, val, structXmlNode, xmlns);
+				else if (memberSchema.isStructSchema()) structXmlNode.addChildNode(this.writeStruct(memberSchema, val, xmlns));
+				else {
+					const memberNode = XmlNode.of(memberSchema.getMergedTraits().xmlName ?? memberSchema.getMemberName());
+					this.writeSimpleInto(memberSchema, val, memberNode, xmlns);
+					structXmlNode.addChildNode(memberNode);
+				}
+			}
+		}
+		const { $unknown } = value;
+		if ($unknown && ns.isUnionSchema() && Array.isArray($unknown) && Object.keys(value).length === 1) {
+			const [k, v] = $unknown;
+			const node = XmlNode.of(k);
+			if (typeof v !== "string") if (value instanceof XmlNode || value instanceof XmlText) structXmlNode.addChildNode(value);
+			else throw new Error("@aws-sdk - $unknown union member in XML requires value of type string, @aws-sdk/xml-builder::XmlNode or XmlText.");
+			this.writeSimpleInto(0, v, node, xmlns);
+			structXmlNode.addChildNode(node);
+		}
+		if (xmlns) structXmlNode.addAttribute(xmlnsAttr, xmlns);
+		return structXmlNode;
+	}
+	writeList(listMember, array, container, parentXmlns) {
+		if (!listMember.isMemberSchema()) throw new Error(`@aws-sdk/core/protocols - xml serializer, cannot write non-member list: ${listMember.getName(true)}`);
+		const listTraits = listMember.getMergedTraits();
+		const listValueSchema = listMember.getValueSchema();
+		const listValueTraits = listValueSchema.getMergedTraits();
+		const sparse = !!listValueTraits.sparse;
+		const flat = !!listTraits.xmlFlattened;
+		const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(listMember, parentXmlns);
+		const writeItem = (container, value) => {
+			if (listValueSchema.isListSchema()) this.writeList(listValueSchema, Array.isArray(value) ? value : [value], container, xmlns);
+			else if (listValueSchema.isMapSchema()) this.writeMap(listValueSchema, value, container, xmlns);
+			else if (listValueSchema.isStructSchema()) {
+				const struct = this.writeStruct(listValueSchema, value, xmlns);
+				container.addChildNode(struct.withName(flat ? listTraits.xmlName ?? listMember.getMemberName() : listValueTraits.xmlName ?? "member"));
+			} else {
+				const listItemNode = XmlNode.of(flat ? listTraits.xmlName ?? listMember.getMemberName() : listValueTraits.xmlName ?? "member");
+				this.writeSimpleInto(listValueSchema, value, listItemNode, xmlns);
+				container.addChildNode(listItemNode);
+			}
+		};
+		if (flat) {
+			for (const value of array) if (sparse || value != null) writeItem(container, value);
+		} else {
+			const listNode = XmlNode.of(listTraits.xmlName ?? listMember.getMemberName());
+			if (xmlns) listNode.addAttribute(xmlnsAttr, xmlns);
+			for (const value of array) if (sparse || value != null) writeItem(listNode, value);
+			container.addChildNode(listNode);
+		}
+	}
+	writeMap(mapMember, map, container, parentXmlns, containerIsMap = false) {
+		if (!mapMember.isMemberSchema()) throw new Error(`@aws-sdk/core/protocols - xml serializer, cannot write non-member map: ${mapMember.getName(true)}`);
+		const mapTraits = mapMember.getMergedTraits();
+		const mapKeySchema = mapMember.getKeySchema();
+		const keyTag = mapKeySchema.getMergedTraits().xmlName ?? "key";
+		const mapValueSchema = mapMember.getValueSchema();
+		const mapValueTraits = mapValueSchema.getMergedTraits();
+		const valueTag = mapValueTraits.xmlName ?? "value";
+		const sparse = !!mapValueTraits.sparse;
+		const flat = !!mapTraits.xmlFlattened;
+		const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(mapMember, parentXmlns);
+		const addKeyValue = (entry, key, val) => {
+			const keyNode = XmlNode.of(keyTag, key);
+			const [keyXmlnsAttr, keyXmlns] = this.getXmlnsAttribute(mapKeySchema, xmlns);
+			if (keyXmlns) keyNode.addAttribute(keyXmlnsAttr, keyXmlns);
+			entry.addChildNode(keyNode);
+			let valueNode = XmlNode.of(valueTag);
+			if (mapValueSchema.isListSchema()) this.writeList(mapValueSchema, val, valueNode, xmlns);
+			else if (mapValueSchema.isMapSchema()) this.writeMap(mapValueSchema, val, valueNode, xmlns, true);
+			else if (mapValueSchema.isStructSchema()) valueNode = this.writeStruct(mapValueSchema, val, xmlns);
+			else this.writeSimpleInto(mapValueSchema, val, valueNode, xmlns);
+			entry.addChildNode(valueNode);
+		};
+		if (flat) for (const key in map) {
+			const val = map[key];
+			if (sparse || val != null) {
+				const entry = XmlNode.of(mapTraits.xmlName ?? mapMember.getMemberName());
+				addKeyValue(entry, key, val);
+				container.addChildNode(entry);
+			}
+		}
+		else {
+			let mapNode;
+			if (!containerIsMap) {
+				mapNode = XmlNode.of(mapTraits.xmlName ?? mapMember.getMemberName());
+				if (xmlns) mapNode.addAttribute(xmlnsAttr, xmlns);
+				container.addChildNode(mapNode);
+			}
+			for (const key in map) {
+				const val = map[key];
+				if (sparse || val != null) {
+					const entry = XmlNode.of("entry");
+					addKeyValue(entry, key, val);
+					(containerIsMap ? container : mapNode).addChildNode(entry);
+				}
+			}
+		}
+	}
+	writeSimple(_schema, value) {
+		if (null === value) throw new Error("@aws-sdk/core/protocols - (XML serializer) cannot write null value.");
+		const ns = NormalizedSchema.of(_schema);
+		let nodeContents = null;
+		if (value && typeof value === "object") if (ns.isBlobSchema()) nodeContents = (this.serdeContext?.base64Encoder ?? toBase64)(value);
+		else if (ns.isTimestampSchema() && value instanceof Date) switch (determineTimestampFormat(ns, this.settings)) {
+			case 5:
+				nodeContents = value.toISOString().replace(".000Z", "Z");
+				break;
+			case 6:
+				nodeContents = dateToUtcString(value);
+				break;
+			case 7:
+				nodeContents = String(value.getTime() / 1e3);
+				break;
+			default:
+				console.warn("Missing timestamp format, using http date", value);
+				nodeContents = dateToUtcString(value);
+				break;
+		}
+		else if (ns.isBigDecimalSchema() && value) {
+			if (value instanceof NumericValue) return value.string;
+			return String(value);
+		} else if (ns.isMapSchema() || ns.isListSchema()) throw new Error("@aws-sdk/core/protocols - xml serializer, cannot call _write() on List/Map schema, call writeList or writeMap() instead.");
+		else throw new Error(`@aws-sdk/core/protocols - xml serializer, unhandled schema type for object value and schema: ${ns.getName(true)}`);
+		if (ns.isBooleanSchema() || ns.isNumericSchema() || ns.isBigIntegerSchema() || ns.isBigDecimalSchema()) nodeContents = String(value);
+		if (ns.isStringSchema()) if (value === void 0 && ns.isIdempotencyToken()) nodeContents = generateIdempotencyToken();
+		else nodeContents = String(value);
+		if (nodeContents === null) throw new Error(`Unhandled schema-value pair ${ns.getName(true)}=${value}`);
+		return nodeContents;
+	}
+	writeSimpleInto(_schema, value, into, parentXmlns) {
+		const nodeContents = this.writeSimple(_schema, value);
+		const ns = NormalizedSchema.of(_schema);
+		const content = new XmlText(nodeContents);
+		const [xmlnsAttr, xmlns] = this.getXmlnsAttribute(ns, parentXmlns);
+		if (xmlns) into.addAttribute(xmlnsAttr, xmlns);
+		into.addChildNode(content);
+	}
+	getXmlnsAttribute(ns, parentXmlns) {
+		const [prefix, xmlns] = ns.getMergedTraits().xmlNamespace ?? [];
+		if (xmlns && xmlns !== parentXmlns) return [prefix ? `xmlns:${prefix}` : "xmlns", xmlns];
+		return [void 0, void 0];
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+core@3.975.3/node_modules/@aws-sdk/core/dist-es/submodules/protocols/xml/XmlCodec.js
+var XmlCodec = class extends SerdeContextConfig {
+	settings;
+	constructor(settings) {
+		super();
+		this.settings = settings;
+	}
+	createSerializer() {
+		const serializer = new XmlShapeSerializer(this.settings);
+		serializer.setSerdeContext(this.serdeContext);
+		return serializer;
+	}
+	createDeserializer() {
+		const deserializer = new XmlShapeDeserializer(this.settings);
+		deserializer.setSerdeContext(this.serdeContext);
+		return deserializer;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+core@3.975.3/node_modules/@aws-sdk/core/dist-es/submodules/protocols/xml/AwsRestXmlProtocol.js
+var AwsRestXmlProtocol = class extends HttpBindingProtocol {
+	codec;
+	serializer;
+	deserializer;
+	mixin = new ProtocolLib();
+	constructor(options) {
+		super(options);
+		const settings = {
+			timestampFormat: {
+				useTrait: true,
+				default: 5
+			},
+			httpBindings: true,
+			xmlNamespace: options.xmlNamespace,
+			serviceNamespace: options.defaultNamespace
+		};
+		this.codec = new XmlCodec(settings);
+		this.serializer = new HttpInterceptingShapeSerializer(this.codec.createSerializer(), settings);
+		this.deserializer = new HttpInterceptingShapeDeserializer(this.codec.createDeserializer(), settings);
+	}
+	getPayloadCodec() {
+		return this.codec;
+	}
+	getShapeId() {
+		return "aws.protocols#restXml";
+	}
+	async serializeRequest(operationSchema, input, context) {
+		const request = await super.serializeRequest(operationSchema, input, context);
+		const inputSchema = NormalizedSchema.of(operationSchema.input);
+		if (!request.headers["content-type"]) {
+			const contentType = this.mixin.resolveRestContentType(this.getDefaultContentType(), inputSchema);
+			if (contentType) request.headers["content-type"] = contentType;
+		}
+		if (typeof request.body === "string" && request.headers["content-type"] === this.getDefaultContentType() && !request.body.startsWith("<?xml ") && !this.hasUnstructuredPayloadBinding(inputSchema)) request.body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + request.body;
+		return request;
+	}
+	async deserializeResponse(operationSchema, context, response) {
+		return super.deserializeResponse(operationSchema, context, response);
+	}
+	async handleError(operationSchema, context, response, dataObject, metadata) {
+		const errorIdentifier = loadRestXmlErrorCode(response, dataObject) ?? "Unknown";
+		this.mixin.compose(this.compositeErrorRegistry, errorIdentifier, this.options.defaultNamespace);
+		if (dataObject.Error && typeof dataObject.Error === "object") for (const key of Object.keys(dataObject.Error)) {
+			dataObject[key] = dataObject.Error[key];
+			if (key.toLowerCase() === "message") dataObject.message = dataObject.Error[key];
+		}
+		if (dataObject.RequestId && !metadata.requestId) metadata.requestId = dataObject.RequestId;
+		const { errorSchema, errorMetadata } = await this.mixin.getErrorSchemaOrThrowBaseException(errorIdentifier, this.options.defaultNamespace, response, dataObject, metadata);
+		const ns = NormalizedSchema.of(errorSchema);
+		const message = dataObject.Error?.message ?? dataObject.Error?.Message ?? dataObject.message ?? dataObject.Message ?? "UnknownError";
+		const exception = new ((this.compositeErrorRegistry.getErrorCtor(errorSchema)) ?? Error)({});
+		await this.deserializeHttpMessage(errorSchema, context, response, dataObject);
+		const output = {};
+		const errorDeserializer = this.codec.createDeserializer();
+		for (const [name, member] of ns.structIterator()) {
+			const target = member.getMergedTraits().xmlName ?? name;
+			const value = dataObject.Error?.[target] ?? dataObject[target];
+			output[name] = errorDeserializer.readSchema(member, value);
+		}
+		throw this.mixin.decorateServiceException(Object.assign(exception, errorMetadata, {
+			$fault: ns.getMergedTraits().error,
+			message
+		}, output), dataObject);
+	}
+	getDefaultContentType() {
+		return "application/xml";
+	}
+	hasUnstructuredPayloadBinding(ns) {
+		for (const [, member] of ns.structIterator()) if (member.getMergedTraits().httpPayload) return !(member.isStructSchema() || member.isMapSchema() || member.isListSchema());
+		return false;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/protocol/S3RestXmlProtocol.js
+var S3RestXmlProtocol = class extends AwsRestXmlProtocol {
+	async serializeRequest(operationSchema, input, context) {
+		const request = await super.serializeRequest(operationSchema, input, context);
+		const ns = NormalizedSchema.of(operationSchema.input);
+		const staticStructureSchema = ns.getSchema();
+		let bucketMemberIndex = 0;
+		const requiredMemberCount = staticStructureSchema[6] ?? 0;
+		if (input && typeof input === "object") for (const [memberName, memberNs] of ns.structIterator()) {
+			if (++bucketMemberIndex > requiredMemberCount) break;
+			if (memberName === "Bucket") {
+				if (!input.Bucket && memberNs.getMergedTraits().httpLabel) throw new Error(`No value provided for input HTTP label: Bucket.`);
+				break;
+			}
+		}
+		return request;
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/NodeUseArnRegionConfigOptions.js
+var NODE_USE_ARN_REGION_ENV_NAME = "AWS_S3_USE_ARN_REGION";
+var NODE_USE_ARN_REGION_INI_NAME = "s3_use_arn_region";
+var NODE_USE_ARN_REGION_CONFIG_OPTIONS = {
+	environmentVariableSelector: (env) => booleanSelector(env, NODE_USE_ARN_REGION_ENV_NAME, SelectorType$1.ENV),
+	configFileSelector: (profile) => booleanSelector(profile, NODE_USE_ARN_REGION_INI_NAME, SelectorType$1.CONFIG),
+	default: void 0
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-expect-continue/middleware-expect-continue.js
+function addExpectContinueMiddleware(options) {
+	return (next) => async (args) => {
+		const { request } = args;
+		if (options.expectContinueHeader !== false && HttpRequest.isInstance(request) && request.body && options.runtime === "node" && options.requestHandler?.constructor?.name !== "FetchHttpHandler") {
+			let sendHeader = true;
+			if (typeof options.expectContinueHeader === "number") try {
+				sendHeader = (Number(request.headers?.["content-length"]) ?? options.bodyLengthChecker?.(request.body) ?? Infinity) >= options.expectContinueHeader;
+			} catch (e) {}
+			else sendHeader = !!options.expectContinueHeader;
+			if (sendHeader) request.headers.Expect = "100-continue";
+		}
+		return next({
+			...args,
+			request
+		});
+	};
+}
+var addExpectContinueMiddlewareOptions = {
+	step: "build",
+	tags: ["SET_EXPECT_HEADER", "EXPECT_HEADER"],
+	name: "addExpectContinueMiddleware",
+	override: true
+};
+var getAddExpectContinuePlugin = (options) => ({ applyToStack: (clientStack) => {
+	clientStack.add(addExpectContinueMiddleware(options), addExpectContinueMiddlewareOptions);
+} });
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.64/node_modules/@aws-sdk/middleware-sdk-s3/dist-es/submodules/s3/middleware-ssec/middleware-ssec.js
+function ssecMiddleware(options) {
+	return (next) => async (args) => {
+		const input = { ...args.input };
+		for (const prop of [{
+			target: "SSECustomerKey",
+			hash: "SSECustomerKeyMD5"
+		}, {
+			target: "CopySourceSSECustomerKey",
+			hash: "CopySourceSSECustomerKeyMD5"
+		}]) {
+			const value = input[prop.target];
+			if (value) {
+				let valueForHash;
+				if (typeof value === "string") if (isValidBase64EncodedSSECustomerKey(value, options)) valueForHash = options.base64Decoder(value);
+				else {
+					valueForHash = options.utf8Decoder(value);
+					input[prop.target] = options.base64Encoder(valueForHash);
+				}
+				else {
+					valueForHash = ArrayBuffer.isView(value) ? new Uint8Array(value.buffer, value.byteOffset, value.byteLength) : new Uint8Array(value);
+					input[prop.target] = options.base64Encoder(valueForHash);
+				}
+				const hash = new options.md5();
+				hash.update(valueForHash);
+				input[prop.hash] = options.base64Encoder(await hash.digest());
+			}
+		}
+		return next({
+			...args,
+			input
+		});
+	};
+}
+var ssecMiddlewareOptions = {
+	name: "ssecMiddleware",
+	step: "initialize",
+	tags: ["SSE"],
+	override: true
+};
+var getSsecPlugin = (config) => ({ applyToStack: (clientStack) => {
+	clientStack.add(ssecMiddleware(config), ssecMiddlewareOptions);
+} });
+function isValidBase64EncodedSSECustomerKey(str, options) {
+	if (!/^(?:[A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(str)) return false;
+	try {
+		return options.base64Decoder(str).length === 32;
+	} catch {
+		return false;
+	}
+}
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-codec/Int64.js
+var Int64 = class Int64 {
+	bytes;
+	constructor(bytes) {
+		this.bytes = bytes;
+		if (bytes.byteLength !== 8) throw new Error("Int64 buffers must be exactly 8 bytes");
+	}
+	static fromNumber(number) {
+		if (number > 0x8000000000000000 || number < -0x8000000000000000) throw new Error(`${number} is too large (or, if negative, too small) to represent as an Int64`);
+		const bytes = /* @__PURE__ */ new Uint8Array(8);
+		for (let i = 7, remaining = Math.abs(Math.round(number)); i > -1 && remaining > 0; i--, remaining /= 256) bytes[i] = remaining;
+		if (number < 0) negate(bytes);
+		return new Int64(bytes);
+	}
+	valueOf() {
+		const bytes = this.bytes.slice(0);
+		const negative = bytes[0] & 128;
+		if (negative) negate(bytes);
+		return parseInt(toHex(bytes), 16) * (negative ? -1 : 1);
+	}
+	toString() {
+		return String(this.valueOf());
+	}
+};
+function negate(bytes) {
+	for (let i = 0; i < 8; i++) bytes[i] ^= 255;
+	for (let i = 7; i > -1; i--) {
+		bytes[i]++;
+		if (bytes[i] !== 0) break;
+	}
+}
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-codec/HeaderMarshaller.js
+var HeaderMarshaller = class {
+	toUtf8;
+	fromUtf8;
+	constructor(toUtf8, fromUtf8) {
+		this.toUtf8 = toUtf8;
+		this.fromUtf8 = fromUtf8;
+	}
+	format(headers) {
+		const chunks = [];
+		for (const headerName of Object.keys(headers)) {
+			const bytes = this.fromUtf8(headerName);
+			chunks.push(Uint8Array.from([bytes.byteLength]), bytes, this.formatHeaderValue(headers[headerName]));
+		}
+		const out = new Uint8Array(chunks.reduce((carry, bytes) => carry + bytes.byteLength, 0));
+		let position = 0;
+		for (const chunk of chunks) {
+			out.set(chunk, position);
+			position += chunk.byteLength;
+		}
+		return out;
+	}
+	formatHeaderValue(header) {
+		switch (header.type) {
+			case "boolean": return Uint8Array.from([header.value ? HEADER_VALUE_TYPE.boolTrue : HEADER_VALUE_TYPE.boolFalse]);
+			case "byte": return Uint8Array.from([HEADER_VALUE_TYPE.byte, header.value]);
+			case "short":
+				const shortView = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(3));
+				shortView.setUint8(0, HEADER_VALUE_TYPE.short);
+				shortView.setInt16(1, header.value, false);
+				return new Uint8Array(shortView.buffer);
+			case "integer":
+				const intView = /* @__PURE__ */ new DataView(/* @__PURE__ */ new ArrayBuffer(5));
+				intView.setUint8(0, HEADER_VALUE_TYPE.integer);
+				intView.setInt32(1, header.value, false);
+				return new Uint8Array(intView.buffer);
+			case "long":
+				const longBytes = /* @__PURE__ */ new Uint8Array(9);
+				longBytes[0] = HEADER_VALUE_TYPE.long;
+				longBytes.set(header.value.bytes, 1);
+				return longBytes;
+			case "binary":
+				const binView = new DataView(new ArrayBuffer(3 + header.value.byteLength));
+				binView.setUint8(0, HEADER_VALUE_TYPE.byteArray);
+				binView.setUint16(1, header.value.byteLength, false);
+				const binBytes = new Uint8Array(binView.buffer);
+				binBytes.set(header.value, 3);
+				return binBytes;
+			case "string":
+				const utf8Bytes = this.fromUtf8(header.value);
+				const strView = new DataView(new ArrayBuffer(3 + utf8Bytes.byteLength));
+				strView.setUint8(0, HEADER_VALUE_TYPE.string);
+				strView.setUint16(1, utf8Bytes.byteLength, false);
+				const strBytes = new Uint8Array(strView.buffer);
+				strBytes.set(utf8Bytes, 3);
+				return strBytes;
+			case "timestamp":
+				const tsBytes = /* @__PURE__ */ new Uint8Array(9);
+				tsBytes[0] = HEADER_VALUE_TYPE.timestamp;
+				tsBytes.set(Int64.fromNumber(header.value.valueOf()).bytes, 1);
+				return tsBytes;
+			case "uuid":
+				if (!UUID_PATTERN.test(header.value)) throw new Error(`Invalid UUID received: ${header.value}`);
+				const uuidBytes = /* @__PURE__ */ new Uint8Array(17);
+				uuidBytes[0] = HEADER_VALUE_TYPE.uuid;
+				uuidBytes.set(fromHex(header.value.replace(/-/g, "")), 1);
+				return uuidBytes;
+		}
+	}
+	parse(headers) {
+		const out = {};
+		let position = 0;
+		while (position < headers.byteLength) {
+			const nameLength = headers.getUint8(position++);
+			const name = this.toUtf8(new Uint8Array(headers.buffer, headers.byteOffset + position, nameLength));
+			position += nameLength;
+			switch (headers.getUint8(position++)) {
+				case HEADER_VALUE_TYPE.boolTrue:
+					out[name] = {
+						type: BOOLEAN_TAG,
+						value: true
+					};
+					break;
+				case HEADER_VALUE_TYPE.boolFalse:
+					out[name] = {
+						type: BOOLEAN_TAG,
+						value: false
+					};
+					break;
+				case HEADER_VALUE_TYPE.byte:
+					out[name] = {
+						type: BYTE_TAG,
+						value: headers.getInt8(position++)
+					};
+					break;
+				case HEADER_VALUE_TYPE.short:
+					out[name] = {
+						type: SHORT_TAG,
+						value: headers.getInt16(position, false)
+					};
+					position += 2;
+					break;
+				case HEADER_VALUE_TYPE.integer:
+					out[name] = {
+						type: INT_TAG,
+						value: headers.getInt32(position, false)
+					};
+					position += 4;
+					break;
+				case HEADER_VALUE_TYPE.long:
+					out[name] = {
+						type: LONG_TAG,
+						value: new Int64(new Uint8Array(headers.buffer, headers.byteOffset + position, 8))
+					};
+					position += 8;
+					break;
+				case HEADER_VALUE_TYPE.byteArray:
+					const binaryLength = headers.getUint16(position, false);
+					position += 2;
+					out[name] = {
+						type: BINARY_TAG,
+						value: new Uint8Array(headers.buffer, headers.byteOffset + position, binaryLength)
+					};
+					position += binaryLength;
+					break;
+				case HEADER_VALUE_TYPE.string:
+					const stringLength = headers.getUint16(position, false);
+					position += 2;
+					out[name] = {
+						type: STRING_TAG,
+						value: this.toUtf8(new Uint8Array(headers.buffer, headers.byteOffset + position, stringLength))
+					};
+					position += stringLength;
+					break;
+				case HEADER_VALUE_TYPE.timestamp:
+					out[name] = {
+						type: TIMESTAMP_TAG,
+						value: new Date(new Int64(new Uint8Array(headers.buffer, headers.byteOffset + position, 8)).valueOf())
+					};
+					position += 8;
+					break;
+				case HEADER_VALUE_TYPE.uuid:
+					const uuidBytes = new Uint8Array(headers.buffer, headers.byteOffset + position, 16);
+					position += 16;
+					out[name] = {
+						type: UUID_TAG,
+						value: `${toHex(uuidBytes.subarray(0, 4))}-${toHex(uuidBytes.subarray(4, 6))}-${toHex(uuidBytes.subarray(6, 8))}-${toHex(uuidBytes.subarray(8, 10))}-${toHex(uuidBytes.subarray(10))}`
+					};
+					break;
+				default: throw new Error(`Unrecognized header type tag`);
+			}
+		}
+		return out;
+	}
+};
+var HEADER_VALUE_TYPE;
+(function(HEADER_VALUE_TYPE) {
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["boolTrue"] = 0] = "boolTrue";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["boolFalse"] = 1] = "boolFalse";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["byte"] = 2] = "byte";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["short"] = 3] = "short";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["integer"] = 4] = "integer";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["long"] = 5] = "long";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["byteArray"] = 6] = "byteArray";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["string"] = 7] = "string";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["timestamp"] = 8] = "timestamp";
+	HEADER_VALUE_TYPE[HEADER_VALUE_TYPE["uuid"] = 9] = "uuid";
+})(HEADER_VALUE_TYPE || (HEADER_VALUE_TYPE = {}));
+var BOOLEAN_TAG = "boolean";
+var BYTE_TAG = "byte";
+var SHORT_TAG = "short";
+var INT_TAG = "integer";
+var LONG_TAG = "long";
+var BINARY_TAG = "binary";
+var STRING_TAG = "string";
+var TIMESTAMP_TAG = "timestamp";
+var UUID_TAG = "uuid";
+var UUID_PATTERN = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-codec/splitMessage.js
+var PRELUDE_MEMBER_LENGTH = 4;
+var PRELUDE_LENGTH = PRELUDE_MEMBER_LENGTH * 2;
+var CHECKSUM_LENGTH = 4;
+var MINIMUM_MESSAGE_LENGTH = 16;
+function splitMessage({ byteLength, byteOffset, buffer }) {
+	if (byteLength < MINIMUM_MESSAGE_LENGTH) throw new Error("Provided message too short to accommodate event stream message overhead");
+	const view = new DataView(buffer, byteOffset, byteLength);
+	const messageLength = view.getUint32(0, false);
+	if (byteLength !== messageLength) throw new Error("Reported message length does not match received message length");
+	const headerLength = view.getUint32(PRELUDE_MEMBER_LENGTH, false);
+	const expectedPreludeChecksum = view.getUint32(PRELUDE_LENGTH, false);
+	const expectedMessageChecksum = view.getUint32(byteLength - CHECKSUM_LENGTH, false);
+	const checksummer = new Crc32Node();
+	checksummer.update(new Uint8Array(buffer, byteOffset, PRELUDE_LENGTH));
+	if (expectedPreludeChecksum !== checksummer.digestSync()) throw new Error(`The prelude checksum specified in the message (${expectedPreludeChecksum}) does not match the calculated CRC32 checksum (${checksummer.digestSync()})`);
+	checksummer.update(new Uint8Array(buffer, byteOffset + PRELUDE_LENGTH, byteLength - 12));
+	if (expectedMessageChecksum !== checksummer.digestSync()) throw new Error(`The message checksum (${checksummer.digestSync()}) did not match the expected value of ${expectedMessageChecksum}`);
+	return {
+		headers: new DataView(buffer, byteOffset + PRELUDE_LENGTH + CHECKSUM_LENGTH, headerLength),
+		body: new Uint8Array(buffer, byteOffset + PRELUDE_LENGTH + CHECKSUM_LENGTH + headerLength, messageLength - headerLength - 16)
+	};
+}
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-codec/EventStreamCodec.js
+var EventStreamCodec = class {
+	headerMarshaller;
+	messageBuffer;
+	isEndOfStream;
+	constructor(toUtf8, fromUtf8) {
+		this.headerMarshaller = new HeaderMarshaller(toUtf8, fromUtf8);
+		this.messageBuffer = [];
+		this.isEndOfStream = false;
+	}
+	feed(message) {
+		this.messageBuffer.push(this.decode(message));
+	}
+	endOfStream() {
+		this.isEndOfStream = true;
+	}
+	getMessage() {
+		const message = this.messageBuffer.pop();
+		const isEndOfStream = this.isEndOfStream;
+		return {
+			getMessage() {
+				return message;
+			},
+			isEndOfStream() {
+				return isEndOfStream;
+			}
+		};
+	}
+	getAvailableMessages() {
+		const messages = this.messageBuffer;
+		this.messageBuffer = [];
+		const isEndOfStream = this.isEndOfStream;
+		return {
+			getMessages() {
+				return messages;
+			},
+			isEndOfStream() {
+				return isEndOfStream;
+			}
+		};
+	}
+	encode({ headers: rawHeaders, body }) {
+		const headers = this.headerMarshaller.format(rawHeaders);
+		const length = headers.byteLength + body.byteLength + 16;
+		const out = new Uint8Array(length);
+		const view = new DataView(out.buffer, out.byteOffset, out.byteLength);
+		const checksum = new Crc32Node();
+		view.setUint32(0, length, false);
+		view.setUint32(4, headers.byteLength, false);
+		checksum.update(out.subarray(0, 8));
+		view.setUint32(8, checksum.digestSync(), false);
+		out.set(headers, 12);
+		out.set(body, headers.byteLength + 12);
+		checksum.update(out.subarray(8, length - 4));
+		view.setUint32(length - 4, checksum.digestSync(), false);
+		return out;
+	}
+	decode(message) {
+		const { headers, body } = splitMessage(message);
+		return {
+			headers: this.headerMarshaller.parse(headers),
+			body
+		};
+	}
+	formatHeaders(rawHeaders) {
+		return this.headerMarshaller.format(rawHeaders);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-codec/MessageDecoderStream.js
+var MessageDecoderStream = class {
+	options;
+	constructor(options) {
+		this.options = options;
+	}
+	[Symbol.asyncIterator]() {
+		return this.asyncIterator();
+	}
+	async *asyncIterator() {
+		for await (const bytes of this.options.inputStream) yield this.options.decoder.decode(bytes);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-codec/MessageEncoderStream.js
+var MessageEncoderStream = class {
+	options;
+	constructor(options) {
+		this.options = options;
+	}
+	[Symbol.asyncIterator]() {
+		return this.asyncIterator();
+	}
+	async *asyncIterator() {
+		for await (const msg of this.options.messageStream) yield this.options.encoder.encode(msg);
+		if (this.options.includeEndFrame) yield /* @__PURE__ */ new Uint8Array(0);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-codec/SmithyMessageDecoderStream.js
+var SmithyMessageDecoderStream = class {
+	options;
+	constructor(options) {
+		this.options = options;
+	}
+	[Symbol.asyncIterator]() {
+		return this.asyncIterator();
+	}
+	async *asyncIterator() {
+		for await (const message of this.options.messageStream) {
+			const deserialized = await this.options.deserializer(message);
+			if (deserialized === void 0) continue;
+			yield deserialized;
+		}
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-codec/SmithyMessageEncoderStream.js
+var SmithyMessageEncoderStream = class {
+	options;
+	constructor(options) {
+		this.options = options;
+	}
+	[Symbol.asyncIterator]() {
+		return this.asyncIterator();
+	}
+	async *asyncIterator() {
+		for await (const chunk of this.options.inputStream) yield this.options.serializer(chunk);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-serde-universal/getChunkedStream.js
+function getChunkedStream(source) {
+	let currentMessageTotalLength = 0;
+	let currentMessagePendingLength = 0;
+	let currentMessage = null;
+	let messageLengthBuffer = null;
+	const allocateMessage = (size) => {
+		if (typeof size !== "number") throw new Error("Attempted to allocate an event message where size was not a number: " + size);
+		currentMessageTotalLength = size;
+		currentMessagePendingLength = 4;
+		currentMessage = new Uint8Array(size);
+		new DataView(currentMessage.buffer).setUint32(0, size, false);
+	};
+	const iterator = async function* () {
+		const sourceIterator = source[Symbol.asyncIterator]();
+		while (true) {
+			const { value, done } = await sourceIterator.next();
+			if (done) {
+				if (!currentMessageTotalLength) return;
+				else if (currentMessageTotalLength === currentMessagePendingLength) yield currentMessage;
+				else throw new Error("Truncated event message received.");
+				return;
+			}
+			const chunkLength = value.length;
+			let currentOffset = 0;
+			while (currentOffset < chunkLength) {
+				if (!currentMessage) {
+					const bytesRemaining = chunkLength - currentOffset;
+					if (!messageLengthBuffer) messageLengthBuffer = /* @__PURE__ */ new Uint8Array(4);
+					const numBytesForTotal = Math.min(4 - currentMessagePendingLength, bytesRemaining);
+					messageLengthBuffer.set(value.slice(currentOffset, currentOffset + numBytesForTotal), currentMessagePendingLength);
+					currentMessagePendingLength += numBytesForTotal;
+					currentOffset += numBytesForTotal;
+					if (currentMessagePendingLength < 4) break;
+					allocateMessage(new DataView(messageLengthBuffer.buffer).getUint32(0, false));
+					messageLengthBuffer = null;
+				}
+				const numBytesToWrite = Math.min(currentMessageTotalLength - currentMessagePendingLength, chunkLength - currentOffset);
+				currentMessage.set(value.slice(currentOffset, currentOffset + numBytesToWrite), currentMessagePendingLength);
+				currentMessagePendingLength += numBytesToWrite;
+				currentOffset += numBytesToWrite;
+				if (currentMessageTotalLength && currentMessageTotalLength === currentMessagePendingLength) {
+					yield currentMessage;
+					currentMessage = null;
+					currentMessageTotalLength = 0;
+					currentMessagePendingLength = 0;
+				}
+			}
+		}
+	};
+	return { [Symbol.asyncIterator]: iterator };
+}
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-serde-universal/getUnmarshalledStream.js
+function getMessageUnmarshaller(deserializer, toUtf8) {
+	return async function(message) {
+		const { value: messageType } = message.headers[":message-type"];
+		if (messageType === "error") {
+			const unmodeledError = new Error(message.headers[":error-message"].value || "UnknownError");
+			unmodeledError.name = message.headers[":error-code"].value;
+			throw unmodeledError;
+		} else if (messageType === "exception") {
+			const code = message.headers[":exception-type"].value;
+			const deserializedException = await deserializer({ [code]: message });
+			if (deserializedException.$unknown) {
+				const error = new Error(toUtf8(message.body));
+				error.name = code;
+				throw error;
+			}
+			throw deserializedException[code];
+		} else if (messageType === "event") {
+			const deserialized = await deserializer({ [message.headers[":event-type"].value]: message });
+			if (deserialized.$unknown) return;
+			return deserialized;
+		} else throw Error(`Unrecognizable event type: ${message.headers[":event-type"].value}`);
+	};
+}
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-serde-universal/EventStreamMarshaller.js
+var EventStreamMarshaller$1 = class {
+	eventStreamCodec;
+	utfEncoder;
+	constructor({ utf8Encoder, utf8Decoder }) {
+		this.eventStreamCodec = new EventStreamCodec(utf8Encoder, utf8Decoder);
+		this.utfEncoder = utf8Encoder;
+	}
+	deserialize(body, deserializer) {
+		return new SmithyMessageDecoderStream({
+			messageStream: new MessageDecoderStream({
+				inputStream: getChunkedStream(body),
+				decoder: this.eventStreamCodec
+			}),
+			deserializer: getMessageUnmarshaller(deserializer, this.utfEncoder)
+		});
+	}
+	serialize(inputStream, serializer) {
+		return new MessageEncoderStream({
+			messageStream: new SmithyMessageEncoderStream({
+				inputStream,
+				serializer
+			}),
+			encoder: this.eventStreamCodec,
+			includeEndFrame: true
+		});
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-serde/EventStreamMarshaller.js
+var EventStreamMarshaller = class {
+	universalMarshaller;
+	constructor({ utf8Encoder, utf8Decoder }) {
+		this.universalMarshaller = new EventStreamMarshaller$1({
+			utf8Decoder,
+			utf8Encoder
+		});
+	}
+	deserialize(body, deserializer) {
+		const bodyIterable = typeof body[Symbol.asyncIterator] === "function" ? body : readableToIterable(body);
+		return this.universalMarshaller.deserialize(bodyIterable, deserializer);
+	}
+	serialize(input, serializer) {
+		return Readable.from(this.universalMarshaller.serialize(input, serializer));
+	}
+};
+var eventStreamSerdeProvider = (options) => new EventStreamMarshaller(options);
+async function* readableToIterable(readStream) {
+	let streamEnded = false;
+	let generationEnded = false;
+	const records = new Array();
+	readStream.on("error", (err) => {
+		if (!streamEnded) streamEnded = true;
+		if (err) throw err;
+	});
+	readStream.on("data", (data) => {
+		records.push(data);
+	});
+	readStream.on("end", () => {
+		streamEnded = true;
+	});
+	while (!generationEnded) {
+		const value = await new Promise((resolve) => setTimeout(() => resolve(records.shift()), 0));
+		if (value) yield value;
+		generationEnded = streamEnded && records.length === 0;
+	}
+}
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/eventstream-serde-config-resolver/EventStreamSerdeConfig.js
+var resolveEventStreamSerdeConfig = (input) => Object.assign(input, { eventStreamMarshaller: input.eventStreamSerdeProvider(input) });
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/EventStreamSerde.js
+var EventStreamSerde = class {
+	marshaller;
+	serializer;
+	deserializer;
+	serdeContext;
+	defaultContentType;
+	constructor({ marshaller, serializer, deserializer, serdeContext, defaultContentType }) {
+		this.marshaller = marshaller;
+		this.serializer = serializer;
+		this.deserializer = deserializer;
+		this.serdeContext = serdeContext;
+		this.defaultContentType = defaultContentType;
+	}
+	async serializeEventStream({ eventStream, requestSchema, initialRequest }) {
+		const marshaller = this.marshaller;
+		const eventStreamMember = requestSchema.getEventStreamMember();
+		const unionSchema = requestSchema.getMemberSchema(eventStreamMember);
+		const serializer = this.serializer;
+		const defaultContentType = this.defaultContentType;
+		const initialRequestMarker = Symbol("initialRequestMarker");
+		const eventStreamIterable = { async *[Symbol.asyncIterator]() {
+			if (initialRequest) {
+				const headers = {
+					":event-type": {
+						type: "string",
+						value: "initial-request"
+					},
+					":message-type": {
+						type: "string",
+						value: "event"
+					},
+					":content-type": {
+						type: "string",
+						value: defaultContentType
+					}
+				};
+				serializer.write(requestSchema, initialRequest);
+				const body = serializer.flush();
+				yield {
+					[initialRequestMarker]: true,
+					headers,
+					body
+				};
+			}
+			for await (const page of eventStream) yield page;
+		} };
+		return marshaller.serialize(eventStreamIterable, (event) => {
+			if (event[initialRequestMarker]) return {
+				headers: event.headers,
+				body: event.body
+			};
+			let unionMember = "";
+			for (const key in event) if (key !== "__type") {
+				unionMember = key;
+				break;
+			}
+			const { additionalHeaders, body, eventType, explicitPayloadContentType } = this.writeEventBody(unionMember, unionSchema, event);
+			return {
+				headers: {
+					":event-type": {
+						type: "string",
+						value: eventType
+					},
+					":message-type": {
+						type: "string",
+						value: "event"
+					},
+					":content-type": {
+						type: "string",
+						value: explicitPayloadContentType ?? defaultContentType
+					},
+					...additionalHeaders
+				},
+				body
+			};
+		});
+	}
+	async deserializeEventStream({ response, responseSchema, initialResponseContainer }) {
+		const marshaller = this.marshaller;
+		const eventStreamMember = responseSchema.getEventStreamMember();
+		const memberSchemas = responseSchema.getMemberSchema(eventStreamMember).getMemberSchemas();
+		const initialResponseMarker = Symbol("initialResponseMarker");
+		const asyncIterable = marshaller.deserialize(response.body, async (event) => {
+			let unionMember = "";
+			for (const key in event) if (key !== "__type") {
+				unionMember = key;
+				break;
+			}
+			const body = event[unionMember].body;
+			if (unionMember === "initial-response") {
+				const dataObject = await this.deserializer.read(responseSchema, body);
+				delete dataObject[eventStreamMember];
+				return {
+					[initialResponseMarker]: true,
+					...dataObject
+				};
+			} else if (unionMember in memberSchemas) {
+				const eventStreamSchema = memberSchemas[unionMember];
+				if (eventStreamSchema.isStructSchema()) {
+					const out = {};
+					let hasBindings = false;
+					for (const [name, member] of eventStreamSchema.structIterator()) {
+						const { eventHeader, eventPayload } = member.getMergedTraits();
+						hasBindings = hasBindings || Boolean(eventHeader || eventPayload);
+						if (eventPayload) {
+							if (member.isBlobSchema()) out[name] = body;
+							else if (member.isStringSchema()) out[name] = (this.serdeContext?.utf8Encoder ?? toUtf8)(body);
+							else if (member.isStructSchema()) out[name] = await this.deserializer.read(member, body);
+						} else if (eventHeader) {
+							const value = event[unionMember].headers[name]?.value;
+							if (value != null) if (member.isNumericSchema()) if (value && typeof value === "object" && "bytes" in value) out[name] = BigInt(value.toString());
+							else out[name] = Number(value);
+							else out[name] = value;
+						}
+					}
+					if (hasBindings) return { [unionMember]: out };
+					if (body.byteLength === 0) return { [unionMember]: {} };
+				}
+				return { [unionMember]: await this.deserializer.read(eventStreamSchema, body) };
+			} else return { $unknown: event };
+		});
+		const asyncIterator = asyncIterable[Symbol.asyncIterator]();
+		const firstEvent = await asyncIterator.next();
+		if (firstEvent.done) return asyncIterable;
+		if (firstEvent.value?.[initialResponseMarker]) {
+			if (!responseSchema) throw new Error("@smithy::core/protocols - initial-response event encountered in event stream but no response schema given.");
+			for (const key in firstEvent.value) initialResponseContainer[key] = firstEvent.value[key];
+		}
+		return { async *[Symbol.asyncIterator]() {
+			if (!firstEvent?.value?.[initialResponseMarker]) yield firstEvent.value;
+			while (true) {
+				const { done, value } = await asyncIterator.next();
+				if (done) break;
+				yield value;
+			}
+		} };
+	}
+	writeEventBody(unionMember, unionSchema, event) {
+		const serializer = this.serializer;
+		let eventType = unionMember;
+		let explicitPayloadMember = null;
+		let explicitPayloadContentType;
+		const isKnownSchema = (() => {
+			return unionSchema.getSchema()[4].includes(unionMember);
+		})();
+		const additionalHeaders = {};
+		if (!isKnownSchema) {
+			const [type, value] = event[unionMember];
+			eventType = type;
+			serializer.write(15, value);
+		} else {
+			const eventSchema = unionSchema.getMemberSchema(unionMember);
+			if (eventSchema.isStructSchema()) {
+				for (const [memberName, memberSchema] of eventSchema.structIterator()) {
+					const { eventHeader, eventPayload } = memberSchema.getMergedTraits();
+					if (eventPayload) explicitPayloadMember = memberName;
+					else if (eventHeader) {
+						const value = event[unionMember][memberName];
+						let type = "binary";
+						if (memberSchema.isNumericSchema()) if ((-2) ** 31 <= value && value <= 2 ** 31 - 1) type = "integer";
+						else type = "long";
+						else if (memberSchema.isTimestampSchema()) type = "timestamp";
+						else if (memberSchema.isStringSchema()) type = "string";
+						else if (memberSchema.isBooleanSchema()) type = "boolean";
+						if (value != null) {
+							additionalHeaders[memberName] = {
+								type,
+								value
+							};
+							delete event[unionMember][memberName];
+						}
+					}
+				}
+				if (explicitPayloadMember !== null) {
+					const payloadSchema = eventSchema.getMemberSchema(explicitPayloadMember);
+					if (payloadSchema.isBlobSchema()) explicitPayloadContentType = "application/octet-stream";
+					else if (payloadSchema.isStringSchema()) explicitPayloadContentType = "text/plain";
+					serializer.write(payloadSchema, event[unionMember][explicitPayloadMember]);
+				} else serializer.write(eventSchema, event[unionMember]);
+			} else if (eventSchema.isUnitSchema()) serializer.write(eventSchema, {});
+			else throw new Error("@smithy/core/event-streams - non-struct member not supported in event stream union.");
+		}
+		const messageSerialization = serializer.flush() ?? /* @__PURE__ */ new Uint8Array();
+		return {
+			body: typeof messageSerialization === "string" ? (this.serdeContext?.utf8Decoder ?? fromUtf8)(messageSerialization) : messageSerialization,
+			eventType,
+			explicitPayloadContentType,
+			additionalHeaders
+		};
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@smithy+core@3.29.5/node_modules/@smithy/core/dist-es/submodules/event-streams/index.js
+var event_streams_exports = /* @__PURE__ */ __exportAll({
+	EventStreamSerde: () => EventStreamSerde,
+	eventStreamSerdeProvider: () => eventStreamSerdeProvider
+});
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/endpoint/bdd.js
+var aw = "ref", ax = "argv", ay = "backend", az = "authSchemes", aA = "disableDoubleEncoding", aB = "signingName", aC = "signingRegion", aD = "signingRegionSet";
+var a = -1, b = true, c = false, d = "isSet", e = "booleanEquals", f = "stringEquals", g = "coalesce", h = "substring", i = "", j = "aws.partition", k = "partitionResult", l = "accessPointSuffix", m = "regionPrefix", n = (n) => "outpostId_ssa_" + n + i, o = "hardwareType", p = "ite", q = "isValidHostLabel", s = "sigv4", t = "aws.isVirtualHostableS3Bucket", u = "url", v = "getAttr", w = "bucketArn", x = "--", y = "arnType", z = "accesspoint", A = (n) => "accessPointName_ssa_" + n + i, B = "s3-object-lambda", C = "s3-outposts", D = "bucketPartition", E = "us-east-1", F = "outpostType", G = "name", H = "s3", I = "{url#scheme}://{Bucket}.{url#authority}{url#path}", J = "{url#scheme}://{url#authority}{url#path}", K$1 = "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}", L = "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}", M = "https://{Bucket}.s3.{partitionResult#dnsSuffix}", N = (n) => "{url#scheme}://{accessPointName_ssa_" + n + "}-{bucketArn#accountId}.{url#authority}{url#path}", O = (n) => "Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and `-`. Found: `{accessPointName_ssa_" + n + "}`", P = "sigv4a", Q = "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}", R = "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", S = "https://s3.{partitionResult#dnsSuffix}", T = { [aw]: "UseFIPS" }, U = { [aw]: "UseDualStack" }, V = { [aw]: "Bucket" }, W = {
+	"fn": v,
+	[ax]: [{ [aw]: k }, G]
+}, X = { [aw]: u }, Y = { [aw]: "Region" }, Z = { [aw]: w }, aa = { [aw]: y }, ab = { [aw]: "accessPointName_ssa_1" }, ac = {
+	"fn": v,
+	[ax]: [Z, "region"]
+}, ad = { [aw]: o }, ae = {
+	"fn": v,
+	[ax]: [Z, "service"]
+}, af = {
+	"fn": v,
+	[ax]: [Z, "accountId"]
+}, ag = {
+	[ay]: "S3Express",
+	[az]: [{
+		[aA]: true,
+		[G]: "{_s3e_auth}",
+		[aB]: "s3express",
+		[aC]: "{Region}"
+	}]
+}, ah = {
+	[ay]: "S3Express",
+	[az]: [{
+		[aA]: true,
+		[G]: s,
+		[aB]: "s3express",
+		[aC]: "{Region}"
+	}]
+}, ai = { [az]: [{
+	[aA]: true,
+	[G]: P,
+	[aB]: C,
+	[aD]: ["*"]
+}, {
+	[aA]: true,
+	[G]: s,
+	[aB]: C,
+	[aC]: "{Region}"
+}] }, aj = { [az]: [{
+	[aA]: true,
+	[G]: s,
+	[aB]: H,
+	[aC]: E
+}] }, ak = { [az]: [{
+	[aA]: true,
+	[G]: s,
+	[aB]: H,
+	[aC]: "{Region}"
+}] }, al = { [az]: [{
+	[aA]: true,
+	[G]: s,
+	[aB]: B,
+	[aC]: "{bucketArn#region}"
+}] }, am = { [az]: [{
+	[aA]: true,
+	[G]: s,
+	[aB]: H,
+	[aC]: "{bucketArn#region}"
+}] }, an = { [az]: [{
+	[aA]: true,
+	[G]: P,
+	[aB]: C,
+	[aD]: ["*"]
+}, {
+	[aA]: true,
+	[G]: s,
+	[aB]: C,
+	[aC]: "{bucketArn#region}"
+}] }, ao = { [az]: [{
+	[aA]: true,
+	[G]: s,
+	[aB]: B,
+	[aC]: "{Region}"
+}] }, ap = [Y], aq = [{ [aw]: "Endpoint" }], as = [V], at = [
+	V,
+	0,
+	7,
+	true
+], au = [Z, "resourceId[1]"], av = ["*"];
+var _data = {
+	conditions: [
+		[d, ap],
+		[e, [{ [aw]: "Accelerate" }, b]],
+		[e, [T, b]],
+		[e, [U, b]],
+		[d, aq],
+		[d, as],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					0,
+					6,
+					b
+				]
+			}, i]
+		}, "--x-s3"]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: at
+			}, i]
+		}, "--xa-s3"]],
+		[
+			j,
+			ap,
+			k
+		],
+		[
+			h,
+			at,
+			l
+		],
+		[f, [{ [aw]: l }, "--op-s3"]],
+		[
+			h,
+			[
+				V,
+				8,
+				12,
+				b
+			],
+			m
+		],
+		[
+			h,
+			[
+				V,
+				32,
+				49,
+				b
+			],
+			n(2)
+		],
+		[
+			h,
+			[
+				V,
+				49,
+				50,
+				b
+			],
+			o
+		],
+		[e, [{ [aw]: "ForcePathStyle" }, b]],
+		[f, [W, "aws-cn"]],
+		[
+			p,
+			[
+				U,
+				".dualstack",
+				i
+			],
+			"_s3e_ds"
+		],
+		[q, [{ [aw]: n(2) }, c]],
+		[
+			p,
+			[
+				T,
+				"-fips",
+				i
+			],
+			"_s3e_fips"
+		],
+		[
+			p,
+			[
+				{
+					fn: g,
+					[ax]: [{ [aw]: "DisableS3ExpressSessionAuth" }, c]
+				},
+				s,
+				"sigv4-s3express"
+			],
+			"_s3e_auth"
+		],
+		[t, [V, c]],
+		[
+			"parseURL",
+			aq,
+			u
+		],
+		[e, [{
+			fn: g,
+			[ax]: [{ [aw]: "UseS3ExpressControlEndpoint" }, c]
+		}, b]],
+		[t, [V, b]],
+		[f, [{
+			fn: v,
+			[ax]: [X, "scheme"]
+		}, "http"]],
+		[q, [Y, c]],
+		[
+			"aws.parseArn",
+			as,
+			w
+		],
+		[
+			v,
+			[{
+				fn: "split",
+				[ax]: [
+					V,
+					x,
+					0
+				]
+			}, "[-2]"],
+			"s3expressAvailabilityZoneId"
+		],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					0,
+					4,
+					c
+				]
+			}, i]
+		}, "arn:"]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					16,
+					18,
+					b
+				]
+			}, i]
+		}, x]],
+		[e, [{
+			fn: v,
+			[ax]: [X, "isIp"]
+		}, b]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					21,
+					23,
+					b
+				]
+			}, i]
+		}, x]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					27,
+					29,
+					b
+				]
+			}, i]
+		}, x]],
+		[f, [{ [aw]: m }, "beta"]],
+		[
+			"uriEncode",
+			as,
+			"uri_encoded_bucket"
+		],
+		[q, [Y, b]],
+		[e, [{
+			fn: g,
+			[ax]: [{ [aw]: "UseObjectLambdaEndpoint" }, c]
+		}, b]],
+		[
+			v,
+			[Z, "resourceId[0]"],
+			y
+		],
+		[f, [aa, i]],
+		[f, [aa, z]],
+		[
+			v,
+			au,
+			A(1)
+		],
+		[f, [ab, i]],
+		[f, [ac, i]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					14,
+					16,
+					b
+				]
+			}, i]
+		}, x]],
+		[f, [ad, "e"]],
+		[f, [ad, "o"]],
+		[f, [Y, "aws-global"]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					19,
+					21,
+					b
+				]
+			}, i]
+		}, x]],
+		[f, [ae, B]],
+		[e, [{
+			fn: g,
+			[ax]: [{ [aw]: "DisableAccessPoints" }, c]
+		}, b]],
+		[f, [ae, C]],
+		[
+			j,
+			[ac],
+			D
+		],
+		[q, [ab, b]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					26,
+					28,
+					b
+				]
+			}, i]
+		}, x]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					15,
+					17,
+					b
+				]
+			}, i]
+		}, x]],
+		[v, [Z, "resourceId[4]"]],
+		[f, [{
+			fn: g,
+			[ax]: [{
+				fn: h,
+				[ax]: [
+					V,
+					20,
+					22,
+					b
+				]
+			}, i]
+		}, x]],
+		[e, [{ [aw]: "UseGlobalEndpoint" }, b]],
+		[f, [Y, E]],
+		[
+			v,
+			au,
+			n(1)
+		],
+		[e, [{
+			fn: g,
+			[ax]: [{ [aw]: "UseArnRegion" }, b]
+		}, b]],
+		[q, [{ [aw]: n(1) }, c]],
+		[
+			v,
+			[Z, "resourceId[2]"],
+			F
+		],
+		[f, [Y, ac]],
+		[f, [{
+			fn: v,
+			[ax]: [{ [aw]: D }, G]
+		}, W]],
+		[e, [{ [aw]: "DisableMultiRegionAccessPoints" }, b]],
+		[q, [ac, b]],
+		[f, [{
+			fn: v,
+			[ax]: [Z, "partition"]
+		}, W]],
+		[f, [af, i]],
+		[f, [ae, H]],
+		[q, [af, c]],
+		[
+			v,
+			[Z, "resourceId[3]"],
+			A(2)
+		],
+		[q, [ab, c]],
+		[f, [{ [aw]: F }, z]],
+		[q, [{ [aw]: A(2) }, c]]
+	],
+	results: [
+		[a],
+		[a, "Accelerate cannot be used with FIPS"],
+		[a, "Cannot set dual-stack in combination with a custom endpoint."],
+		[a, "A custom endpoint cannot be combined with FIPS"],
+		[a, "A custom endpoint cannot be combined with S3 Accelerate"],
+		[a, "Partition does not support FIPS"],
+		[a, "S3Express does not support S3 Accelerate."],
+		["{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}", ag],
+		[I, ag],
+		[a, "S3Express bucket name is not a valid virtual hostable name."],
+		["https://s3express-control{_s3e_fips}{_s3e_ds}.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", ah],
+		["https://{Bucket}.s3express{_s3e_fips}-{s3expressAvailabilityZoneId}{_s3e_ds}.{Region}.{partitionResult#dnsSuffix}", ag],
+		[a, "Unrecognized S3Express bucket name format."],
+		[J, ag],
+		["https://s3express-control{_s3e_fips}{_s3e_ds}.{Region}.{partitionResult#dnsSuffix}", ah],
+		[a, "Expected a endpoint to be specified but no endpoint was found"],
+		["https://{Bucket}.ec2.{url#authority}", ai],
+		["https://{Bucket}.ec2.s3-outposts.{Region}.{partitionResult#dnsSuffix}", ai],
+		["https://{Bucket}.op-{outpostId_ssa_2}.{url#authority}", ai],
+		["https://{Bucket}.op-{outpostId_ssa_2}.s3-outposts.{Region}.{partitionResult#dnsSuffix}", ai],
+		[a, "Unrecognized hardware type: \"Expected hardware type o or e but got {hardwareType}\""],
+		[a, "Invalid Outposts Bucket alias - it must be a valid bucket name."],
+		[a, "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`."],
+		[a, "Custom endpoint `{Endpoint}` was not a valid URI"],
+		[a, "S3 Accelerate cannot be used in this region"],
+		["https://{Bucket}.s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", aj],
+		["https://{Bucket}.s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", ak],
+		["https://{Bucket}.s3-fips.us-east-1.{partitionResult#dnsSuffix}", aj],
+		["https://{Bucket}.s3-fips.{Region}.{partitionResult#dnsSuffix}", ak],
+		["https://{Bucket}.s3-accelerate.dualstack.us-east-1.{partitionResult#dnsSuffix}", aj],
+		["https://{Bucket}.s3-accelerate.dualstack.{partitionResult#dnsSuffix}", ak],
+		["https://{Bucket}.s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", aj],
+		["https://{Bucket}.s3.dualstack.{Region}.{partitionResult#dnsSuffix}", ak],
+		[K$1, aj],
+		[I, aj],
+		[K$1, ak],
+		[I, ak],
+		[L, aj],
+		[L, ak],
+		[M, aj],
+		[M, ak],
+		["https://{Bucket}.s3.{Region}.{partitionResult#dnsSuffix}", ak],
+		[a, "Invalid region: region was not a valid DNS name."],
+		[a, "S3 Object Lambda does not support Dual-stack"],
+		[a, "S3 Object Lambda does not support S3 Accelerate"],
+		[a, "Access points are not supported for this operation"],
+		[a, "Invalid configuration: region from ARN `{bucketArn#region}` does not match client region `{Region}` and UseArnRegion is `false`"],
+		[a, "Invalid ARN: Missing account id"],
+		[N(1), al],
+		["https://{accessPointName_ssa_1}-{bucketArn#accountId}.s3-object-lambda-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", al],
+		["https://{accessPointName_ssa_1}-{bucketArn#accountId}.s3-object-lambda.{bucketArn#region}.{bucketPartition#dnsSuffix}", al],
+		[a, O(1)],
+		[a, "Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and `-`. Found: `{bucketArn#accountId}`"],
+		[a, "Invalid region in ARN: `{bucketArn#region}` (invalid DNS name)"],
+		[a, "Client was configured for partition `{partitionResult#name}` but ARN (`{Bucket}`) has `{bucketPartition#name}`"],
+		[a, "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`."],
+		[a, "Invalid ARN: bucket ARN is missing a region"],
+		[a, "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided"],
+		[a, "Invalid ARN: Object Lambda ARNs only support `accesspoint` arn types, but found: `{arnType}`"],
+		[a, "Access Points do not support S3 Accelerate"],
+		["https://{accessPointName_ssa_1}-{bucketArn#accountId}.s3-accesspoint-fips.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", am],
+		["https://{accessPointName_ssa_1}-{bucketArn#accountId}.s3-accesspoint-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}", am],
+		["https://{accessPointName_ssa_1}-{bucketArn#accountId}.s3-accesspoint.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}", am],
+		[N(1), am],
+		["https://{accessPointName_ssa_1}-{bucketArn#accountId}.s3-accesspoint.{bucketArn#region}.{bucketPartition#dnsSuffix}", am],
+		[a, "Invalid ARN: The ARN was not for the S3 service, found: {bucketArn#service}"],
+		[a, "S3 MRAP does not support dual-stack"],
+		[a, "S3 MRAP does not support FIPS"],
+		[a, "S3 MRAP does not support S3 Accelerate"],
+		[a, "Invalid configuration: Multi-Region Access Point ARNs are disabled."],
+		["https://{accessPointName_ssa_1}.accesspoint.s3-global.{partitionResult#dnsSuffix}", { [az]: [{
+			[aA]: b,
+			name: P,
+			[aB]: H,
+			[aD]: av
+		}] }],
+		[a, "Client was configured for partition `{partitionResult#name}` but bucket referred to partition `{bucketArn#partition}`"],
+		[a, "Invalid Access Point Name"],
+		[a, "S3 Outposts does not support Dual-stack"],
+		[a, "S3 Outposts does not support FIPS"],
+		[a, "S3 Outposts does not support S3 Accelerate"],
+		[a, "Invalid Arn: Outpost Access Point ARN contains sub resources"],
+		["https://{accessPointName_ssa_2}-{bucketArn#accountId}.{outpostId_ssa_1}.{url#authority}", an],
+		["https://{accessPointName_ssa_2}-{bucketArn#accountId}.{outpostId_ssa_1}.s3-outposts.{bucketArn#region}.{bucketPartition#dnsSuffix}", an],
+		[a, O(2)],
+		[a, "Expected an outpost type `accesspoint`, found {outpostType}"],
+		[a, "Invalid ARN: expected an access point name"],
+		[a, "Invalid ARN: Expected a 4-component resource"],
+		[a, "Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and `-`. Found: `{outpostId_ssa_1}`"],
+		[a, "Invalid ARN: The Outpost Id was not set"],
+		[a, "Invalid ARN: Unrecognized format: {Bucket} (type: {arnType})"],
+		[a, "Invalid ARN: No ARN type specified"],
+		[a, "Invalid ARN: `{Bucket}` was not a valid ARN"],
+		[a, "Path-style addressing cannot be used with ARN buckets"],
+		["https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", aj],
+		["https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", ak],
+		["https://s3-fips.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", aj],
+		["https://s3-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", ak],
+		["https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", aj],
+		["https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", ak],
+		[Q, aj],
+		[Q, ak],
+		[R, aj],
+		[R, ak],
+		["https://s3.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}", ak],
+		[a, "Path-style addressing cannot be used with S3 Accelerate"],
+		[J, ao],
+		["https://s3-object-lambda-fips.{Region}.{partitionResult#dnsSuffix}", ao],
+		["https://s3-object-lambda.{Region}.{partitionResult#dnsSuffix}", ao],
+		["https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}", aj],
+		["https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}", ak],
+		["https://s3-fips.us-east-1.{partitionResult#dnsSuffix}", aj],
+		["https://s3-fips.{Region}.{partitionResult#dnsSuffix}", ak],
+		["https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}", aj],
+		["https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}", ak],
+		[J, aj],
+		[J, ak],
+		[S, aj],
+		[S, ak],
+		["https://s3.{Region}.{partitionResult#dnsSuffix}", ak],
+		[a, "A region must be set when sending requests to S3."]
+	]
+};
+var root = 2;
+var nodes = new Int32Array([
+	-1,
+	1,
+	-1,
+	0,
+	3,
+	100000115,
+	1,
+	424,
+	4,
+	2,
+	272,
+	5,
+	3,
+	233,
+	6,
+	4,
+	85,
+	7,
+	5,
+	15,
+	8,
+	8,
+	9,
+	100000115,
+	16,
+	10,
+	13,
+	18,
+	11,
+	13,
+	19,
+	12,
+	13,
+	22,
+	100000014,
+	13,
+	35,
+	14,
+	100000042,
+	36,
+	100000103,
+	435,
+	6,
+	271,
+	16,
+	7,
+	270,
+	17,
+	8,
+	19,
+	18,
+	14,
+	501,
+	106,
+	9,
+	20,
+	24,
+	10,
+	21,
+	24,
+	11,
+	22,
+	24,
+	12,
+	23,
+	24,
+	13,
+	547,
+	24,
+	14,
+	77,
+	25,
+	20,
+	73,
+	26,
+	26,
+	27,
+	78,
+	37,
+	28,
+	100000086,
+	38,
+	100000086,
+	29,
+	39,
+	47,
+	30,
+	48,
+	100000058,
+	31,
+	50,
+	32,
+	100000085,
+	51,
+	33,
+	136,
+	55,
+	100000076,
+	34,
+	59,
+	35,
+	100000084,
+	60,
+	39,
+	36,
+	61,
+	37,
+	100000083,
+	62,
+	38,
+	146,
+	63,
+	41,
+	100000046,
+	61,
+	40,
+	100000083,
+	62,
+	41,
+	150,
+	64,
+	42,
+	100000054,
+	66,
+	43,
+	100000053,
+	70,
+	44,
+	100000052,
+	71,
+	45,
+	100000081,
+	73,
+	46,
+	100000080,
+	74,
+	100000078,
+	100000079,
+	40,
+	48,
+	100000057,
+	41,
+	100000057,
+	49,
+	42,
+	185,
+	50,
+	48,
+	62,
+	51,
+	49,
+	100000045,
+	52,
+	51,
+	53,
+	526,
+	60,
+	56,
+	54,
+	62,
+	100000055,
+	55,
+	63,
+	57,
+	100000046,
+	62,
+	100000055,
+	57,
+	64,
+	58,
+	100000054,
+	66,
+	59,
+	100000053,
+	69,
+	60,
+	100000065,
+	70,
+	61,
+	100000052,
+	72,
+	100000064,
+	100000051,
+	49,
+	100000045,
+	63,
+	51,
+	64,
+	526,
+	60,
+	67,
+	65,
+	62,
+	100000055,
+	66,
+	63,
+	68,
+	100000046,
+	62,
+	100000055,
+	68,
+	64,
+	69,
+	100000054,
+	66,
+	70,
+	100000053,
+	68,
+	100000047,
+	71,
+	70,
+	72,
+	100000052,
+	72,
+	100000050,
+	100000051,
+	25,
+	74,
+	100000042,
+	46,
+	100000039,
+	75,
+	57,
+	76,
+	100000041,
+	58,
+	100000040,
+	100000041,
+	26,
+	100000088,
+	78,
+	28,
+	100000087,
+	79,
+	34,
+	82,
+	80,
+	35,
+	81,
+	545,
+	36,
+	100000103,
+	100000115,
+	46,
+	100000097,
+	83,
+	57,
+	84,
+	100000099,
+	58,
+	100000098,
+	100000099,
+	5,
+	101,
+	86,
+	8,
+	87,
+	100000115,
+	16,
+	88,
+	89,
+	18,
+	91,
+	89,
+	19,
+	90,
+	92,
+	21,
+	97,
+	95,
+	19,
+	93,
+	92,
+	21,
+	98,
+	95,
+	21,
+	97,
+	94,
+	22,
+	100000014,
+	95,
+	35,
+	96,
+	100000042,
+	36,
+	100000103,
+	100000042,
+	22,
+	100000013,
+	98,
+	35,
+	99,
+	100000042,
+	36,
+	100000101,
+	100,
+	46,
+	100000110,
+	100000111,
+	6,
+	214,
+	102,
+	7,
+	208,
+	103,
+	8,
+	119,
+	104,
+	14,
+	118,
+	105,
+	21,
+	106,
+	100000023,
+	26,
+	107,
+	502,
+	37,
+	108,
+	100000086,
+	38,
+	100000086,
+	109,
+	39,
+	112,
+	110,
+	48,
+	100000058,
+	111,
+	50,
+	136,
+	100000085,
+	40,
+	113,
+	100000057,
+	41,
+	100000057,
+	114,
+	42,
+	115,
+	500,
+	48,
+	100000056,
+	116,
+	52,
+	117,
+	100000072,
+	65,
+	100000069,
+	100000072,
+	21,
+	501,
+	100000023,
+	9,
+	120,
+	124,
+	10,
+	121,
+	124,
+	11,
+	122,
+	124,
+	12,
+	123,
+	124,
+	13,
+	202,
+	124,
+	14,
+	195,
+	125,
+	20,
+	190,
+	126,
+	21,
+	127,
+	100000023,
+	23,
+	128,
+	129,
+	24,
+	189,
+	129,
+	26,
+	130,
+	197,
+	37,
+	131,
+	100000086,
+	38,
+	100000086,
+	132,
+	39,
+	159,
+	133,
+	48,
+	100000058,
+	134,
+	50,
+	135,
+	100000085,
+	51,
+	141,
+	136,
+	55,
+	100000076,
+	137,
+	59,
+	138,
+	100000084,
+	60,
+	100000083,
+	139,
+	61,
+	140,
+	100000083,
+	63,
+	100000083,
+	100000046,
+	55,
+	100000076,
+	142,
+	59,
+	143,
+	100000084,
+	60,
+	148,
+	144,
+	61,
+	145,
+	100000083,
+	62,
+	147,
+	146,
+	63,
+	150,
+	100000046,
+	63,
+	153,
+	100000046,
+	61,
+	149,
+	100000083,
+	62,
+	153,
+	150,
+	64,
+	151,
+	100000054,
+	66,
+	152,
+	100000053,
+	70,
+	100000082,
+	100000052,
+	64,
+	154,
+	100000054,
+	66,
+	155,
+	100000053,
+	70,
+	156,
+	100000052,
+	71,
+	157,
+	100000081,
+	73,
+	158,
+	100000080,
+	74,
+	100000077,
+	100000079,
+	40,
+	160,
+	100000057,
+	41,
+	100000057,
+	161,
+	42,
+	185,
+	162,
+	48,
+	174,
+	163,
+	49,
+	100000045,
+	164,
+	51,
+	165,
+	526,
+	60,
+	168,
+	166,
+	62,
+	100000055,
+	167,
+	63,
+	169,
+	100000046,
+	62,
+	100000055,
+	169,
+	64,
+	170,
+	100000054,
+	66,
+	171,
+	100000053,
+	69,
+	172,
+	100000065,
+	70,
+	173,
+	100000052,
+	72,
+	100000063,
+	100000051,
+	49,
+	100000045,
+	175,
+	51,
+	176,
+	526,
+	60,
+	179,
+	177,
+	62,
+	100000055,
+	178,
+	63,
+	180,
+	100000046,
+	62,
+	100000055,
+	180,
+	64,
+	181,
+	100000054,
+	66,
+	182,
+	100000053,
+	68,
+	100000047,
+	183,
+	70,
+	184,
+	100000052,
+	72,
+	100000048,
+	100000051,
+	48,
+	100000056,
+	186,
+	52,
+	187,
+	100000072,
+	65,
+	100000069,
+	188,
+	67,
+	100000070,
+	100000071,
+	25,
+	100000036,
+	100000042,
+	21,
+	191,
+	100000023,
+	25,
+	192,
+	100000042,
+	30,
+	194,
+	193,
+	46,
+	100000034,
+	100000036,
+	46,
+	100000033,
+	100000035,
+	21,
+	196,
+	100000023,
+	26,
+	100000088,
+	197,
+	28,
+	100000087,
+	198,
+	34,
+	201,
+	199,
+	35,
+	200,
+	545,
+	36,
+	100000101,
+	100000115,
+	46,
+	100000095,
+	100000096,
+	17,
+	203,
+	100000022,
+	20,
+	204,
+	100000021,
+	21,
+	205,
+	550,
+	33,
+	206,
+	550,
+	44,
+	100000016,
+	207,
+	45,
+	100000018,
+	100000020,
+	8,
+	209,
+	215,
+	16,
+	210,
+	220,
+	18,
+	211,
+	220,
+	19,
+	212,
+	224,
+	20,
+	213,
+	227,
+	21,
+	231,
+	401,
+	8,
+	218,
+	215,
+	19,
+	216,
+	100000009,
+	20,
+	217,
+	227,
+	21,
+	231,
+	100000009,
+	16,
+	219,
+	220,
+	18,
+	223,
+	220,
+	19,
+	221,
+	224,
+	20,
+	222,
+	227,
+	21,
+	231,
+	100000012,
+	19,
+	226,
+	224,
+	20,
+	225,
+	100000009,
+	21,
+	100000009,
+	100000012,
+	20,
+	230,
+	227,
+	21,
+	228,
+	100000009,
+	30,
+	229,
+	100000009,
+	34,
+	100000007,
+	100000009,
+	21,
+	231,
+	415,
+	30,
+	232,
+	100000008,
+	34,
+	100000007,
+	100000008,
+	4,
+	100000002,
+	234,
+	5,
+	235,
+	480,
+	6,
+	271,
+	236,
+	7,
+	270,
+	237,
+	8,
+	238,
+	491,
+	9,
+	239,
+	243,
+	10,
+	240,
+	243,
+	11,
+	241,
+	243,
+	12,
+	242,
+	243,
+	13,
+	547,
+	243,
+	14,
+	266,
+	244,
+	20,
+	264,
+	245,
+	26,
+	246,
+	267,
+	37,
+	247,
+	100000086,
+	38,
+	100000086,
+	248,
+	39,
+	249,
+	518,
+	40,
+	250,
+	100000057,
+	41,
+	100000057,
+	251,
+	42,
+	538,
+	252,
+	48,
+	100000043,
+	253,
+	49,
+	100000045,
+	254,
+	51,
+	255,
+	526,
+	60,
+	258,
+	256,
+	62,
+	100000055,
+	257,
+	63,
+	259,
+	100000046,
+	62,
+	100000055,
+	259,
+	64,
+	260,
+	100000054,
+	66,
+	261,
+	100000053,
+	69,
+	262,
+	100000065,
+	70,
+	263,
+	100000052,
+	72,
+	100000062,
+	100000051,
+	25,
+	265,
+	100000042,
+	46,
+	100000031,
+	100000032,
+	26,
+	100000088,
+	267,
+	28,
+	100000087,
+	268,
+	34,
+	269,
+	544,
+	46,
+	100000093,
+	100000094,
+	8,
+	397,
+	100000009,
+	8,
+	407,
+	100000009,
+	3,
+	346,
+	273,
+	4,
+	100000003,
+	274,
+	5,
+	284,
+	275,
+	8,
+	276,
+	100000115,
+	15,
+	100000005,
+	277,
+	16,
+	278,
+	281,
+	18,
+	279,
+	281,
+	19,
+	280,
+	281,
+	22,
+	100000014,
+	281,
+	35,
+	282,
+	100000042,
+	36,
+	100000102,
+	283,
+	46,
+	100000106,
+	100000107,
+	6,
+	405,
+	285,
+	7,
+	395,
+	286,
+	8,
+	295,
+	287,
+	14,
+	501,
+	288,
+	26,
+	289,
+	502,
+	37,
+	290,
+	100000086,
+	38,
+	100000086,
+	291,
+	39,
+	292,
+	307,
+	40,
+	293,
+	100000057,
+	41,
+	100000057,
+	294,
+	42,
+	335,
+	500,
+	9,
+	296,
+	300,
+	10,
+	297,
+	300,
+	11,
+	298,
+	300,
+	12,
+	299,
+	300,
+	13,
+	394,
+	300,
+	14,
+	339,
+	301,
+	15,
+	100000005,
+	302,
+	20,
+	337,
+	303,
+	26,
+	304,
+	341,
+	37,
+	305,
+	100000086,
+	38,
+	100000086,
+	306,
+	39,
+	309,
+	307,
+	48,
+	100000058,
+	308,
+	50,
+	100000074,
+	100000085,
+	40,
+	310,
+	100000057,
+	41,
+	100000057,
+	311,
+	42,
+	335,
+	312,
+	48,
+	324,
+	313,
+	49,
+	100000045,
+	314,
+	51,
+	315,
+	526,
+	60,
+	318,
+	316,
+	62,
+	100000055,
+	317,
+	63,
+	319,
+	100000046,
+	62,
+	100000055,
+	319,
+	64,
+	320,
+	100000054,
+	66,
+	321,
+	100000053,
+	69,
+	322,
+	100000065,
+	70,
+	323,
+	100000052,
+	72,
+	100000061,
+	100000051,
+	49,
+	100000045,
+	325,
+	51,
+	326,
+	526,
+	60,
+	329,
+	327,
+	62,
+	100000055,
+	328,
+	63,
+	330,
+	100000046,
+	62,
+	100000055,
+	330,
+	64,
+	331,
+	100000054,
+	66,
+	332,
+	100000053,
+	68,
+	100000047,
+	333,
+	70,
+	334,
+	100000052,
+	72,
+	100000049,
+	100000051,
+	48,
+	100000056,
+	336,
+	52,
+	100000067,
+	100000072,
+	25,
+	338,
+	100000042,
+	46,
+	100000027,
+	100000028,
+	15,
+	100000005,
+	340,
+	26,
+	100000088,
+	341,
+	28,
+	100000087,
+	342,
+	34,
+	345,
+	343,
+	35,
+	344,
+	545,
+	36,
+	100000102,
+	100000115,
+	46,
+	100000091,
+	100000092,
+	4,
+	100000002,
+	347,
+	5,
+	357,
+	348,
+	8,
+	349,
+	100000115,
+	15,
+	100000005,
+	350,
+	16,
+	351,
+	354,
+	18,
+	352,
+	354,
+	19,
+	353,
+	354,
+	22,
+	100000014,
+	354,
+	35,
+	355,
+	100000042,
+	36,
+	100000043,
+	356,
+	46,
+	100000104,
+	100000105,
+	6,
+	405,
+	358,
+	7,
+	395,
+	359,
+	8,
+	360,
+	491,
+	9,
+	361,
+	365,
+	10,
+	362,
+	365,
+	11,
+	363,
+	365,
+	12,
+	364,
+	365,
+	13,
+	394,
+	365,
+	14,
+	389,
+	366,
+	15,
+	100000005,
+	367,
+	20,
+	387,
+	368,
+	26,
+	369,
+	391,
+	37,
+	370,
+	100000086,
+	38,
+	100000086,
+	371,
+	39,
+	372,
+	518,
+	40,
+	373,
+	100000057,
+	41,
+	100000057,
+	374,
+	42,
+	538,
+	375,
+	48,
+	100000043,
+	376,
+	49,
+	100000045,
+	377,
+	51,
+	378,
+	526,
+	60,
+	381,
+	379,
+	62,
+	100000055,
+	380,
+	63,
+	382,
+	100000046,
+	62,
+	100000055,
+	382,
+	64,
+	383,
+	100000054,
+	66,
+	384,
+	100000053,
+	69,
+	385,
+	100000065,
+	70,
+	386,
+	100000052,
+	72,
+	100000060,
+	100000051,
+	25,
+	388,
+	100000042,
+	46,
+	100000025,
+	100000026,
+	15,
+	100000005,
+	390,
+	26,
+	100000088,
+	391,
+	28,
+	100000087,
+	392,
+	34,
+	393,
+	544,
+	46,
+	100000089,
+	100000090,
+	15,
+	100000005,
+	547,
+	8,
+	396,
+	100000009,
+	15,
+	100000005,
+	397,
+	16,
+	398,
+	410,
+	18,
+	399,
+	410,
+	19,
+	400,
+	410,
+	20,
+	401,
+	100000009,
+	27,
+	402,
+	100000012,
+	29,
+	100000011,
+	403,
+	31,
+	100000011,
+	404,
+	32,
+	100000011,
+	422,
+	8,
+	406,
+	100000009,
+	15,
+	100000005,
+	407,
+	16,
+	408,
+	410,
+	18,
+	409,
+	410,
+	19,
+	411,
+	410,
+	20,
+	100000012,
+	100000009,
+	20,
+	414,
+	412,
+	22,
+	413,
+	100000009,
+	34,
+	100000010,
+	100000009,
+	22,
+	416,
+	415,
+	27,
+	419,
+	100000012,
+	27,
+	418,
+	417,
+	34,
+	100000010,
+	100000012,
+	34,
+	100000010,
+	419,
+	43,
+	100000011,
+	420,
+	47,
+	100000011,
+	421,
+	53,
+	100000011,
+	422,
+	54,
+	100000011,
+	423,
+	56,
+	100000011,
+	100000012,
+	2,
+	100000001,
+	425,
+	3,
+	478,
+	426,
+	4,
+	100000004,
+	427,
+	5,
+	438,
+	428,
+	8,
+	429,
+	100000115,
+	16,
+	430,
+	433,
+	18,
+	431,
+	433,
+	19,
+	432,
+	433,
+	22,
+	100000014,
+	433,
+	35,
+	434,
+	100000042,
+	36,
+	100000044,
+	435,
+	46,
+	100000112,
+	436,
+	57,
+	437,
+	100000114,
+	58,
+	100000113,
+	100000114,
+	6,
+	100000006,
+	439,
+	7,
+	100000006,
+	440,
+	8,
+	450,
+	441,
+	14,
+	501,
+	442,
+	26,
+	443,
+	502,
+	37,
+	444,
+	100000086,
+	38,
+	100000086,
+	445,
+	39,
+	446,
+	465,
+	40,
+	447,
+	100000057,
+	41,
+	100000057,
+	448,
+	42,
+	471,
+	449,
+	48,
+	100000044,
+	500,
+	9,
+	451,
+	455,
+	10,
+	452,
+	455,
+	11,
+	453,
+	455,
+	12,
+	454,
+	455,
+	13,
+	547,
+	455,
+	14,
+	473,
+	456,
+	15,
+	460,
+	457,
+	20,
+	458,
+	461,
+	25,
+	459,
+	100000042,
+	46,
+	100000037,
+	100000038,
+	20,
+	540,
+	461,
+	26,
+	462,
+	474,
+	37,
+	463,
+	100000086,
+	38,
+	100000086,
+	464,
+	39,
+	467,
+	465,
+	48,
+	100000058,
+	466,
+	50,
+	100000075,
+	100000085,
+	40,
+	468,
+	100000057,
+	41,
+	100000057,
+	469,
+	42,
+	471,
+	470,
+	48,
+	100000044,
+	524,
+	48,
+	100000044,
+	472,
+	52,
+	100000068,
+	100000072,
+	26,
+	100000088,
+	474,
+	28,
+	100000087,
+	475,
+	34,
+	100000100,
+	476,
+	35,
+	477,
+	545,
+	36,
+	100000044,
+	100000115,
+	4,
+	100000002,
+	479,
+	5,
+	488,
+	480,
+	8,
+	481,
+	100000115,
+	16,
+	482,
+	485,
+	18,
+	483,
+	485,
+	19,
+	484,
+	485,
+	22,
+	100000014,
+	485,
+	35,
+	486,
+	100000042,
+	36,
+	100000043,
+	487,
+	46,
+	100000108,
+	100000109,
+	6,
+	100000006,
+	489,
+	7,
+	100000006,
+	490,
+	8,
+	503,
+	491,
+	14,
+	501,
+	492,
+	26,
+	493,
+	502,
+	37,
+	494,
+	100000086,
+	38,
+	100000086,
+	495,
+	39,
+	496,
+	518,
+	40,
+	497,
+	100000057,
+	41,
+	100000057,
+	498,
+	42,
+	538,
+	499,
+	48,
+	100000043,
+	500,
+	49,
+	100000045,
+	526,
+	26,
+	100000088,
+	502,
+	28,
+	100000087,
+	100000115,
+	9,
+	504,
+	508,
+	10,
+	505,
+	508,
+	11,
+	506,
+	508,
+	12,
+	507,
+	508,
+	13,
+	547,
+	508,
+	14,
+	541,
+	509,
+	15,
+	513,
+	510,
+	20,
+	511,
+	514,
+	25,
+	512,
+	100000042,
+	46,
+	100000029,
+	100000030,
+	20,
+	540,
+	514,
+	26,
+	515,
+	542,
+	37,
+	516,
+	100000086,
+	38,
+	100000086,
+	517,
+	39,
+	520,
+	518,
+	48,
+	100000058,
+	519,
+	50,
+	100000073,
+	100000085,
+	40,
+	521,
+	100000057,
+	41,
+	100000057,
+	522,
+	42,
+	538,
+	523,
+	48,
+	100000043,
+	524,
+	49,
+	100000045,
+	525,
+	51,
+	529,
+	526,
+	60,
+	100000055,
+	527,
+	62,
+	100000055,
+	528,
+	63,
+	100000055,
+	100000046,
+	60,
+	532,
+	530,
+	62,
+	100000055,
+	531,
+	63,
+	533,
+	100000046,
+	62,
+	100000055,
+	533,
+	64,
+	534,
+	100000054,
+	66,
+	535,
+	100000053,
+	69,
+	536,
+	100000065,
+	70,
+	537,
+	100000052,
+	72,
+	100000059,
+	100000051,
+	48,
+	100000043,
+	539,
+	52,
+	100000066,
+	100000072,
+	25,
+	100000024,
+	100000042,
+	26,
+	100000088,
+	542,
+	28,
+	100000087,
+	543,
+	34,
+	100000100,
+	544,
+	35,
+	546,
+	545,
+	36,
+	100000042,
+	100000115,
+	36,
+	100000043,
+	100000115,
+	17,
+	548,
+	100000022,
+	20,
+	549,
+	100000021,
+	33,
+	552,
+	550,
+	44,
+	100000017,
+	551,
+	45,
+	100000019,
+	100000020,
+	44,
+	100000015,
+	553,
+	45,
+	100000015,
+	100000020
+]);
+var bdd = BinaryDecisionDiagram.from(nodes, root, _data.conditions, _data.results);
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/endpoint/endpointResolver.js
+var cache = new EndpointCache({
+	size: 50,
+	params: [
+		"Accelerate",
+		"Bucket",
+		"DisableAccessPoints",
+		"DisableMultiRegionAccessPoints",
+		"DisableS3ExpressSessionAuth",
+		"Endpoint",
+		"ForcePathStyle",
+		"Region",
+		"UseArnRegion",
+		"UseDualStack",
+		"UseFIPS",
+		"UseGlobalEndpoint",
+		"UseObjectLambdaEndpoint",
+		"UseS3ExpressControlEndpoint"
+	]
+});
+var defaultEndpointResolver = (endpointParams, context = {}) => {
+	return cache.get(endpointParams, () => decideEndpoint(bdd, {
+		endpointParams,
+		logger: context.logger
+	}));
+};
+customEndpointFunctions.aws = awsEndpointFunctions;
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/auth/httpAuthSchemeProvider.js
+var createEndpointRuleSetHttpAuthSchemeParametersProvider = (defaultHttpAuthSchemeParametersProvider) => async (config, context, input) => {
+	if (!input) throw new Error("Could not find `input` for `defaultEndpointRuleSetHttpAuthSchemeParametersProvider`");
+	const defaultParameters = await defaultHttpAuthSchemeParametersProvider(config, context, input);
+	const instructionsFn = getSmithyContext(context)?.commandInstance?.constructor?.getEndpointParameterInstructions;
+	if (!instructionsFn) throw new Error(`getEndpointParameterInstructions() is not defined on '${context.commandName}'`);
+	const endpointParameters = await resolveParams(input, { getEndpointParameterInstructions: instructionsFn }, config);
+	return Object.assign(defaultParameters, endpointParameters);
+};
+var _defaultS3HttpAuthSchemeParametersProvider = async (config, context, input) => {
+	return {
+		operation: getSmithyContext(context).operation,
+		region: await normalizeProvider(config.region)() || (() => {
+			throw new Error("expected `region` to be configured for `aws.auth#sigv4`");
+		})()
+	};
+};
+var defaultS3HttpAuthSchemeParametersProvider = createEndpointRuleSetHttpAuthSchemeParametersProvider(_defaultS3HttpAuthSchemeParametersProvider);
+function createAwsAuthSigv4HttpAuthOption(authParameters) {
+	return {
+		schemeId: "aws.auth#sigv4",
+		signingProperties: {
+			name: "s3",
+			region: authParameters.region
+		},
+		propertiesExtractor: (config, context) => ({ signingProperties: {
+			config,
+			context
+		} })
+	};
+}
+function createAwsAuthSigv4aHttpAuthOption(authParameters) {
+	return {
+		schemeId: "aws.auth#sigv4a",
+		signingProperties: {
+			name: "s3",
+			region: authParameters.region
+		},
+		propertiesExtractor: (config, context) => ({ signingProperties: {
+			config,
+			context
+		} })
+	};
+}
+var createEndpointRuleSetHttpAuthSchemeProvider = (defaultEndpointResolver, defaultHttpAuthSchemeResolver, createHttpAuthOptionFunctions) => {
+	const endpointRuleSetHttpAuthSchemeProvider = (authParameters) => {
+		const authSchemes = defaultEndpointResolver(authParameters).properties?.authSchemes;
+		if (!authSchemes) return defaultHttpAuthSchemeResolver(authParameters);
+		const options = [];
+		for (const scheme of authSchemes) {
+			const { name: resolvedName, properties = {}, ...rest } = scheme;
+			const name = resolvedName.toLowerCase();
+			if (resolvedName !== name) console.warn(`HttpAuthScheme has been normalized with lowercasing: '${resolvedName}' to '${name}'`);
+			let schemeId;
+			if (name === "sigv4a") {
+				schemeId = "aws.auth#sigv4a";
+				const sigv4Present = authSchemes.find((s) => {
+					const name = s.name.toLowerCase();
+					return name !== "sigv4a" && name.startsWith("sigv4");
+				});
+				if (SignatureV4MultiRegion.sigv4aDependency() === "none" && sigv4Present) continue;
+			} else if (name.startsWith("sigv4")) schemeId = "aws.auth#sigv4";
+			else throw new Error(`Unknown HttpAuthScheme found in '@smithy.rules#endpointRuleSet': '${name}'`);
+			const createOption = createHttpAuthOptionFunctions[schemeId];
+			if (!createOption) throw new Error(`Could not find HttpAuthOption create function for '${schemeId}'`);
+			const option = createOption(authParameters);
+			option.schemeId = schemeId;
+			option.signingProperties = {
+				...option.signingProperties || {},
+				...rest,
+				...properties
+			};
+			options.push(option);
+		}
+		return options;
+	};
+	return endpointRuleSetHttpAuthSchemeProvider;
+};
+var _defaultS3HttpAuthSchemeProvider = (authParameters) => {
+	const options = [];
+	switch (authParameters.operation) {
+		default:
+			options.push(createAwsAuthSigv4HttpAuthOption(authParameters));
+			options.push(createAwsAuthSigv4aHttpAuthOption(authParameters));
+	}
+	return options;
+};
+var defaultS3HttpAuthSchemeProvider = createEndpointRuleSetHttpAuthSchemeProvider(defaultEndpointResolver, _defaultS3HttpAuthSchemeProvider, {
+	"aws.auth#sigv4": createAwsAuthSigv4HttpAuthOption,
+	"aws.auth#sigv4a": createAwsAuthSigv4aHttpAuthOption
+});
+var resolveHttpAuthSchemeConfig = (config) => {
+	const config_1 = resolveAwsSdkSigV4AConfig(resolveAwsSdkSigV4Config(config));
+	return Object.assign(config_1, { authSchemePreference: normalizeProvider(config.authSchemePreference ?? []) });
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/endpoint/EndpointParameters.js
+var resolveClientEndpointParameters = (options) => {
+	return Object.assign(options, {
+		useFipsEndpoint: options.useFipsEndpoint ?? false,
+		useDualstackEndpoint: options.useDualstackEndpoint ?? false,
+		forcePathStyle: options.forcePathStyle ?? false,
+		useAccelerateEndpoint: options.useAccelerateEndpoint ?? false,
+		useGlobalEndpoint: options.useGlobalEndpoint ?? false,
+		disableMultiregionAccessPoints: options.disableMultiregionAccessPoints ?? false,
+		defaultSigningName: "s3",
+		clientContextParams: options.clientContextParams ?? {}
+	});
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/commandBuilder.js
+var command = makeBuilder({
+	ForcePathStyle: {
+		type: "clientContextParams",
+		name: "forcePathStyle"
+	},
+	UseArnRegion: {
+		type: "clientContextParams",
+		name: "useArnRegion"
+	},
+	DisableMultiRegionAccessPoints: {
+		type: "clientContextParams",
+		name: "disableMultiregionAccessPoints"
+	},
+	Accelerate: {
+		type: "clientContextParams",
+		name: "useAccelerateEndpoint"
+	},
+	DisableS3ExpressSessionAuth: {
+		type: "clientContextParams",
+		name: "disableS3ExpressSessionAuth"
+	},
+	UseGlobalEndpoint: {
+		type: "builtInParams",
+		name: "useGlobalEndpoint"
+	},
+	UseFIPS: {
+		type: "builtInParams",
+		name: "useFipsEndpoint"
+	},
+	Endpoint: {
+		type: "builtInParams",
+		name: "endpoint"
+	},
+	Region: {
+		type: "builtInParams",
+		name: "region"
+	},
+	UseDualStack: {
+		type: "builtInParams",
+		name: "useDualstackEndpoint"
+	}
+}, "AmazonS3", "S3Client", getEndpointPlugin);
+var _ep0 = {
+	Bucket: {
+		type: "contextParams",
+		name: "Bucket"
+	},
+	Key: {
+		type: "contextParams",
+		name: "Key"
+	}
+};
+var _ep4 = {
+	DisableS3ExpressSessionAuth: {
+		type: "staticContextParams",
+		value: true
+	},
+	Bucket: {
+		type: "contextParams",
+		name: "Bucket"
+	}
+};
+var _mw0 = (Command, cs, config, o) => [getThrow200ExceptionsPlugin(config)];
+var _mw7 = (Command, cs, config, o) => [
+	getFlexibleChecksumsPlugin(config, {
+		requestChecksumRequired: false,
+		requestValidationModeMember: "ChecksumMode",
+		responseAlgorithms: [
+			"CRC64NVME",
+			"CRC32",
+			"CRC32C",
+			"SHA256",
+			"SHA1",
+			"SHA512",
+			"MD5",
+			"XXHASH64",
+			"XXHASH3",
+			"XXHASH128"
+		]
+	}),
+	getSsecPlugin(config),
+	getS3ExpiresMiddlewarePlugin(config)
+];
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/models/S3ServiceException.js
+var S3ServiceException = class S3ServiceException extends ServiceException {
+	constructor(options) {
+		super(options);
+		Object.setPrototypeOf(this, S3ServiceException.prototype);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/models/errors.js
+var NoSuchUpload = class NoSuchUpload extends S3ServiceException {
+	name = "NoSuchUpload";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "NoSuchUpload",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, NoSuchUpload.prototype);
+	}
+};
+var AccessDenied = class AccessDenied extends S3ServiceException {
+	name = "AccessDenied";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "AccessDenied",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, AccessDenied.prototype);
+	}
+};
+var ObjectNotInActiveTierError = class ObjectNotInActiveTierError extends S3ServiceException {
+	name = "ObjectNotInActiveTierError";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "ObjectNotInActiveTierError",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, ObjectNotInActiveTierError.prototype);
+	}
+};
+var BucketAlreadyExists = class BucketAlreadyExists extends S3ServiceException {
+	name = "BucketAlreadyExists";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "BucketAlreadyExists",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, BucketAlreadyExists.prototype);
+	}
+};
+var BucketAlreadyOwnedByYou = class BucketAlreadyOwnedByYou extends S3ServiceException {
+	name = "BucketAlreadyOwnedByYou";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "BucketAlreadyOwnedByYou",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, BucketAlreadyOwnedByYou.prototype);
+	}
+};
+var NoSuchBucket = class NoSuchBucket extends S3ServiceException {
+	name = "NoSuchBucket";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "NoSuchBucket",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, NoSuchBucket.prototype);
+	}
+};
+var NoSuchKey = class NoSuchKey extends S3ServiceException {
+	name = "NoSuchKey";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "NoSuchKey",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, NoSuchKey.prototype);
+	}
+};
+var InvalidObjectState = class InvalidObjectState extends S3ServiceException {
+	name = "InvalidObjectState";
+	$fault = "client";
+	StorageClass;
+	AccessTier;
+	constructor(opts) {
+		super({
+			name: "InvalidObjectState",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, InvalidObjectState.prototype);
+		this.StorageClass = opts.StorageClass;
+		this.AccessTier = opts.AccessTier;
+	}
+};
+var NoSuchAnnotation = class NoSuchAnnotation extends S3ServiceException {
+	name = "NoSuchAnnotation";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "NoSuchAnnotation",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, NoSuchAnnotation.prototype);
+	}
+};
+var NotFound = class NotFound extends S3ServiceException {
+	name = "NotFound";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "NotFound",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, NotFound.prototype);
+	}
+};
+var InvalidPrefix = class InvalidPrefix extends S3ServiceException {
+	name = "InvalidPrefix";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "InvalidPrefix",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, InvalidPrefix.prototype);
+	}
+};
+var EncryptionTypeMismatch = class EncryptionTypeMismatch extends S3ServiceException {
+	name = "EncryptionTypeMismatch";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "EncryptionTypeMismatch",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, EncryptionTypeMismatch.prototype);
+	}
+};
+var InvalidRequest = class InvalidRequest extends S3ServiceException {
+	name = "InvalidRequest";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "InvalidRequest",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, InvalidRequest.prototype);
+	}
+};
+var InvalidWriteOffset = class InvalidWriteOffset extends S3ServiceException {
+	name = "InvalidWriteOffset";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "InvalidWriteOffset",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, InvalidWriteOffset.prototype);
+	}
+};
+var TooManyParts = class TooManyParts extends S3ServiceException {
+	name = "TooManyParts";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "TooManyParts",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, TooManyParts.prototype);
+	}
+};
+var AnnotationLimitExceeded = class AnnotationLimitExceeded extends S3ServiceException {
+	name = "AnnotationLimitExceeded";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "AnnotationLimitExceeded",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, AnnotationLimitExceeded.prototype);
+	}
+};
+var AnnotationNameTooLong = class AnnotationNameTooLong extends S3ServiceException {
+	name = "AnnotationNameTooLong";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "AnnotationNameTooLong",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, AnnotationNameTooLong.prototype);
+	}
+};
+var InvalidAnnotationName = class InvalidAnnotationName extends S3ServiceException {
+	name = "InvalidAnnotationName";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "InvalidAnnotationName",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, InvalidAnnotationName.prototype);
+	}
+};
+var UnsupportedMediaType = class UnsupportedMediaType extends S3ServiceException {
+	name = "UnsupportedMediaType";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "UnsupportedMediaType",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, UnsupportedMediaType.prototype);
+	}
+};
+var IdempotencyParameterMismatch = class IdempotencyParameterMismatch extends S3ServiceException {
+	name = "IdempotencyParameterMismatch";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "IdempotencyParameterMismatch",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, IdempotencyParameterMismatch.prototype);
+	}
+};
+var ObjectAlreadyInActiveTierError = class ObjectAlreadyInActiveTierError extends S3ServiceException {
+	name = "ObjectAlreadyInActiveTierError";
+	$fault = "client";
+	constructor(opts) {
+		super({
+			name: "ObjectAlreadyInActiveTierError",
+			$fault: "client",
+			...opts
+		});
+		Object.setPrototypeOf(this, ObjectAlreadyInActiveTierError.prototype);
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/schemas/schemas_0.js
+var _AD = "AccessDenied";
+var _AKI = "AccessKeyId";
+var _ALE = "AnnotationLimitExceeded";
+var _ANTL = "AnnotationNameTooLong";
+var _AR = "AcceptRanges";
+var _AT = "AccessTier";
+var _B = "Bucket";
+var _BAE = "BucketAlreadyExists";
+var _BAOBY = "BucketAlreadyOwnedByYou";
+var _BKE = "BucketKeyEnabled";
+var _Bo = "Body";
+var _CC = "CacheControl";
+var _CCRC = "ChecksumCRC32";
+var _CCRCC = "ChecksumCRC32C";
+var _CCRCNVME = "ChecksumCRC64NVME";
+var _CC_ = "Cache-Control";
+var _CD_ = "Content-Disposition";
+var _CDo = "ContentDisposition";
+var _CE_ = "Content-Encoding";
+var _CEo = "ContentEncoding";
+var _CL = "ContentLanguage";
+var _CL_ = "Content-Language";
+var _CL__ = "Content-Length";
+var _CLo = "ContentLength";
+var _CMD = "ChecksumMD5";
+var _CMh = "ChecksumMode";
+var _CR = "ContentRange";
+var _CR_ = "Content-Range";
+var _CSHA = "ChecksumSHA1";
+var _CSHAh = "ChecksumSHA256";
+var _CSHAhe = "ChecksumSHA512";
+var _CSO = "CreateSessionOutput";
+var _CSR = "CreateSessionResult";
+var _CSRr = "CreateSessionRequest";
+var _CSr = "CreateSession";
+var _CT = "ChecksumType";
+var _CT_ = "Content-Type";
+var _CTo = "ContentType";
+var _CXXHASH = "ChecksumXXHASH64";
+var _CXXHASHh = "ChecksumXXHASH3";
+var _CXXHASHhe = "ChecksumXXHASH128";
+var _Cr = "Credentials";
+var _DM = "DeleteMarker";
+var _EBO = "ExpectedBucketOwner";
+var _ES = "ExpiresString";
+var _ET = "ETag";
+var _ETM = "EncryptionTypeMismatch";
+var _Ex = "Expiration";
+var _Exp = "Expires";
+var _GO = "GetObject";
+var _GOO = "GetObjectOutput";
+var _GOR = "GetObjectRequest";
+var _IAN = "InvalidAnnotationName";
+var _IM = "IfMatch";
+var _IMS_ = "If-Modified-Since";
+var _IMSf = "IfModifiedSince";
+var _IM_ = "If-Match";
+var _INM = "IfNoneMatch";
+var _INM_ = "If-None-Match";
+var _IOS = "InvalidObjectState";
+var _IP = "InvalidPrefix";
+var _IPM = "IdempotencyParameterMismatch";
+var _IR = "InvalidRequest";
+var _IUS = "IfUnmodifiedSince";
+var _IUS_ = "If-Unmodified-Since";
+var _IWO = "InvalidWriteOffset";
+var _K = "Key";
+var _LM = "LastModified";
+var _LM_ = "Last-Modified";
+var _M = "Metadata";
+var _MM = "MissingMeta";
+var _NF = "NotFound";
+var _NSA = "NoSuchAnnotation";
+var _NSB = "NoSuchBucket";
+var _NSK = "NoSuchKey";
+var _NSU = "NoSuchUpload";
+var _OAIATE = "ObjectAlreadyInActiveTierError";
+var _OLLHS = "ObjectLockLegalHoldStatus";
+var _OLM = "ObjectLockMode";
+var _OLRUD = "ObjectLockRetainUntilDate";
+var _ONIATE = "ObjectNotInActiveTierError";
+var _PC = "PartsCount";
+var _PN = "PartNumber";
+var _RC = "RequestCharged";
+var _RCC = "ResponseCacheControl";
+var _RCD = "ResponseContentDisposition";
+var _RCE = "ResponseContentEncoding";
+var _RCL = "ResponseContentLanguage";
+var _RCT = "ResponseContentType";
+var _RE = "ResponseExpires";
+var _RP = "RequestPayer";
+var _RS = "ReplicationStatus";
+var _Ra = "Range";
+var _Re = "Restore";
+var _SAK = "SecretAccessKey";
+var _SB = "StreamingBlob";
+var _SC = "StorageClass";
+var _SCV = "SessionCredentialValue";
+var _SCe = "SessionCredentials";
+var _SM = "SessionMode";
+var _SSE = "ServerSideEncryption";
+var _SSECA = "SSECustomerAlgorithm";
+var _SSECK = "SSECustomerKey";
+var _SSECKMD = "SSECustomerKeyMD5";
+var _SSEKMSEC = "SSEKMSEncryptionContext";
+var _SSEKMSKI = "SSEKMSKeyId";
+var _ST = "SessionToken";
+var _TC = "TagCount";
+var _TMP = "TooManyParts";
+var _UMT = "UnsupportedMediaType";
+var _VI = "VersionId";
+var _WRL = "WebsiteRedirectLocation";
+var _ar = "accept-ranges";
+var _c = "client";
+var _e = "error";
+var _h = "http";
+var _hC = "httpChecksum";
+var _hE = "httpError";
+var _hH = "httpHeader";
+var _hPH = "httpPrefixHeaders";
+var _hQ = "httpQuery";
+var _pN = "partNumber";
+var _rcc = "response-cache-control";
+var _rcd = "response-content-disposition";
+var _rce = "response-content-encoding";
+var _rcl = "response-content-language";
+var _rct = "response-content-type";
+var _re = "response-expires";
+var _s = "smithy.ts.sdk.synthetic.com.amazonaws.s3";
+var _st = "streaming";
+var _vI = "versionId";
+var _xN = "xmlName";
+var _xacc = "x-amz-checksum-crc32";
+var _xacc_ = "x-amz-checksum-crc32c";
+var _xacc__ = "x-amz-checksum-crc64nvme";
+var _xacm = "x-amz-checksum-md5";
+var _xacm_ = "x-amz-checksum-mode";
+var _xacs = "x-amz-checksum-sha1";
+var _xacs_ = "x-amz-checksum-sha256";
+var _xacs__ = "x-amz-checksum-sha512";
+var _xacsm = "x-amz-create-session-mode";
+var _xact = "x-amz-checksum-type";
+var _xacx = "x-amz-checksum-xxhash64";
+var _xacx_ = "x-amz-checksum-xxhash3";
+var _xacx__ = "x-amz-checksum-xxhash128";
+var _xadm = "x-amz-delete-marker";
+var _xae = "x-amz-expiration";
+var _xaebo = "x-amz-expected-bucket-owner";
+var _xam = "x-amz-meta-";
+var _xamm = "x-amz-missing-meta";
+var _xampc = "x-amz-mp-parts-count";
+var _xaollh = "x-amz-object-lock-legal-hold";
+var _xaolm = "x-amz-object-lock-mode";
+var _xaolrud = "x-amz-object-lock-retain-until-date";
+var _xar = "x-amz-restore";
+var _xarc = "x-amz-request-charged";
+var _xarp = "x-amz-request-payer";
+var _xars = "x-amz-replication-status";
+var _xasc = "x-amz-storage-class";
+var _xasse = "x-amz-server-side-encryption";
+var _xasseakki = "x-amz-server-side-encryption-aws-kms-key-id";
+var _xassebke = "x-amz-server-side-encryption-bucket-key-enabled";
+var _xassec = "x-amz-server-side-encryption-context";
+var _xasseca = "x-amz-server-side-encryption-customer-algorithm";
+var _xasseck = "x-amz-server-side-encryption-customer-key";
+var _xasseckM = "x-amz-server-side-encryption-customer-key-MD5";
+var _xatc = "x-amz-tagging-count";
+var _xavi = "x-amz-version-id";
+var _xawrl = "x-amz-website-redirect-location";
+var n0 = "com.amazonaws.s3";
+var _s_registry = TypeRegistry.for(_s);
+var S3ServiceException$ = [
+	-3,
+	_s,
+	"S3ServiceException",
+	0,
+	[],
+	[]
+];
+_s_registry.registerError(S3ServiceException$, S3ServiceException);
+var n0_registry = TypeRegistry.for(n0);
+var AccessDenied$ = [
+	-3,
+	n0,
+	_AD,
+	{
+		[_e]: _c,
+		[_hE]: 403
+	},
+	[],
+	[]
+];
+n0_registry.registerError(AccessDenied$, AccessDenied);
+var AnnotationLimitExceeded$ = [
+	-3,
+	n0,
+	_ALE,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(AnnotationLimitExceeded$, AnnotationLimitExceeded);
+var AnnotationNameTooLong$ = [
+	-3,
+	n0,
+	_ANTL,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(AnnotationNameTooLong$, AnnotationNameTooLong);
+var BucketAlreadyExists$ = [
+	-3,
+	n0,
+	_BAE,
+	{
+		[_e]: _c,
+		[_hE]: 409
+	},
+	[],
+	[]
+];
+n0_registry.registerError(BucketAlreadyExists$, BucketAlreadyExists);
+var BucketAlreadyOwnedByYou$ = [
+	-3,
+	n0,
+	_BAOBY,
+	{
+		[_e]: _c,
+		[_hE]: 409
+	},
+	[],
+	[]
+];
+n0_registry.registerError(BucketAlreadyOwnedByYou$, BucketAlreadyOwnedByYou);
+var EncryptionTypeMismatch$ = [
+	-3,
+	n0,
+	_ETM,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(EncryptionTypeMismatch$, EncryptionTypeMismatch);
+var IdempotencyParameterMismatch$ = [
+	-3,
+	n0,
+	_IPM,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(IdempotencyParameterMismatch$, IdempotencyParameterMismatch);
+var InvalidAnnotationName$ = [
+	-3,
+	n0,
+	_IAN,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(InvalidAnnotationName$, InvalidAnnotationName);
+var InvalidObjectState$ = [
+	-3,
+	n0,
+	_IOS,
+	{
+		[_e]: _c,
+		[_hE]: 403
+	},
+	[_SC, _AT],
+	[0, 0]
+];
+n0_registry.registerError(InvalidObjectState$, InvalidObjectState);
+var InvalidPrefix$ = [
+	-3,
+	n0,
+	_IP,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(InvalidPrefix$, InvalidPrefix);
+var InvalidRequest$ = [
+	-3,
+	n0,
+	_IR,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(InvalidRequest$, InvalidRequest);
+var InvalidWriteOffset$ = [
+	-3,
+	n0,
+	_IWO,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(InvalidWriteOffset$, InvalidWriteOffset);
+var NoSuchAnnotation$ = [
+	-3,
+	n0,
+	_NSA,
+	{
+		[_e]: _c,
+		[_hE]: 404
+	},
+	[],
+	[]
+];
+n0_registry.registerError(NoSuchAnnotation$, NoSuchAnnotation);
+var NoSuchBucket$ = [
+	-3,
+	n0,
+	_NSB,
+	{
+		[_e]: _c,
+		[_hE]: 404
+	},
+	[],
+	[]
+];
+n0_registry.registerError(NoSuchBucket$, NoSuchBucket);
+var NoSuchKey$ = [
+	-3,
+	n0,
+	_NSK,
+	{
+		[_e]: _c,
+		[_hE]: 404
+	},
+	[],
+	[]
+];
+n0_registry.registerError(NoSuchKey$, NoSuchKey);
+var NoSuchUpload$ = [
+	-3,
+	n0,
+	_NSU,
+	{
+		[_e]: _c,
+		[_hE]: 404
+	},
+	[],
+	[]
+];
+n0_registry.registerError(NoSuchUpload$, NoSuchUpload);
+var NotFound$ = [
+	-3,
+	n0,
+	_NF,
+	{ [_e]: _c },
+	[],
+	[]
+];
+n0_registry.registerError(NotFound$, NotFound);
+var ObjectAlreadyInActiveTierError$ = [
+	-3,
+	n0,
+	_OAIATE,
+	{
+		[_e]: _c,
+		[_hE]: 403
+	},
+	[],
+	[]
+];
+n0_registry.registerError(ObjectAlreadyInActiveTierError$, ObjectAlreadyInActiveTierError);
+var ObjectNotInActiveTierError$ = [
+	-3,
+	n0,
+	_ONIATE,
+	{
+		[_e]: _c,
+		[_hE]: 403
+	},
+	[],
+	[]
+];
+n0_registry.registerError(ObjectNotInActiveTierError$, ObjectNotInActiveTierError);
+var TooManyParts$ = [
+	-3,
+	n0,
+	_TMP,
+	{
+		[_e]: _c,
+		[_hE]: 400
+	},
+	[],
+	[]
+];
+n0_registry.registerError(TooManyParts$, TooManyParts);
+var UnsupportedMediaType$ = [
+	-3,
+	n0,
+	_UMT,
+	{
+		[_e]: _c,
+		[_hE]: 415
+	},
+	[],
+	[]
+];
+n0_registry.registerError(UnsupportedMediaType$, UnsupportedMediaType);
+var errorTypeRegistries = [_s_registry, n0_registry];
+var SessionCredentialValue = [
+	0,
+	n0,
+	_SCV,
+	8,
+	0
+];
+var SSECustomerKey = [
+	0,
+	n0,
+	_SSECK,
+	8,
+	0
+];
+var SSEKMSEncryptionContext = [
+	0,
+	n0,
+	_SSEKMSEC,
+	8,
+	0
+];
+var SSEKMSKeyId = [
+	0,
+	n0,
+	_SSEKMSKI,
+	8,
+	0
+];
+var StreamingBlob = [
+	0,
+	n0,
+	_SB,
+	{ [_st]: 1 },
+	42
+];
+var CreateSessionOutput$ = [
+	3,
+	n0,
+	_CSO,
+	{ [_xN]: _CSR },
+	[
+		_Cr,
+		_SSE,
+		_SSEKMSKI,
+		_SSEKMSEC,
+		_BKE
+	],
+	[
+		[() => SessionCredentials$, { [_xN]: _Cr }],
+		[0, { [_hH]: _xasse }],
+		[() => SSEKMSKeyId, { [_hH]: _xasseakki }],
+		[() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
+		[2, { [_hH]: _xassebke }]
+	],
+	1
+];
+var CreateSessionRequest$ = [
+	3,
+	n0,
+	_CSRr,
+	0,
+	[
+		_B,
+		_SM,
+		_SSE,
+		_SSEKMSKI,
+		_SSEKMSEC,
+		_BKE
+	],
+	[
+		[0, 1],
+		[0, { [_hH]: _xacsm }],
+		[0, { [_hH]: _xasse }],
+		[() => SSEKMSKeyId, { [_hH]: _xasseakki }],
+		[() => SSEKMSEncryptionContext, { [_hH]: _xassec }],
+		[2, { [_hH]: _xassebke }]
+	],
+	1
+];
+var GetObjectOutput$ = [
+	3,
+	n0,
+	_GOO,
+	0,
+	[
+		_Bo,
+		_DM,
+		_AR,
+		_Ex,
+		_Re,
+		_LM,
+		_CLo,
+		_ET,
+		_CCRC,
+		_CCRCC,
+		_CCRCNVME,
+		_CSHA,
+		_CSHAh,
+		_CSHAhe,
+		_CMD,
+		_CXXHASH,
+		_CXXHASHh,
+		_CXXHASHhe,
+		_CT,
+		_MM,
+		_VI,
+		_CC,
+		_CDo,
+		_CEo,
+		_CL,
+		_CR,
+		_CTo,
+		_Exp,
+		_ES,
+		_WRL,
+		_SSE,
+		_M,
+		_SSECA,
+		_SSECKMD,
+		_SSEKMSKI,
+		_BKE,
+		_SC,
+		_RC,
+		_RS,
+		_PC,
+		_TC,
+		_OLM,
+		_OLRUD,
+		_OLLHS
+	],
+	[
+		[() => StreamingBlob, 16],
+		[2, { [_hH]: _xadm }],
+		[0, { [_hH]: _ar }],
+		[0, { [_hH]: _xae }],
+		[0, { [_hH]: _xar }],
+		[4, { [_hH]: _LM_ }],
+		[1, { [_hH]: _CL__ }],
+		[0, { [_hH]: _ET }],
+		[0, { [_hH]: _xacc }],
+		[0, { [_hH]: _xacc_ }],
+		[0, { [_hH]: _xacc__ }],
+		[0, { [_hH]: _xacs }],
+		[0, { [_hH]: _xacs_ }],
+		[0, { [_hH]: _xacs__ }],
+		[0, { [_hH]: _xacm }],
+		[0, { [_hH]: _xacx }],
+		[0, { [_hH]: _xacx_ }],
+		[0, { [_hH]: _xacx__ }],
+		[0, { [_hH]: _xact }],
+		[1, { [_hH]: _xamm }],
+		[0, { [_hH]: _xavi }],
+		[0, { [_hH]: _CC_ }],
+		[0, { [_hH]: _CD_ }],
+		[0, { [_hH]: _CE_ }],
+		[0, { [_hH]: _CL_ }],
+		[0, { [_hH]: _CR_ }],
+		[0, { [_hH]: _CT_ }],
+		[4, { [_hH]: _Exp }],
+		[0, { [_hH]: _ES }],
+		[0, { [_hH]: _xawrl }],
+		[0, { [_hH]: _xasse }],
+		[128, { [_hPH]: _xam }],
+		[0, { [_hH]: _xasseca }],
+		[0, { [_hH]: _xasseckM }],
+		[() => SSEKMSKeyId, { [_hH]: _xasseakki }],
+		[2, { [_hH]: _xassebke }],
+		[0, { [_hH]: _xasc }],
+		[0, { [_hH]: _xarc }],
+		[0, { [_hH]: _xars }],
+		[1, { [_hH]: _xampc }],
+		[1, { [_hH]: _xatc }],
+		[0, { [_hH]: _xaolm }],
+		[5, { [_hH]: _xaolrud }],
+		[0, { [_hH]: _xaollh }]
+	]
+];
+var GetObjectRequest$ = [
+	3,
+	n0,
+	_GOR,
+	0,
+	[
+		_B,
+		_K,
+		_IM,
+		_IMSf,
+		_INM,
+		_IUS,
+		_Ra,
+		_RCC,
+		_RCD,
+		_RCE,
+		_RCL,
+		_RCT,
+		_RE,
+		_VI,
+		_SSECA,
+		_SSECK,
+		_SSECKMD,
+		_RP,
+		_PN,
+		_EBO,
+		_CMh
+	],
+	[
+		[0, 1],
+		[0, 1],
+		[0, { [_hH]: _IM_ }],
+		[4, { [_hH]: _IMS_ }],
+		[0, { [_hH]: _INM_ }],
+		[4, { [_hH]: _IUS_ }],
+		[0, { [_hH]: _Ra }],
+		[0, { [_hQ]: _rcc }],
+		[0, { [_hQ]: _rcd }],
+		[0, { [_hQ]: _rce }],
+		[0, { [_hQ]: _rcl }],
+		[0, { [_hQ]: _rct }],
+		[6, { [_hQ]: _re }],
+		[0, { [_hQ]: _vI }],
+		[0, { [_hH]: _xasseca }],
+		[() => SSECustomerKey, { [_hH]: _xasseck }],
+		[0, { [_hH]: _xasseckM }],
+		[0, { [_hH]: _xarp }],
+		[1, { [_hQ]: _pN }],
+		[0, { [_hH]: _xaebo }],
+		[0, { [_hH]: _xacm_ }]
+	],
+	2
+];
+var SessionCredentials$ = [
+	3,
+	n0,
+	_SCe,
+	0,
+	[
+		_AKI,
+		_SAK,
+		_ST,
+		_Ex
+	],
+	[
+		[0, { [_xN]: _AKI }],
+		[() => SessionCredentialValue, { [_xN]: _SAK }],
+		[() => SessionCredentialValue, { [_xN]: _ST }],
+		[4, { [_xN]: _Ex }]
+	],
+	4
+];
+var CreateSession$ = [
+	9,
+	n0,
+	_CSr,
+	{ [_h]: [
+		"GET",
+		"/?session",
+		200
+	] },
+	() => CreateSessionRequest$,
+	() => CreateSessionOutput$
+];
+var GetObject$ = [
+	9,
+	n0,
+	_GO,
+	{
+		[_hC]: "-",
+		[_h]: [
+			"GET",
+			"/{Key+}?x-id=GetObject",
+			200
+		]
+	},
+	() => GetObjectRequest$,
+	() => GetObjectOutput$
+];
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/commands/CreateSessionCommand.js
+var CreateSessionCommand = class extends command(_ep4, _mw0, "CreateSession", CreateSession$) {};
+var package_default = {
+	name: "@aws-sdk/client-s3",
+	version: "3.1090.0",
+	description: "AWS SDK for JavaScript S3 Client for Node.js, Browser and React Native",
+	homepage: "https://github.com/aws/aws-sdk-js-v3/tree/main/clients/client-s3",
+	license: "Apache-2.0",
+	author: {
+		"name": "AWS SDK for JavaScript Team",
+		"url": "https://aws.amazon.com/sdk-for-javascript/"
+	},
+	repository: {
+		"type": "git",
+		"url": "https://github.com/aws/aws-sdk-js-v3.git",
+		"directory": "clients/client-s3"
+	},
+	files: ["dist-*/**"],
+	sideEffects: false,
+	main: "./dist-cjs/index.js",
+	module: "./dist-es/index.js",
+	browser: { "./dist-es/runtimeConfig": "./dist-es/runtimeConfig.browser" },
+	types: "./dist-types/index.d.ts",
+	typesVersions: { "<4.5": { "dist-types/*": ["dist-types/ts3.4/*"] } },
+	"react-native": { "./dist-es/runtimeConfig": "./dist-es/runtimeConfig.native" },
+	scripts: {
+		"build": "concurrently 'yarn:build:types' 'yarn:build:es' && yarn build:cjs",
+		"build:cjs": "node ../../scripts/compilation/inline",
+		"build:es": "premove dist-es && tsc -p tsconfig.es.json",
+		"build:include:deps": "yarn g:turbo run build -F=\"$npm_package_name\"",
+		"build:types": "premove dist-types && tsc -p tsconfig.types.json",
+		"build:types:downlevel": "downlevel-dts dist-types dist-types/ts3.4",
+		"clean": "premove dist-cjs dist-es dist-types",
+		"extract:docs": "api-extractor run --local",
+		"generate:client": "node ../../scripts/generate-clients/single-service",
+		"test": "yarn g:vitest run --passWithNoTests",
+		"test:watch": "yarn g:vitest watch --passWithNoTests",
+		"test:integration": "yarn g:vitest run --passWithNoTests -c vitest.config.integ.mts",
+		"test:integration:watch": "yarn g:vitest watch --passWithNoTests -c vitest.config.integ.mts",
+		"test:e2e": "yarn g:vitest run -c vitest.config.e2e.mts",
+		"test:e2e:watch": "yarn g:vitest watch -c vitest.config.e2e.mts",
+		"test:browser": "yarn g:vitest run -c vitest.config.browser.mts",
+		"test:browser:watch": "yarn g:vitest watch -c vitest.config.browser.mts",
+		"test:index": "tsc --noEmit ./test/index-types.ts && node ./test/index-objects.spec.mjs"
+	},
+	dependencies: {
+		"@aws-sdk/checksums": "^3.1000.18",
+		"@aws-sdk/core": "^3.975.3",
+		"@aws-sdk/credential-provider-node": "^3.972.70",
+		"@aws-sdk/middleware-sdk-s3": "^3.972.64",
+		"@aws-sdk/signature-v4-multi-region": "^3.996.41",
+		"@aws-sdk/types": "^3.974.2",
+		"@smithy/core": "^3.29.4",
+		"@smithy/fetch-http-handler": "^5.6.6",
+		"@smithy/node-http-handler": "^4.9.6",
+		"@smithy/types": "^4.16.1",
+		"tslib": "^2.6.2"
+	},
+	devDependencies: {
+		"@aws-sdk/signature-v4-crt": "3.1090.0",
+		"@smithy/snapshot-testing": "^2.2.9",
+		"@tsconfig/node20": "20.1.8",
+		"@types/node": "^20.14.8",
+		"concurrently": "7.0.0",
+		"downlevel-dts": "0.10.1",
+		"premove": "4.0.0",
+		"typescript": "~5.8.3",
+		"vitest": "^4.0.17"
+	},
+	engines: { "node": ">=20.0.0" }
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+credential-provider-env@3.972.59/node_modules/@aws-sdk/credential-provider-env/dist-es/fromEnv.js
+var ENV_KEY = "AWS_ACCESS_KEY_ID";
+var ENV_SECRET = "AWS_SECRET_ACCESS_KEY";
+var ENV_SESSION = "AWS_SESSION_TOKEN";
+var ENV_EXPIRATION = "AWS_CREDENTIAL_EXPIRATION";
+var ENV_CREDENTIAL_SCOPE = "AWS_CREDENTIAL_SCOPE";
+var ENV_ACCOUNT_ID = "AWS_ACCOUNT_ID";
+var fromEnv = (init) => async () => {
+	init?.logger?.debug("@aws-sdk/credential-provider-env - fromEnv");
+	const accessKeyId = process.env[ENV_KEY];
+	const secretAccessKey = process.env[ENV_SECRET];
+	const sessionToken = process.env[ENV_SESSION];
+	const expiry = process.env[ENV_EXPIRATION];
+	const credentialScope = process.env[ENV_CREDENTIAL_SCOPE];
+	const accountId = process.env[ENV_ACCOUNT_ID];
+	if (accessKeyId && secretAccessKey) {
+		const credentials = {
+			accessKeyId,
+			secretAccessKey,
+			...sessionToken && { sessionToken },
+			...expiry && { expiration: new Date(expiry) },
+			...credentialScope && { credentialScope },
+			...accountId && { accountId }
+		};
+		setCredentialFeature(credentials, "CREDENTIALS_ENV_VARS", "g");
+		return credentials;
+	}
+	throw new CredentialsProviderError("Unable to find environment variable credentials.", { logger: init?.logger });
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+credential-provider-env@3.972.59/node_modules/@aws-sdk/credential-provider-env/dist-es/index.js
+var dist_es_exports = /* @__PURE__ */ __exportAll({
+	ENV_ACCOUNT_ID: () => ENV_ACCOUNT_ID,
+	ENV_CREDENTIAL_SCOPE: () => ENV_CREDENTIAL_SCOPE,
+	ENV_EXPIRATION: () => ENV_EXPIRATION,
+	ENV_KEY: () => ENV_KEY,
+	ENV_SECRET: () => ENV_SECRET,
+	ENV_SESSION: () => ENV_SESSION,
+	fromEnv: () => fromEnv
+});
+var remoteProvider = async (init) => {
+	const { ENV_CMDS_FULL_URI, ENV_CMDS_RELATIVE_URI, fromContainerMetadata, fromInstanceMetadata } = await import("./assets/dist-es-tEI_Qa_F.js");
+	if (process.env[ENV_CMDS_RELATIVE_URI] || process.env[ENV_CMDS_FULL_URI]) {
+		init.logger?.debug("@aws-sdk/credential-provider-node - remoteProvider::fromHttp/fromContainerMetadata");
+		const { fromHttp } = await import("./assets/dist-es-CD8R2698.js");
+		return chain(fromHttp(init), fromContainerMetadata(init));
+	}
+	if (process.env["AWS_EC2_METADATA_DISABLED"] && process.env["AWS_EC2_METADATA_DISABLED"] !== "false") return async () => {
+		throw new CredentialsProviderError("EC2 Instance Metadata Service access disabled", { logger: init.logger });
+	};
+	init.logger?.debug("@aws-sdk/credential-provider-node - remoteProvider::fromInstanceMetadata");
+	return fromInstanceMetadata(init);
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+credential-provider-node@3.972.70/node_modules/@aws-sdk/credential-provider-node/dist-es/runtime/memoize-chain.js
+function memoizeChain(providers, treatAsExpired) {
+	const chain = internalCreateChain(providers);
+	let activeLock;
+	let passiveLock;
+	let credentials;
+	let forceRefreshLock;
+	const provider = async (options) => {
+		if (options?.forceRefresh) {
+			if (!forceRefreshLock) forceRefreshLock = chain(options).then((c) => {
+				credentials = c;
+			}).finally(() => {
+				forceRefreshLock = void 0;
+			});
+			await forceRefreshLock;
+			return credentials;
+		}
+		if (credentials?.expiration) {
+			if (credentials?.expiration?.getTime() < Date.now()) credentials = void 0;
+		}
+		if (activeLock) await activeLock;
+		else if (!credentials || treatAsExpired?.(credentials)) if (credentials) {
+			if (!passiveLock) passiveLock = chain(options).then((c) => {
+				credentials = c;
+			}).finally(() => {
+				passiveLock = void 0;
+			});
+		} else {
+			activeLock = chain(options).then((c) => {
+				credentials = c;
+			}).finally(() => {
+				activeLock = void 0;
+			});
+			return provider(options);
+		}
+		return credentials;
+	};
+	return provider;
+}
+var internalCreateChain = (providers) => async (awsIdentityProperties) => {
+	let lastProviderError;
+	for (const provider of providers) try {
+		return await provider(awsIdentityProperties);
+	} catch (err) {
+		lastProviderError = err;
+		if (err?.tryNextLink) continue;
+		throw err;
+	}
+	throw lastProviderError;
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+credential-provider-node@3.972.70/node_modules/@aws-sdk/credential-provider-node/dist-es/defaultProvider.js
+var multipleCredentialSourceWarningEmitted = false;
+var defaultProvider = (init = {}) => memoizeChain([
+	async () => {
+		if (init.profile ?? process.env["AWS_PROFILE"]) {
+			if (process.env["AWS_ACCESS_KEY_ID"] && process.env["AWS_SECRET_ACCESS_KEY"]) {
+				if (!multipleCredentialSourceWarningEmitted) {
+					(init.logger?.warn && init.logger?.constructor?.name !== "NoOpLogger" ? init.logger.warn.bind(init.logger) : console.warn)(`@aws-sdk/credential-provider-node - defaultProvider::fromEnv WARNING:
+    Multiple credential sources detected: 
+    Both AWS_PROFILE and the pair AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY static credentials are set.
+    This SDK will proceed with the AWS_PROFILE value.
+    
+    However, a future version may change this behavior to prefer the ENV static credentials.
+    Please ensure that your environment only sets either the AWS_PROFILE or the
+    AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY pair.
+`);
+					multipleCredentialSourceWarningEmitted = true;
+				}
+			}
+			throw new CredentialsProviderError("AWS_PROFILE is set, skipping fromEnv provider.", {
+				logger: init.logger,
+				tryNextLink: true
+			});
+		}
+		init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromEnv");
+		return fromEnv(init)();
+	},
+	async (awsIdentityProperties) => {
+		init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromSSO");
+		const { ssoStartUrl, ssoAccountId, ssoRegion, ssoRoleName, ssoSession } = init;
+		if (!ssoStartUrl && !ssoAccountId && !ssoRegion && !ssoRoleName && !ssoSession) throw new CredentialsProviderError("Skipping SSO provider in default chain (inputs do not include SSO fields).", { logger: init.logger });
+		const { fromSSO } = await import("./assets/dist-es-COMl0v5y.js");
+		return fromSSO(init)(awsIdentityProperties);
+	},
+	async (awsIdentityProperties) => {
+		init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromIni");
+		const { fromIni } = await import("./assets/dist-es-CaWeXCkr.js");
+		return fromIni(init)(awsIdentityProperties);
+	},
+	async (awsIdentityProperties) => {
+		init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromProcess");
+		const { fromProcess } = await import("./assets/dist-es-UqpQ_mk0.js");
+		return fromProcess(init)(awsIdentityProperties);
+	},
+	async (awsIdentityProperties) => {
+		init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::fromTokenFile");
+		const { fromTokenFile } = await import("./assets/dist-es-Bfkvl0Sf.js");
+		return fromTokenFile(init)(awsIdentityProperties);
+	},
+	async () => {
+		init.logger?.debug("@aws-sdk/credential-provider-node - defaultProvider::remoteProvider");
+		return (await remoteProvider(init))();
+	},
+	async () => {
+		throw new CredentialsProviderError("Could not load credentials from any providers", {
+			tryNextLink: false,
+			logger: init.logger
+		});
+	}
+], credentialsTreatedAsExpired);
+var credentialsTreatedAsExpired = (credentials) => credentials?.expiration !== void 0 && credentials.expiration.getTime() - Date.now() < 3e5;
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+checksums@3.1000.18/node_modules/@aws-sdk/checksums/dist-es/submodules/sha/sha1/Sha1Js.js
+var BLOCK = 64;
+var DIGEST_LENGTH = 20;
+var INIT = new Int32Array([
+	1732584193,
+	4023233417,
+	2562383102,
+	271733878,
+	3285377520
+]);
+var K = new Int32Array([
+	1518500249,
+	1859775393,
+	2400959708,
+	3395469782
+]);
+var Sha1Js = class Sha1Js {
+	digestLength = DIGEST_LENGTH;
+	state = Int32Array.from(INIT);
+	w;
+	buffer = new Uint8Array(BLOCK);
+	bufferLength = 0;
+	bytesHashed = 0;
+	finished = false;
+	inner;
+	outer;
+	constructor(secret) {
+		if (secret) {
+			const key = Sha1Js.normalizeKey(secret);
+			this.inner = new Sha1Js();
+			this.outer = new Sha1Js();
+			const pad = new Uint8Array(BLOCK * 2);
+			for (let i = 0; i < BLOCK; ++i) {
+				pad[i] = 54 ^ key[i];
+				pad[i + BLOCK] = 92 ^ key[i];
+			}
+			this.inner.update(pad.subarray(0, BLOCK));
+			this.outer.update(pad.subarray(BLOCK));
+		}
+	}
+	update(data) {
+		if (this.finished) throw new Error("Attempted to update an already finished HMAC.");
+		if (this.inner) {
+			this.inner.update(data);
+			return;
+		}
+		let pos = 0;
+		let { length } = data;
+		this.bytesHashed += length;
+		if (this.bufferLength > 0) {
+			while (length > 0 && this.bufferLength < BLOCK) {
+				this.buffer[this.bufferLength++] = data[pos++];
+				--length;
+			}
+			if (this.bufferLength === BLOCK) {
+				this.hashBuffer(this.buffer, 0);
+				this.bufferLength = 0;
+			}
+		}
+		while (length >= BLOCK) {
+			this.hashBuffer(data, pos);
+			pos += BLOCK;
+			length -= BLOCK;
+		}
+		while (length > 0) {
+			this.buffer[this.bufferLength++] = data[pos++];
+			--length;
+		}
+	}
+	async digest() {
+		if (this.inner && this.outer) {
+			if (this.finished) throw new Error("Attempted to digest an already finished HMAC.");
+			this.finished = true;
+			const innerDigest = this.inner.digestSync();
+			this.outer.update(innerDigest);
+			return this.outer.digestSync();
+		}
+		return this.digestSync();
+	}
+	reset() {
+		this.state = Int32Array.from(INIT);
+		this.buffer = new Uint8Array(BLOCK);
+		this.bufferLength = 0;
+		this.bytesHashed = 0;
+	}
+	digestSync() {
+		const state = this.state.slice();
+		const buffer = this.buffer.slice();
+		let bufferLength = this.bufferLength;
+		const bitsHi = this.bytesHashed / 536870912 | 0;
+		const bitsLo = this.bytesHashed << 3;
+		buffer[bufferLength++] = 128;
+		if (bufferLength > BLOCK - 8) {
+			for (let i = bufferLength; i < BLOCK; ++i) buffer[i] = 0;
+			this.hashBufferWith(state, buffer, 0);
+			bufferLength = 0;
+		}
+		for (let i = bufferLength; i < BLOCK - 8; ++i) buffer[i] = 0;
+		const v = new DataView(buffer.buffer, buffer.byteOffset, BLOCK);
+		v.setUint32(BLOCK - 8, bitsHi, false);
+		v.setUint32(BLOCK - 4, bitsLo, false);
+		this.hashBufferWith(state, buffer, 0);
+		const out = new Uint8Array(DIGEST_LENGTH);
+		out[0] = state[0] >>> 24 & 255;
+		out[1] = state[0] >>> 16 & 255;
+		out[2] = state[0] >>> 8 & 255;
+		out[3] = state[0] & 255;
+		out[4] = state[1] >>> 24 & 255;
+		out[5] = state[1] >>> 16 & 255;
+		out[6] = state[1] >>> 8 & 255;
+		out[7] = state[1] & 255;
+		out[8] = state[2] >>> 24 & 255;
+		out[9] = state[2] >>> 16 & 255;
+		out[10] = state[2] >>> 8 & 255;
+		out[11] = state[2] & 255;
+		out[12] = state[3] >>> 24 & 255;
+		out[13] = state[3] >>> 16 & 255;
+		out[14] = state[3] >>> 8 & 255;
+		out[15] = state[3] & 255;
+		out[16] = state[4] >>> 24 & 255;
+		out[17] = state[4] >>> 16 & 255;
+		out[18] = state[4] >>> 8 & 255;
+		out[19] = state[4] & 255;
+		return out;
+	}
+	static normalizeKey(secret) {
+		const key = toUint8Array(secret);
+		if (key.byteLength > BLOCK) {
+			const h = new Sha1Js();
+			h.update(key);
+			const digest = h.digestSync();
+			const padded = new Uint8Array(BLOCK);
+			padded.set(digest);
+			return padded;
+		}
+		const padded = new Uint8Array(BLOCK);
+		padded.set(key);
+		return padded;
+	}
+	hashBuffer(data, offset) {
+		this.hashBufferWith(this.state, data, offset);
+	}
+	hashBufferWith(state, data, offset) {
+		const w = this.w ??= /* @__PURE__ */ new Int32Array(80);
+		let s0 = state[0], s1 = state[1], s2 = state[2], s3 = state[3], s4 = state[4];
+		for (let t = 0; t < 16; ++t) w[t] = (data[offset + t * 4] & 255) << 24 | (data[offset + t * 4 + 1] & 255) << 16 | (data[offset + t * 4 + 2] & 255) << 8 | data[offset + t * 4 + 3] & 255;
+		for (let t = 16; t < 80; ++t) {
+			const x = w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16];
+			w[t] = x << 1 | x >>> 31;
+		}
+		for (let t = 0; t < 80; ++t) {
+			const r = t < 20 ? 0 : t < 40 ? 1 : t < 60 ? 2 : 3;
+			const temp = ((s0 << 5 | s0 >>> 27) + (r === 0 ? s1 & s2 ^ ~s1 & s3 : r === 2 ? s1 & s2 ^ s1 & s3 ^ s2 & s3 : s1 ^ s2 ^ s3) | 0) + (s4 + (K[r] + w[t] | 0) | 0) | 0;
+			s4 = s3;
+			s3 = s2;
+			s2 = s1 << 30 | s1 >>> 2;
+			s1 = s0;
+			s0 = temp;
+		}
+		state[0] = state[0] + s0 | 0;
+		state[1] = state[1] + s1 | 0;
+		state[2] = state[2] + s2 | 0;
+		state[3] = state[3] + s3 | 0;
+		state[4] = state[4] + s4 | 0;
+	}
+};
+var Sha1Node = (() => {
+	try {
+		createHash("sha1");
+		return true;
+	} catch {
+		return false;
+	}
+})() ? buildNativeClass() : Sha1Js;
+function buildNativeClass() {
+	return class Sha1Node {
+		digestLength = 20;
+		secret;
+		hash;
+		isHmac;
+		finished = false;
+		constructor(secret) {
+			this.secret = secret;
+			this.isHmac = !!secret;
+			this.hash = this.createHash();
+		}
+		update(data) {
+			if (this.finished) throw new Error("Attempted to update an already finished hash.");
+			this.hash.update(data);
+		}
+		async digest() {
+			let buf;
+			if (this.isHmac) {
+				this.finished = true;
+				buf = this.hash.digest();
+			} else buf = this.hash.copy().digest();
+			return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+		}
+		reset() {
+			this.hash = this.createHash();
+			this.finished = false;
+		}
+		createHash() {
+			return this.secret ? createHmac("sha1", toBuffer(this.secret)) : createHash("sha1");
+		}
+	};
+}
+function toBuffer(data) {
+	if (typeof data === "string") return data;
+	if (ArrayBuffer.isView(data)) return Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+	return Buffer.from(data);
+}
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/runtimeConfig.shared.js
+var getRuntimeConfig$1 = (config) => {
+	return {
+		apiVersion: "2006-03-01",
+		base64Decoder: config?.base64Decoder ?? fromBase64,
+		base64Encoder: config?.base64Encoder ?? toBase64,
+		disableHostPrefix: config?.disableHostPrefix ?? false,
+		endpointProvider: config?.endpointProvider ?? defaultEndpointResolver,
+		extensions: config?.extensions ?? [],
+		getAwsChunkedEncodingStream: config?.getAwsChunkedEncodingStream ?? getAwsChunkedEncodingStream,
+		httpAuthSchemeProvider: config?.httpAuthSchemeProvider ?? defaultS3HttpAuthSchemeProvider,
+		httpAuthSchemes: config?.httpAuthSchemes ?? [{
+			schemeId: "aws.auth#sigv4",
+			identityProvider: (ipc) => ipc.getIdentityProvider("aws.auth#sigv4"),
+			signer: new AwsSdkSigV4Signer()
+		}, {
+			schemeId: "aws.auth#sigv4a",
+			identityProvider: (ipc) => ipc.getIdentityProvider("aws.auth#sigv4a"),
+			signer: new AwsSdkSigV4ASigner()
+		}],
+		logger: config?.logger ?? new NoOpLogger(),
+		md5: config?.md5 ?? Md5Node,
+		protocol: config?.protocol ?? S3RestXmlProtocol,
+		protocolSettings: config?.protocolSettings ?? {
+			defaultNamespace: "com.amazonaws.s3",
+			errorTypeRegistries,
+			xmlNamespace: "http://s3.amazonaws.com/doc/2006-03-01/",
+			version: "2006-03-01",
+			serviceTarget: "AmazonS3"
+		},
+		sdkStreamMixin: config?.sdkStreamMixin ?? sdkStreamMixin,
+		serviceId: config?.serviceId ?? "S3",
+		sha1: config?.sha1 ?? Sha1Node,
+		sha256: config?.sha256 ?? Sha256Node,
+		signerConstructor: config?.signerConstructor ?? SignatureV4MultiRegion,
+		signingEscapePath: config?.signingEscapePath ?? false,
+		urlParser: config?.urlParser ?? parseUrl,
+		useArnRegion: config?.useArnRegion ?? void 0,
+		utf8Decoder: config?.utf8Decoder ?? fromUtf8,
+		utf8Encoder: config?.utf8Encoder ?? toUtf8
+	};
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/runtimeConfig.js
+var getRuntimeConfig = (config) => {
+	emitWarningIfUnsupportedVersion(process.version);
+	const defaultsMode = resolveDefaultsModeConfig(config);
+	const defaultConfigProvider = () => defaultsMode().then(loadConfigsForDefaultMode);
+	const clientSharedValues = getRuntimeConfig$1(config);
+	emitWarningIfUnsupportedVersion$1(process.version);
+	const loaderConfig = {
+		profile: config?.profile,
+		logger: clientSharedValues.logger
+	};
+	return {
+		...clientSharedValues,
+		...config,
+		runtime: "node",
+		defaultsMode,
+		authSchemePreference: config?.authSchemePreference ?? loadConfig(NODE_AUTH_SCHEME_PREFERENCE_OPTIONS, loaderConfig),
+		bodyLengthChecker: config?.bodyLengthChecker ?? calculateBodyLength,
+		credentialDefaultProvider: config?.credentialDefaultProvider ?? defaultProvider,
+		defaultUserAgentProvider: config?.defaultUserAgentProvider ?? createDefaultUserAgentProvider({
+			serviceId: clientSharedValues.serviceId,
+			clientVersion: package_default.version
+		}),
+		disableS3ExpressSessionAuth: config?.disableS3ExpressSessionAuth ?? loadConfig(NODE_DISABLE_S3_EXPRESS_SESSION_AUTH_OPTIONS, loaderConfig),
+		eventStreamSerdeProvider: config?.eventStreamSerdeProvider ?? eventStreamSerdeProvider,
+		maxAttempts: config?.maxAttempts ?? loadConfig(NODE_MAX_ATTEMPT_CONFIG_OPTIONS, config),
+		region: config?.region ?? loadConfig(NODE_REGION_CONFIG_OPTIONS, {
+			...NODE_REGION_CONFIG_FILE_OPTIONS,
+			...loaderConfig
+		}),
+		requestChecksumCalculation: config?.requestChecksumCalculation ?? loadConfig(NODE_REQUEST_CHECKSUM_CALCULATION_CONFIG_OPTIONS, loaderConfig),
+		requestHandler: NodeHttpHandler.create(config?.requestHandler ?? defaultConfigProvider),
+		responseChecksumValidation: config?.responseChecksumValidation ?? loadConfig(NODE_RESPONSE_CHECKSUM_VALIDATION_CONFIG_OPTIONS, loaderConfig),
+		retryMode: config?.retryMode ?? loadConfig({
+			...NODE_RETRY_MODE_CONFIG_OPTIONS,
+			default: async () => (await defaultConfigProvider()).retryMode || DEFAULT_RETRY_MODE
+		}, config),
+		sigv4aSigningRegionSet: config?.sigv4aSigningRegionSet ?? loadConfig(NODE_SIGV4A_CONFIG_OPTIONS, loaderConfig),
+		streamCollector: config?.streamCollector ?? streamCollector,
+		streamHasher: config?.streamHasher ?? readableStreamHasher,
+		useArnRegion: config?.useArnRegion ?? loadConfig(NODE_USE_ARN_REGION_CONFIG_OPTIONS, loaderConfig),
+		useDualstackEndpoint: config?.useDualstackEndpoint ?? loadConfig(NODE_USE_DUALSTACK_ENDPOINT_CONFIG_OPTIONS, loaderConfig),
+		useFipsEndpoint: config?.useFipsEndpoint ?? loadConfig(NODE_USE_FIPS_ENDPOINT_CONFIG_OPTIONS, loaderConfig),
+		userAgentAppId: config?.userAgentAppId ?? loadConfig(NODE_APP_ID_CONFIG_OPTIONS, loaderConfig)
+	};
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/auth/httpAuthExtensionConfiguration.js
+var getHttpAuthExtensionConfiguration = (runtimeConfig) => {
+	const _httpAuthSchemes = runtimeConfig.httpAuthSchemes;
+	let _httpAuthSchemeProvider = runtimeConfig.httpAuthSchemeProvider;
+	let _credentials = runtimeConfig.credentials;
+	return {
+		setHttpAuthScheme(httpAuthScheme) {
+			const index = _httpAuthSchemes.findIndex((scheme) => scheme.schemeId === httpAuthScheme.schemeId);
+			if (index === -1) _httpAuthSchemes.push(httpAuthScheme);
+			else _httpAuthSchemes.splice(index, 1, httpAuthScheme);
+		},
+		httpAuthSchemes() {
+			return _httpAuthSchemes;
+		},
+		setHttpAuthSchemeProvider(httpAuthSchemeProvider) {
+			_httpAuthSchemeProvider = httpAuthSchemeProvider;
+		},
+		httpAuthSchemeProvider() {
+			return _httpAuthSchemeProvider;
+		},
+		setCredentials(credentials) {
+			_credentials = credentials;
+		},
+		credentials() {
+			return _credentials;
+		}
+	};
+};
+var resolveHttpAuthRuntimeConfig = (config) => {
+	return {
+		httpAuthSchemes: config.httpAuthSchemes(),
+		httpAuthSchemeProvider: config.httpAuthSchemeProvider(),
+		credentials: config.credentials()
+	};
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/runtimeExtensions.js
+var resolveRuntimeExtensions = (runtimeConfig, extensions) => {
+	const extensionConfiguration = Object.assign(getAwsRegionExtensionConfiguration(runtimeConfig), getDefaultExtensionConfiguration(runtimeConfig), getHttpHandlerExtensionConfiguration(runtimeConfig), getHttpAuthExtensionConfiguration(runtimeConfig));
+	extensions.forEach((extension) => extension.configure(extensionConfiguration));
+	return Object.assign(runtimeConfig, resolveAwsRegionExtensionConfiguration(extensionConfiguration), resolveDefaultRuntimeConfig(extensionConfiguration), resolveHttpHandlerRuntimeConfig(extensionConfiguration), resolveHttpAuthRuntimeConfig(extensionConfiguration));
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/S3Client.js
+var S3Client = class extends Client {
+	config;
+	constructor(...[configuration]) {
+		const _config_0 = getRuntimeConfig(configuration || {});
+		super(_config_0);
+		this.initConfig = _config_0;
+		const _config_11 = resolveRuntimeExtensions(resolveS3Config(resolveHttpAuthSchemeConfig(resolveEventStreamSerdeConfig(resolveEndpointConfig(resolveHostHeaderConfig(resolveRegionConfig(resolveRetryConfig(resolveFlexibleChecksumsConfig(resolveUserAgentConfig(resolveClientEndpointParameters(_config_0))))))))), { session: [() => this, CreateSessionCommand] }), configuration?.extensions || []);
+		this.config = _config_11;
+		this.middlewareStack.use(getSchemaSerdePlugin(this.config));
+		this.middlewareStack.use(getUserAgentPlugin(this.config));
+		this.middlewareStack.use(getRetryPlugin(this.config));
+		this.middlewareStack.use(getContentLengthPlugin(this.config));
+		this.middlewareStack.use(getHostHeaderPlugin(this.config));
+		this.middlewareStack.use(getLoggerPlugin(this.config));
+		this.middlewareStack.use(getRecursionDetectionPlugin(this.config));
+		this.middlewareStack.use(getHttpAuthSchemeEndpointRuleSetPlugin(this.config, {
+			httpAuthSchemeParametersProvider: defaultS3HttpAuthSchemeParametersProvider,
+			identityProviderConfigProvider: async (config) => new DefaultIdentityProviderConfig({
+				"aws.auth#sigv4": config.credentials,
+				"aws.auth#sigv4a": config.credentials
+			})
+		}));
+		this.middlewareStack.use(getHttpSigningPlugin(this.config));
+		this.middlewareStack.use(getValidateBucketNamePlugin(this.config));
+		this.middlewareStack.use(getAddExpectContinuePlugin(this.config));
+		this.middlewareStack.use(getRegionRedirectMiddlewarePlugin(this.config));
+		this.middlewareStack.use(getS3ExpressPlugin(this.config));
+		this.middlewareStack.use(getS3ExpressHttpSigningPlugin(this.config));
+	}
+	destroy() {
+		super.destroy();
+	}
+};
+//#endregion
+//#region node_modules/.pnpm/@aws-sdk+client-s3@3.1090.0/node_modules/@aws-sdk/client-s3/dist-es/commands/GetObjectCommand.js
+var GetObjectCommand = class extends command(_ep0, _mw7, "GetObject", GetObject$) {};
+//#endregion
+//#region services/artifact-storage.ts
+var bucket = process.env.S3_BUCKET;
+var client = bucket ? new S3Client({
+	region: process.env.S3_REGION ?? "ap-southeast-1",
+	endpoint: process.env.S3_ENDPOINT || void 0,
+	credentials: {
+		accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
+		secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? ""
+	}
+}) : null;
+async function readArtifact(storageKey) {
+	if (client && bucket) {
+		const result = await client.send(new GetObjectCommand({
+			Bucket: bucket,
+			Key: storageKey
+		}));
+		return Buffer.from(await result.Body.transformToByteArray());
+	}
+	return fs.readFile(path.join(process.cwd(), "data", storageKey));
+}
+//#endregion
+//#region app/routes/artifacts.$id.tsx
+var artifacts_$id_exports = /* @__PURE__ */ __exportAll({ loader: () => loader$6 });
+async function loader$6({ request, params }) {
+	const session = await getWebSessionContext(request);
+	const telegramUserId = session?.telegramUserId;
+	if (!telegramUserId) throw new Response("Unauthorized", { status: 401 });
+	if (!params.id) throw new Response("Bad Request", { status: 400 });
+	const db = getDb();
+	const [artifact] = await db.select().from(rppArtifacts).where(eq(rppArtifacts.id, params.id)).limit(1);
+	if (!artifact) throw new Response("Artifact tidak ditemukan", { status: 404 });
+	const [document] = await db.select().from(rppDocuments).where(eq(rppDocuments.id, artifact.rppDocumentId)).limit(1);
+	const [user] = await db.select().from(authorizedUsers).where(eq(authorizedUsers.telegramUserId, telegramUserId)).limit(1);
+	if (!document || !user || session?.activeOrganizationId !== document.organizationId || user.role !== "admin" && document.telegramUserId !== telegramUserId) throw new Response("Forbidden", { status: 403 });
+	const extension = artifact.format === "docx" ? "docx" : "pdf";
+	try {
+		return new Response(new Uint8Array(await readArtifact(artifact.storageKey)), { headers: {
+			"Content-Type": extension === "docx" ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document" : "application/pdf",
+			"Content-Disposition": `attachment; filename="RPP.${extension}"`
+		} });
+	} catch {
+		throw new Response("Berkas tidak tersedia", { status: 404 });
+	}
+}
+//#endregion
 //#region app/routes/download.$id.tsx
-var download_$id_exports = /* @__PURE__ */ __exportAll({ loader: () => loader$4 });
-async function loader$4({ request, params }) {
-	const telegramUserId = (request.headers.get("Cookie")?.split(";").find((c) => c.trim().startsWith("session=")))?.split("=")[1];
+var download_$id_exports = /* @__PURE__ */ __exportAll({ loader: () => loader$5 });
+async function loader$5({ request, params }) {
+	const session = await getWebSessionContext(request);
+	const telegramUserId = session?.telegramUserId;
 	if (!telegramUserId) throw new Response("Unauthorized", { status: 401 });
 	const rppId = params.id;
 	if (!rppId) throw new Response("Bad Request", { status: 400 });
@@ -40640,10 +50850,11 @@ async function loader$4({ request, params }) {
 	const results = await db.select().from(rppDocuments).where(eq(rppDocuments.id, rppId)).limit(1);
 	if (results.length === 0) throw new Response("RPP Tidak Ditemukan", { status: 404 });
 	const rpp = results[0];
-	const isAdmin = (await db.select().from(authorizedUsers).where(eq(authorizedUsers.telegramUserId, telegramUserId)).limit(1))[0]?.role === "admin";
-	if (rpp.telegramUserId !== telegramUserId && !isAdmin) throw new Response("Forbidden", { status: 403 });
-	if (!rpp.pdfPath || !fs.existsSync(rpp.pdfPath)) throw new Response("Berkas PDF belum dicetak atau tidak ditemukan di server.", { status: 404 });
-	const fileBuffer = fs.readFileSync(rpp.pdfPath);
+	const user = (await db.select().from(authorizedUsers).where(eq(authorizedUsers.telegramUserId, telegramUserId)).limit(1))[0];
+	const isAdmin = user?.role === "admin";
+	if (!user || session?.activeOrganizationId !== rpp.organizationId || rpp.telegramUserId !== telegramUserId && !isAdmin) throw new Response("Forbidden", { status: 403 });
+	if (!rpp.pdfPath || !fs$1.existsSync(rpp.pdfPath)) throw new Response("Berkas PDF belum dicetak atau tidak ditemukan di server.", { status: 404 });
+	const fileBuffer = fs$1.readFileSync(rpp.pdfPath);
 	const cleanSubject = rpp.subject.replace(/[^a-zA-Z0-9]/g, "_");
 	const cleanGrade = rpp.grade.replace(/[^a-zA-Z0-9]/g, "_");
 	return new Response(fileBuffer, { headers: {
@@ -40651,30 +50862,220 @@ async function loader$4({ request, params }) {
 		"Content-Disposition": `attachment; filename="RPP_${cleanSubject}_${cleanGrade}.pdf"`
 	} });
 }
+var PORTAL_LOGIN_CONFIRM_PATH = `/portal-login/confirm`;
+//#endregion
+//#region app/routes/portal-login.tsx
+var portal_login_exports = /* @__PURE__ */ __exportAll({
+	default: () => portal_login_default,
+	loader: () => loader$4
+});
+async function loader$4({ request }) {
+	const token = new URL(request.url).searchParams.get("token");
+	if (!token) return { error: "Token login tidak ditemukan. Harap dapatkan link login baru dari Telegram Bot." };
+	return { token };
+}
+var portal_login_default = withComponentProps(function PortalLoginRoute({ loaderData }) {
+	const error = loaderData?.error;
+	const token = loaderData?.token;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex min-h-screen flex-col items-center justify-center p-6 text-center bg-zinc-950 text-zinc-100",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "max-w-md w-full bg-zinc-900 border border-zinc-800 p-8 rounded-2xl shadow-xl space-y-6",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+				className: "text-3xl font-extrabold tracking-tight text-indigo-400",
+				children: "Autentikasi Portal RPP"
+			}), error ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "space-y-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "p-4 bg-red-950/50 border border-red-900 text-red-300 rounded-xl text-sm",
+					children: error
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+					className: "text-zinc-400 text-sm",
+					children: [
+						"Silakan kembali ke Telegram Bot dan ketik ",
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("code", {
+							className: "px-1.5 py-0.5 bg-zinc-800 text-indigo-300 rounded font-mono",
+							children: "/riwayat"
+						}),
+						" untuk mendapatkan link masuk yang baru."
+					]
+				})]
+			}) : token ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Form, {
+				method: "get",
+				action: PORTAL_LOGIN_CONFIRM_PATH,
+				className: "space-y-4",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-zinc-300 text-sm",
+						children: "Tekan tombol di bawah untuk masuk ke dashboard RPP Anda."
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+						type: "hidden",
+						name: "token",
+						value: token
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "submit",
+						className: "w-full rounded-xl bg-indigo-500 px-4 py-3 font-semibold text-white transition hover:bg-indigo-400",
+						children: "Masuk ke dashboard"
+					})
+				]
+			}) : null]
+		})
+	});
+});
+//#endregion
+//#region app/routes/portal-login.confirm.tsx
+var portal_login_confirm_exports = /* @__PURE__ */ __exportAll({
+	default: () => portal_login_confirm_default,
+	loader: () => loader$3
+});
+async function loader$3({ request }) {
+	const token = new URL(request.url).searchParams.get("token");
+	if (!token) return { error: "Token login tidak ditemukan. Harap dapatkan link login baru dari Telegram Bot." };
+	const telegramUserId = await consumeMagicLinkToken(token);
+	if (!telegramUserId) return { error: "Link login tidak valid, kadaluarsa, atau sudah pernah digunakan." };
+	return redirect("/dashboard", { headers: { "Set-Cookie": sessionCookie(await createWebSession(telegramUserId)) } });
+}
+var portal_login_confirm_default = withComponentProps(function PortalLoginConfirmRoute({ loaderData }) {
+	if (!loaderData?.error) return null;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		className: "flex min-h-screen items-center justify-center p-6 bg-zinc-950 text-zinc-100",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+			className: "max-w-md rounded-xl border border-red-900 bg-red-950/50 p-4 text-center text-sm text-red-300",
+			children: loaderData.error
+		})
+	});
+});
+//#endregion
+//#region services/school-document-template.ts
+var defaultSchoolDocumentTemplate = { city: "Jakarta" };
+function schoolDocumentTemplateId(organizationId, schoolName) {
+	return `${organizationId}:${schoolName}`;
+}
+function normalizeSchoolDocumentTemplate(template) {
+	const clean = (value) => value?.trim() || void 0;
+	return {
+		letterheadText: clean(template?.letterheadText),
+		city: clean(template?.city) ?? defaultSchoolDocumentTemplate.city,
+		headmasterNip: clean(template?.headmasterNip),
+		teacherNip: clean(template?.teacherNip)
+	};
+}
 //#endregion
 //#region app/routes/dashboard.tsx
 var dashboard_exports = /* @__PURE__ */ __exportAll({
 	action: () => action,
 	default: () => dashboard_default,
-	loader: () => loader$3
+	loader: () => loader$2
 });
-async function loader$3({ request }) {
-	const telegramUserId = (request.headers.get("Cookie")?.split(";").find((c) => c.trim().startsWith("session=")))?.split("=")[1];
+async function loader$2({ request }) {
+	const session = await getWebSessionContext(request);
+	const telegramUserId = session?.telegramUserId;
 	if (!telegramUserId) return redirect("/");
 	const db = getDb();
 	const userResults = await db.select().from(authorizedUsers).where(eq(authorizedUsers.telegramUserId, telegramUserId)).limit(1);
 	if (userResults.length === 0) return redirect("/logout");
 	const currentUser = userResults[0];
+	const memberships = await db.select().from(organizationMemberships).where(eq(organizationMemberships.telegramUserId, telegramUserId));
 	let rpps = [];
-	if (currentUser.role === "admin") rpps = await db.select().from(rppDocuments).orderBy(desc(rppDocuments.createdAt));
-	else rpps = await db.select().from(rppDocuments).where(eq(rppDocuments.telegramUserId, telegramUserId)).orderBy(desc(rppDocuments.createdAt));
+	if (currentUser.role === "admin") rpps = await db.select().from(rppDocuments).where(eq(rppDocuments.organizationId, session.activeOrganizationId)).orderBy(desc(rppDocuments.createdAt));
+	else rpps = await db.select().from(rppDocuments).where(and(eq(rppDocuments.telegramUserId, telegramUserId), eq(rppDocuments.organizationId, session.activeOrganizationId))).orderBy(desc(rppDocuments.createdAt));
+	const rppIds = rpps.map((rpp) => rpp.id);
+	const schoolNames = [...new Set(rpps.map((rpp) => rpp.schoolName))];
+	const artifacts = rppIds.length ? await db.select({
+		id: rppArtifacts.id,
+		rppDocumentId: rppArtifacts.rppDocumentId,
+		format: rppArtifacts.format,
+		status: rppArtifacts.status
+	}).from(rppArtifacts).where(inArray(rppArtifacts.rppDocumentId, rppIds)) : [];
+	const jobs = rppIds.length ? await db.select({
+		id: rppExportJobs.id,
+		rppDocumentId: rppExportJobs.rppDocumentId,
+		status: rppExportJobs.status,
+		error: rppExportJobs.error
+	}).from(rppExportJobs).where(inArray(rppExportJobs.rppDocumentId, rppIds)).orderBy(desc(rppExportJobs.createdAt)) : [];
+	const schoolTemplates = schoolNames.length ? await db.select().from(schoolDocumentTemplates).where(and(eq(schoolDocumentTemplates.organizationId, session.activeOrganizationId), inArray(schoolDocumentTemplates.schoolName, schoolNames))) : [];
 	return {
 		user: currentUser,
-		rpps
+		rpps,
+		artifacts,
+		jobs,
+		schoolTemplates,
+		memberships,
+		activeOrganizationId: session.activeOrganizationId
 	};
 }
+var schoolTemplateFormSchema = object({
+	schoolName: string().trim().min(2).max(250),
+	letterheadText: string().trim().max(500).optional(),
+	city: string().trim().min(2).max(100),
+	headmasterNip: string().trim().max(100).optional(),
+	teacherNip: string().trim().max(100).optional()
+});
 async function action({ request }) {
-	if ((await request.formData()).get("intent") === "logout") return redirect("/", { headers: { "Set-Cookie": "session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0" } });
+	const formData = await request.formData();
+	const intent = formData.get("intent");
+	if (intent === "logout") {
+		await revokeWebSession(request);
+		return redirect("/", { headers: { "Set-Cookie": clearSessionCookie() } });
+	}
+	if (intent === "retry") {
+		const jobId = String(formData.get("jobId") ?? "");
+		const telegramUserId = await getWebSessionUserId(request);
+		const db = getDb();
+		const [job] = await db.select().from(rppExportJobs).where(eq(rppExportJobs.id, jobId)).limit(1);
+		const [document] = job ? await db.select().from(rppDocuments).where(eq(rppDocuments.id, job.rppDocumentId)).limit(1) : [];
+		const [user] = telegramUserId ? await db.select().from(authorizedUsers).where(eq(authorizedUsers.telegramUserId, telegramUserId)).limit(1) : [];
+		if (job && document && user && job.status === "failed" && (user.role === "admin" || document.telegramUserId === telegramUserId)) {
+			const now = Date.now();
+			await db.update(rppExportJobs).set({
+				status: "queued",
+				attempts: 0,
+				error: null,
+				nextAttemptAt: now,
+				leaseExpiresAt: null,
+				updatedAt: now
+			}).where(eq(rppExportJobs.id, job.id));
+		}
+		return null;
+	}
+	if (intent === "switch-organization") {
+		await setActiveOrganization(request, String(formData.get("organizationId") ?? ""));
+		return null;
+	}
+	if (intent === "save-school-template") {
+		const telegramUserId = await getWebSessionUserId(request);
+		const db = getDb();
+		const [user] = telegramUserId ? await db.select().from(authorizedUsers).where(eq(authorizedUsers.telegramUserId, telegramUserId)).limit(1) : [];
+		if (!user || user.role !== "admin") throw new Response("Forbidden", { status: 403 });
+		const values = schoolTemplateFormSchema.parse({
+			schoolName: formData.get("schoolName"),
+			letterheadText: formData.get("letterheadText") || void 0,
+			city: formData.get("city"),
+			headmasterNip: formData.get("headmasterNip") || void 0,
+			teacherNip: formData.get("teacherNip") || void 0
+		});
+		const template = normalizeSchoolDocumentTemplate(values);
+		const now = Date.now();
+		await db.insert(schoolDocumentTemplates).values({
+			id: schoolDocumentTemplateId(user.organizationId, values.schoolName),
+			organizationId: user.organizationId,
+			schoolName: values.schoolName,
+			...template,
+			updatedAt: now
+		}).onConflictDoUpdate({
+			target: schoolDocumentTemplates.id,
+			set: {
+				...template,
+				updatedAt: now
+			}
+		});
+		return {
+			status: "success",
+			message: `Template ${values.schoolName} tersimpan.`
+		};
+	}
 	return null;
 }
 function RppMarkdownRenderer({ content }) {
@@ -40742,16 +51143,23 @@ function RppMarkdownRenderer({ content }) {
 	});
 }
 var dashboard_default = withComponentProps(function DashboardRoute() {
-	const { user, rpps } = useLoaderData();
+	const { user, rpps, artifacts, jobs, schoolTemplates, memberships, activeOrganizationId } = useLoaderData();
+	const revalidator = useRevalidator();
 	const [searchTerm, setSearchTerm] = (0, import_react.useState)("");
 	const [selectedGrade, setSelectedGrade] = (0, import_react.useState)("All");
 	const [activePreviewRpp, setActivePreviewRpp] = (0, import_react.useState)(null);
+	(0, import_react.useEffect)(() => {
+		if (!jobs.some((job) => job.status === "queued" || job.status === "processing")) return;
+		const timer = window.setInterval(() => revalidator.revalidate(), 5e3);
+		return () => window.clearInterval(timer);
+	}, [jobs, revalidator]);
 	const grades = ["All", ...Array.from(new Set(rpps.map((r) => r.grade)))];
 	const filteredRpps = rpps.filter((rpp) => {
 		const matchesSearch = rpp.topic.toLowerCase().includes(searchTerm.toLowerCase()) || rpp.subject.toLowerCase().includes(searchTerm.toLowerCase()) || rpp.teacherName.toLowerCase().includes(searchTerm.toLowerCase());
 		const matchesGrade = selectedGrade === "All" || rpp.grade === selectedGrade;
 		return matchesSearch && matchesGrade;
 	});
+	const activeTemplate = activePreviewRpp ? schoolTemplates.find((template) => template.schoolName === activePreviewRpp.schoolName) : void 0;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans",
 		children: [
@@ -40782,28 +51190,48 @@ var dashboard_default = withComponentProps(function DashboardRoute() {
 					})] })]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "flex items-center space-x-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "text-right hidden sm:block",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-sm font-semibold",
-							children: user.name
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-xs text-zinc-400 capitalize",
-							children: user.role === "admin" ? "🛡️ Administrator" : "🧑‍🏫 Guru"
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
-						method: "post",
-						className: "flex items-center",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-							type: "hidden",
-							name: "intent",
-							value: "logout"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							type: "submit",
-							className: "px-3.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-zinc-100 rounded-lg text-xs font-semibold transition duration-200 border border-zinc-750",
-							children: "Keluar"
-						})]
-					})]
+					children: [
+						memberships.length > 1 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+							method: "post",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+								type: "hidden",
+								name: "intent",
+								value: "switch-organization"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", {
+								name: "organizationId",
+								defaultValue: activeOrganizationId,
+								onChange: (event) => event.currentTarget.form?.requestSubmit(),
+								className: "bg-zinc-800 text-xs rounded px-2 py-1",
+								children: memberships.map((membership) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+									value: membership.organizationId,
+									children: membership.organizationId
+								}, membership.organizationId))
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "text-right hidden sm:block",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-sm font-semibold",
+								children: user.name
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-xs text-zinc-400 capitalize",
+								children: user.role === "admin" ? "🛡️ Administrator" : "🧑‍🏫 Guru"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+							method: "post",
+							className: "flex items-center",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+								type: "hidden",
+								name: "intent",
+								value: "logout"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "submit",
+								className: "px-3.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-zinc-100 rounded-lg text-xs font-semibold transition duration-200 border border-zinc-750",
+								children: "Keluar"
+							})]
+						})
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
@@ -40887,6 +51315,93 @@ var dashboard_default = withComponentProps(function DashboardRoute() {
 									className: "text-xs text-zinc-400 font-medium",
 									children: "Dokumen Terakhir Dibuat"
 								})] })]
+							})
+						]
+					}),
+					user.role === "admin" && rpps.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", {
+						className: "bg-zinc-900 border border-zinc-800/80 rounded-2xl p-5 shadow-sm group",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", {
+								className: "cursor-pointer font-bold text-sm text-zinc-100 list-none flex items-center justify-between",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Identitas dokumen sekolah" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-xs font-medium text-indigo-300 group-open:hidden",
+										children: "Atur template"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-xs font-medium text-indigo-300 hidden group-open:inline",
+										children: "Tutup"
+									})
+								]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs text-zinc-400 mt-3",
+								children: "Berlaku pada ekspor berikutnya untuk sekolah yang dipilih. RPP lama tidak diubah."
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+								method: "post",
+								className: "mt-4 grid grid-cols-1 md:grid-cols-2 gap-3",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+										type: "hidden",
+										name: "intent",
+										value: "save-school-template"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+										className: "text-xs text-zinc-400",
+										children: ["Sekolah", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", {
+											name: "schoolName",
+											required: true,
+											className: "mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200",
+											children: Array.from(new Set(rpps.map((rpp) => rpp.schoolName))).map((schoolName) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+												value: schoolName,
+												children: schoolName
+											}, schoolName))
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+										className: "text-xs text-zinc-400",
+										children: ["Kota tanda tangan", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+											name: "city",
+											required: true,
+											defaultValue: "Jakarta",
+											className: "mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+										className: "text-xs text-zinc-400 md:col-span-2",
+										children: ["Teks kop/alamat (opsional)", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+											name: "letterheadText",
+											maxLength: 500,
+											className: "mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+										className: "text-xs text-zinc-400",
+										children: ["NIP kepala sekolah (opsional)", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+											name: "headmasterNip",
+											maxLength: 100,
+											className: "mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+										className: "text-xs text-zinc-400",
+										children: ["NIP guru (opsional)", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+											name: "teacherNip",
+											maxLength: 100,
+											className: "mt-1 w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm text-zinc-200"
+										})]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+										className: "md:col-span-2",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											type: "submit",
+											className: "px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-semibold",
+											children: "Simpan template"
+										})
+									})
+								]
 							})
 						]
 					}),
@@ -40985,13 +51500,20 @@ var dashboard_default = withComponentProps(function DashboardRoute() {
 										children: [
 											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("td", {
 												className: "px-6 py-4",
-												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-													className: "font-bold text-zinc-100 text-base",
-													children: rpp.topic
-												}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-													className: "text-xs text-zinc-400 mt-0.5",
-													children: rpp.subject
-												})]
+												children: [
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+														className: "font-bold text-zinc-100 text-base",
+														children: rpp.topic
+													}),
+													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+														className: "text-xs text-zinc-400 mt-0.5",
+														children: rpp.subject
+													}),
+													jobs.find((job) => job.rppDocumentId === rpp.id) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+														className: "text-[10px] uppercase text-indigo-300 mt-1",
+														children: jobs.find((job) => job.rppDocumentId === rpp.id)?.status
+													})
+												]
 											}),
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("td", {
 												className: "px-6 py-4 text-zinc-300 font-medium",
@@ -41021,42 +51543,69 @@ var dashboard_default = withComponentProps(function DashboardRoute() {
 												className: "px-6 py-4 text-right",
 												children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 													className: "flex items-center justify-end space-x-2.5",
-													children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-														onClick: () => setActivePreviewRpp(rpp),
-														className: "px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-indigo-400 rounded-lg text-xs font-semibold transition duration-150 border border-zinc-750 flex items-center space-x-1",
-														children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-															className: "w-3.5 h-3.5",
-															fill: "none",
-															viewBox: "0 0 24 24",
-															stroke: "currentColor",
-															children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-																strokeLinecap: "round",
-																strokeLinejoin: "round",
-																strokeWidth: 2,
-																d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-															}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-																strokeLinecap: "round",
-																strokeLinejoin: "round",
-																strokeWidth: 2,
-																d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-															})]
-														}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Preview" })]
-													}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
-														href: `/download/${rpp.id}`,
-														className: "px-3 py-1.5 bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-900/60 text-indigo-400 hover:text-indigo-300 rounded-lg text-xs font-semibold transition duration-150 flex items-center space-x-1",
-														children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
-															className: "w-3.5 h-3.5",
-															fill: "none",
-															viewBox: "0 0 24 24",
-															stroke: "currentColor",
-															children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
-																strokeLinecap: "round",
-																strokeLinejoin: "round",
-																strokeWidth: 2,
-																d: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-															})
-														}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Unduh PDF" })]
-													})]
+													children: [
+														/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+															onClick: () => setActivePreviewRpp(rpp),
+															className: "px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-indigo-400 rounded-lg text-xs font-semibold transition duration-150 border border-zinc-750 flex items-center space-x-1",
+															children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+																className: "w-3.5 h-3.5",
+																fill: "none",
+																viewBox: "0 0 24 24",
+																stroke: "currentColor",
+																children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+																	strokeLinecap: "round",
+																	strokeLinejoin: "round",
+																	strokeWidth: 2,
+																	d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+																}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+																	strokeLinecap: "round",
+																	strokeLinejoin: "round",
+																	strokeWidth: 2,
+																	d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+																})]
+															}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Preview" })]
+														}),
+														/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+															href: `/download/${rpp.id}`,
+															className: "px-3 py-1.5 bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-900/60 text-indigo-400 hover:text-indigo-300 rounded-lg text-xs font-semibold transition duration-150 flex items-center space-x-1",
+															children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
+																className: "w-3.5 h-3.5",
+																fill: "none",
+																viewBox: "0 0 24 24",
+																stroke: "currentColor",
+																children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+																	strokeLinecap: "round",
+																	strokeLinejoin: "round",
+																	strokeWidth: 2,
+																	d: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+																})
+															}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Unduh PDF" })]
+														}),
+														artifacts.filter((artifact) => artifact.rppDocumentId === rpp.id).map((artifact) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+															href: `/artifacts/${artifact.id}`,
+															className: "px-3 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-900/60 text-emerald-300 rounded-lg text-xs font-semibold",
+															children: ["Unduh ", artifact.format.toUpperCase()]
+														}, artifact.id)),
+														jobs.find((job) => job.rppDocumentId === rpp.id)?.status === "failed" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+															method: "post",
+															children: [
+																/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+																	type: "hidden",
+																	name: "intent",
+																	value: "retry"
+																}),
+																/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+																	type: "hidden",
+																	name: "jobId",
+																	value: jobs.find((job) => job.rppDocumentId === rpp.id)?.id
+																}),
+																/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+																	className: "px-3 py-1.5 bg-amber-950 text-amber-300 rounded-lg text-xs font-semibold",
+																	children: "Coba lagi"
+																})
+															]
+														})
+													]
 												})
 											})
 										]
@@ -41131,6 +51680,10 @@ var dashboard_default = withComponentProps(function DashboardRoute() {
 											className: "text-sm font-bold uppercase tracking-wider text-zinc-400",
 											children: activePreviewRpp.schoolName
 										}),
+										activeTemplate?.letterheadText && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "text-[10px] text-zinc-500 mt-1",
+											children: activeTemplate.letterheadText
+										}),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 											className: "text-lg font-black uppercase mt-1 tracking-widest text-zinc-100",
 											children: "RENCANA PELAKSANAAN PEMBELAJARAN"
@@ -41177,6 +51730,29 @@ var dashboard_default = withComponentProps(function DashboardRoute() {
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 									className: "mt-8",
 									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RppMarkdownRenderer, { content: activePreviewRpp.content })
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "grid grid-cols-2 gap-6 pt-8 text-center text-xs text-zinc-400",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Mengetahui, Kepala Sekolah" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "mt-12 font-semibold text-zinc-200",
+											children: activePreviewRpp.headmasterName
+										}),
+										activeTemplate?.headmasterNip && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: ["NIP. ", activeTemplate.headmasterNip] })
+									] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [
+											activeTemplate?.city ?? "Jakarta",
+											", ",
+											new Date(activePreviewRpp.createdAt).toLocaleDateString("id-ID")
+										] }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Guru Mata Pelajaran" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+											className: "mt-8 font-semibold text-zinc-200",
+											children: activePreviewRpp.teacherName
+										}),
+										activeTemplate?.teacherNip && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: ["NIP. ", activeTemplate.teacherNip] })
+									] })]
 								})
 							]
 						})
@@ -41190,7 +51766,7 @@ var dashboard_default = withComponentProps(function DashboardRoute() {
 //#region app/routes/_index.tsx
 var _index_exports = /* @__PURE__ */ __exportAll({
 	default: () => _index_default,
-	loader: () => loader$2,
+	loader: () => loader$1,
 	meta: () => meta
 });
 function meta() {
@@ -41199,8 +51775,8 @@ function meta() {
 		content: "Portal Rencana Pelaksanaan Pembelajaran Kurikulum Pembelajaran Mendalam"
 	}];
 }
-async function loader$2({ request }) {
-	if ((request.headers.get("Cookie")?.split(";").find((c) => c.trim().startsWith("session=")))?.split("=")[1]) return redirect("/dashboard");
+async function loader$1({ request }) {
+	if (await getWebSessionUserId(request)) return redirect("/dashboard");
 	return null;
 }
 var _index_default = withComponentProps(function HomeRoute() {
@@ -41301,71 +51877,21 @@ var _index_default = withComponentProps(function HomeRoute() {
 });
 //#endregion
 //#region app/routes/logout.tsx
-var logout_exports = /* @__PURE__ */ __exportAll({ loader: () => loader$1 });
-async function loader$1() {
-	return redirect("/", { headers: { "Set-Cookie": "session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0" } });
-}
-//#endregion
-//#region app/routes/login.tsx
-var login_exports = /* @__PURE__ */ __exportAll({
-	default: () => login_default,
-	loader: () => loader
-});
+var logout_exports = /* @__PURE__ */ __exportAll({ loader: () => loader });
 async function loader({ request }) {
-	const token = new URL(request.url).searchParams.get("token");
-	if (!token) return { error: "Token login tidak ditemukan. Harap dapatkan link login baru dari Telegram Bot." };
-	const db = getDb();
-	const sessions = await db.select().from(webSessions).where(eq(webSessions.token, token)).limit(1);
-	if (sessions.length === 0) return { error: "Link login tidak valid atau sudah pernah digunakan sebelumnya." };
-	const session = sessions[0];
-	if (session.expiresAt < Date.now()) {
-		await db.delete(webSessions).where(eq(webSessions.token, token));
-		return { error: "Link login telah kadaluarsa. Harap minta link login baru melalui perintah /riwayat di Telegram." };
-	}
-	await db.delete(webSessions).where(eq(webSessions.token, token));
-	return redirect("/dashboard", { headers: { "Set-Cookie": `session=${session.telegramUserId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000` } });
+	await revokeWebSession(request);
+	return redirect("/", { headers: { "Set-Cookie": clearSessionCookie() } });
 }
-var login_default = withComponentProps(function LoginRoute({ loaderData }) {
-	const error = loaderData?.error;
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		className: "flex min-h-screen flex-col items-center justify-center p-6 text-center bg-zinc-950 text-zinc-100",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "max-w-md w-full bg-zinc-900 border border-zinc-800 p-8 rounded-2xl shadow-xl space-y-6",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-				className: "text-3xl font-extrabold tracking-tight text-indigo-400",
-				children: "Autentikasi Portal RPP"
-			}), error ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "space-y-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "p-4 bg-red-950/50 border border-red-900 text-red-300 rounded-xl text-sm",
-					children: error
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					className: "text-zinc-400 text-sm",
-					children: [
-						"Silakan kembali ke Telegram Bot dan ketik ",
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("code", {
-							className: "px-1.5 py-0.5 bg-zinc-800 text-indigo-300 rounded font-mono",
-							children: "/riwayat"
-						}),
-						" untuk mendapatkan link masuk yang baru."
-					]
-				})]
-			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex flex-col items-center space-y-4",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-zinc-300",
-					children: "Sedang memproses masuk ke dashboard Anda..."
-				})]
-			})]
-		})
-	});
-});
 //#endregion
 //#region \0virtual:react-router/server-manifest
 var server_manifest_default = {
 	"entry": {
-		"module": "/assets/entry.client-OOcjwcn8.js",
-		"imports": ["/assets/jsx-runtime-Bvokxn9E.js", "/assets/errorBoundaries-CCHTrs6S.js"],
+		"module": "/assets/entry.client-CJU3SiHV.js",
+		"imports": [
+			"/assets/jsx-runtime-gp_OAnKz.js",
+			"/assets/react-dom-BLGHtUyv.js",
+			"/assets/errorBoundaries-B4njA7Gd.js"
+		],
 		"css": []
 	},
 	"routes": {
@@ -41382,12 +51908,35 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": true,
-			"module": "/assets/root-DkxbNTlh.js",
+			"module": "/assets/root-C07lPpAc.js",
 			"imports": [
-				"/assets/jsx-runtime-Bvokxn9E.js",
-				"/assets/errorBoundaries-CCHTrs6S.js",
-				"/assets/analytics-BR48IMDs.js"
+				"/assets/jsx-runtime-gp_OAnKz.js",
+				"/assets/react-dom-BLGHtUyv.js",
+				"/assets/errorBoundaries-B4njA7Gd.js",
+				"/assets/lib-BVObsyK-.js",
+				"/assets/analytics-BwU2sFW5.js"
 			],
+			"css": [],
+			"clientActionModule": void 0,
+			"clientLoaderModule": void 0,
+			"clientMiddlewareModule": void 0,
+			"hydrateFallbackModule": void 0
+		},
+		"routes/artifacts.$id": {
+			"id": "routes/artifacts.$id",
+			"parentId": "root",
+			"path": "artifacts/:id",
+			"index": void 0,
+			"caseSensitive": void 0,
+			"hasAction": false,
+			"hasLoader": true,
+			"hasClientAction": false,
+			"hasClientLoader": false,
+			"hasClientMiddleware": false,
+			"hasDefaultExport": false,
+			"hasErrorBoundary": false,
+			"module": "/assets/artifacts._id-BvRk9kiK.js",
+			"imports": [],
 			"css": [],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -41415,6 +51964,52 @@ var server_manifest_default = {
 			"clientMiddlewareModule": void 0,
 			"hydrateFallbackModule": void 0
 		},
+		"routes/portal-login": {
+			"id": "routes/portal-login",
+			"parentId": "root",
+			"path": "portal-login",
+			"index": void 0,
+			"caseSensitive": void 0,
+			"hasAction": false,
+			"hasLoader": true,
+			"hasClientAction": false,
+			"hasClientLoader": false,
+			"hasClientMiddleware": false,
+			"hasDefaultExport": true,
+			"hasErrorBoundary": false,
+			"module": "/assets/portal-login-Dt7d_2TR.js",
+			"imports": [
+				"/assets/jsx-runtime-gp_OAnKz.js",
+				"/assets/lib-BVObsyK-.js",
+				"/assets/errorBoundaries-B4njA7Gd.js"
+			],
+			"css": [],
+			"clientActionModule": void 0,
+			"clientLoaderModule": void 0,
+			"clientMiddlewareModule": void 0,
+			"hydrateFallbackModule": void 0
+		},
+		"routes/portal-login.confirm": {
+			"id": "routes/portal-login.confirm",
+			"parentId": "routes/portal-login",
+			"path": "confirm",
+			"index": void 0,
+			"caseSensitive": void 0,
+			"hasAction": false,
+			"hasLoader": true,
+			"hasClientAction": false,
+			"hasClientLoader": false,
+			"hasClientMiddleware": false,
+			"hasDefaultExport": true,
+			"hasErrorBoundary": false,
+			"module": "/assets/portal-login.confirm-BuY24zBs.js",
+			"imports": ["/assets/jsx-runtime-gp_OAnKz.js"],
+			"css": [],
+			"clientActionModule": void 0,
+			"clientLoaderModule": void 0,
+			"clientMiddlewareModule": void 0,
+			"hydrateFallbackModule": void 0
+		},
 		"routes/dashboard": {
 			"id": "routes/dashboard",
 			"parentId": "root",
@@ -41428,8 +52023,8 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/dashboard-DT4kR48j.js",
-			"imports": ["/assets/jsx-runtime-Bvokxn9E.js"],
+			"module": "/assets/dashboard-CU0_jRRI.js",
+			"imports": ["/assets/jsx-runtime-gp_OAnKz.js"],
 			"css": [],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -41449,8 +52044,8 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/_index-Bvqcf54M.js",
-			"imports": ["/assets/jsx-runtime-Bvokxn9E.js"],
+			"module": "/assets/_index-BQznlLjv.js",
+			"imports": ["/assets/jsx-runtime-gp_OAnKz.js"],
 			"css": [],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -41477,31 +52072,10 @@ var server_manifest_default = {
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
 			"hydrateFallbackModule": void 0
-		},
-		"routes/login": {
-			"id": "routes/login",
-			"parentId": "root",
-			"path": "login",
-			"index": void 0,
-			"caseSensitive": void 0,
-			"hasAction": false,
-			"hasLoader": true,
-			"hasClientAction": false,
-			"hasClientLoader": false,
-			"hasClientMiddleware": false,
-			"hasDefaultExport": true,
-			"hasErrorBoundary": false,
-			"module": "/assets/login-DbMRsi25.js",
-			"imports": ["/assets/jsx-runtime-Bvokxn9E.js"],
-			"css": [],
-			"clientActionModule": void 0,
-			"clientLoaderModule": void 0,
-			"clientMiddlewareModule": void 0,
-			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-aae5d126.js",
-	"version": "aae5d126",
+	"url": "/assets/manifest-ce8b2d71.js",
+	"version": "ce8b2d71",
 	"sri": void 0
 };
 //#endregion
@@ -41524,6 +52098,14 @@ var routes = {
 		caseSensitive: void 0,
 		module: root_exports
 	},
+	"routes/artifacts.$id": {
+		id: "routes/artifacts.$id",
+		parentId: "root",
+		path: "artifacts/:id",
+		index: void 0,
+		caseSensitive: void 0,
+		module: artifacts_$id_exports
+	},
 	"routes/download.$id": {
 		id: "routes/download.$id",
 		parentId: "root",
@@ -41531,6 +52113,22 @@ var routes = {
 		index: void 0,
 		caseSensitive: void 0,
 		module: download_$id_exports
+	},
+	"routes/portal-login": {
+		id: "routes/portal-login",
+		parentId: "root",
+		path: "portal-login",
+		index: void 0,
+		caseSensitive: void 0,
+		module: portal_login_exports
+	},
+	"routes/portal-login.confirm": {
+		id: "routes/portal-login.confirm",
+		parentId: "routes/portal-login",
+		path: "confirm",
+		index: void 0,
+		caseSensitive: void 0,
+		module: portal_login_confirm_exports
 	},
 	"routes/dashboard": {
 		id: "routes/dashboard",
@@ -41555,16 +52153,8 @@ var routes = {
 		index: void 0,
 		caseSensitive: void 0,
 		module: logout_exports
-	},
-	"routes/login": {
-		id: "routes/login",
-		parentId: "root",
-		path: "login",
-		index: void 0,
-		caseSensitive: void 0,
-		module: login_exports
 	}
 };
 var allowedActionOrigins = false;
 //#endregion
-export { allowedActionOrigins, server_manifest_default as assets, assetsBuildDirectory, basename, entry, future, isSpaMode, prerender, publicPath, routeDiscovery, routes, ssr };
+export { allowedActionOrigins, server_manifest_default as assets, assetsBuildDirectory, basename, entry, future, isSpaMode, event_streams_exports as n, prerender, publicPath, routeDiscovery, routes, ssr, dist_es_exports as t };

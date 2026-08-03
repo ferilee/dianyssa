@@ -56,7 +56,7 @@ export default defineAction({
     return {
       status: "success",
       rppId,
-      message: `Draf RPP untuk ${args.subject} ${args.grade} berhasil disimpan dengan ID ${rppId} dan status draft.${syncMessage} Tampilkan ringkasannya kepada guru, lalu panggil aksi 'approve-rpp' sebelum mengekspor dokumen.`,
+      message: `Draf RPP untuk ${args.subject} ${args.grade} berhasil disimpan dengan ID ${rppId} dan status draft.${syncMessage} Tampilkan ringkasannya kepada guru. Untuk Telegram, minta guru mengirim perintah final 'Setuju', 'Cetak DOCX', atau 'Cetak PDF'; adapter akan menyetujui dan mengantrikan ekspor secara aman.`,
     };
   },
 });
