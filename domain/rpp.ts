@@ -2,6 +2,19 @@ import { z } from "zod";
 
 const nonEmpty = z.string().trim().min(1);
 
+export const graduateProfileDimensions = [
+  "Keimanan",
+  "Kewargaan",
+  "Penalaran Kritis",
+  "Kreativitas",
+  "Kolaborasi",
+  "Kemandirian",
+  "Kesehatan",
+  "Komunikasi",
+] as const;
+
+const graduateProfileDimensionSet = new Set<string>(graduateProfileDimensions);
+
 export const rppDraftSchema = z.object({
   teacherName: nonEmpty,
   headmasterName: nonEmpty,
@@ -37,6 +50,33 @@ export const rppDraftSchema = z.object({
 });
 
 export type RppDraft = z.infer<typeof rppDraftSchema>;
+
+export function validateRppDraftQuality(draft: RppDraft): string[] {
+  const issues: string[] = [];
+  const dimensions = draft.identification.graduateProfileDimensions;
+  const normalizedDimensions = dimensions.map((dimension) => dimension.trim().toLowerCase());
+
+  const unsupportedDimensions = dimensions.filter(
+    (dimension) => !graduateProfileDimensionSet.has(dimension),
+  );
+  if (unsupportedDimensions.length > 0) {
+    issues.push(`Dimensi Profil Lulusan tidak valid: ${unsupportedDimensions.join(", ")}.`);
+  }
+  if (new Set(normalizedDimensions).size !== normalizedDimensions.length) {
+    issues.push("Dimensi Profil Lulusan tidak boleh duplikat.");
+  }
+
+  if (!/^\d{4}\/\d{4}$/.test(draft.academicYear)) {
+    issues.push("Tahun ajaran harus memakai format YYYY/YYYY, misalnya 2026/2027.");
+  }
+
+  const objectives = draft.design.learningObjectives.map((objective) => objective.trim().toLowerCase());
+  if (new Set(objectives).size !== objectives.length) {
+    issues.push("Tujuan pembelajaran tidak boleh duplikat.");
+  }
+
+  return issues;
+}
 
 function section(title: string, items: string[]): string {
   return `## ${title}\n${items.map((item) => `- ${item}`).join("\n")}`;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { rppDraftSchema, rppDraftToMarkdown } from "../domain/rpp";
+import { rppDraftSchema, rppDraftToMarkdown, validateRppDraftQuality } from "../domain/rpp";
 
 const draft = {
   teacherName: "Ibu Sari",
@@ -50,5 +50,27 @@ describe("RPP domain", () => {
       ...draft,
       identification: { ...draft.identification, graduateProfileDimensions: [] },
     })).toThrow();
+  });
+
+  it("flags quality issues that would make an RPP inconsistent", () => {
+    const parsed = rppDraftSchema.parse({
+      ...draft,
+      academicYear: "2026-2027",
+      identification: {
+        ...draft.identification,
+        graduateProfileDimensions: ["Penalaran Kritis", "Penalaran Kritis", "Tidak Valid"],
+      },
+      design: {
+        ...draft.design,
+        learningObjectives: ["Menjelaskan komponen ekosistem.", "Menjelaskan komponen ekosistem."],
+      },
+    });
+
+    expect(validateRppDraftQuality(parsed)).toEqual([
+      "Dimensi Profil Lulusan tidak valid: Tidak Valid.",
+      "Dimensi Profil Lulusan tidak boleh duplikat.",
+      "Tahun ajaran harus memakai format YYYY/YYYY, misalnya 2026/2027.",
+      "Tujuan pembelajaran tidak boleh duplikat.",
+    ]);
   });
 });

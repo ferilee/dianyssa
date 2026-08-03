@@ -4,13 +4,17 @@ import crypto from "node:crypto";
 import { resolveIdeTechSession } from "../lib/resolve-session";
 import { createIdeTechClient } from "../lib/idetech-client";
 import { requireAuthorizedActor } from "../server/auth/authorization.js";
-import { rppDraftSchema, rppDraftToMarkdown } from "../domain/rpp.js";
+import { rppDraftSchema, rppDraftToMarkdown, validateRppDraftQuality } from "../domain/rpp.js";
 
 export default defineAction({
   description: "Menyimpan draf RPP baru yang telah disepakati ke dalam database dan menghasilkan ID RPP.",
   schema: rppDraftSchema.describe("Draf RPP Pembelajaran Mendalam terstruktur dan tervalidasi."),
   run: async (args, ctx) => {
     const actor = await requireAuthorizedActor(ctx);
+    const qualityIssues = validateRppDraftQuality(args);
+    if (qualityIssues.length > 0) {
+      throw new Error(`Draf RPP belum memenuhi validasi kualitas: ${qualityIssues.join(" ")}`);
+    }
     const db = getDb();
     const rppId = crypto.randomUUID();
 
