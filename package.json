@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "agent-native dev",
+    "prebuild": "node scripts/patch-agent-native-core.js",
     "build": "agent-native build",
     "postbuild": "node scripts/patch-output.js",
     "start": "agent-native start",
