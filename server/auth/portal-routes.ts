@@ -1,4 +1,5 @@
 export const PORTAL_LOGIN_PATH = "/portal-login";
+export const PORTAL_LOGIN_CONFIRM_PATH = `${PORTAL_LOGIN_PATH}/confirm`;
 
 // These routes perform their own Telegram portal-session authorization. They
 // must bypass Agent-Native's separate Better Auth guard so a Telegram magic

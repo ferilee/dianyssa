@@ -1,6 +1,6 @@
-import { Form, redirect, useActionData } from "react-router";
+import { Form } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
-import { consumeMagicLinkToken, createWebSession, sessionCookie } from "../../server/auth/web-session.js";
+import { PORTAL_LOGIN_CONFIRM_PATH } from "../../server/auth/portal-routes.js";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -15,28 +15,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return { token };
 }
 
-export async function action({ request }: LoaderFunctionArgs) {
-  const formData = await request.formData();
-  const token = String(formData.get("token") ?? "");
-
-  if (!token) {
-    return { error: "Token login tidak ditemukan. Harap dapatkan link login baru dari Telegram Bot." };
-  }
-
-  const telegramUserId = await consumeMagicLinkToken(token);
-  if (!telegramUserId) {
-    return { error: "Link login tidak valid, kadaluarsa, atau sudah pernah digunakan." };
-  }
-
-  const sessionToken = await createWebSession(telegramUserId);
-  return redirect("/dashboard", {
-    headers: { "Set-Cookie": sessionCookie(sessionToken) },
-  });
-}
-
 export default function PortalLoginRoute({ loaderData }: { loaderData?: { error?: string; token?: string } }) {
-  const actionData = useActionData<typeof action>();
-  const error = actionData?.error ?? loaderData?.error;
+  const error = loaderData?.error;
   const token = loaderData?.token;
 
   return (
@@ -56,7 +36,7 @@ export default function PortalLoginRoute({ loaderData }: { loaderData?: { error?
             </p>
           </div>
         ) : token ? (
-          <Form method="post" className="space-y-4">
+          <Form method="get" action={PORTAL_LOGIN_CONFIRM_PATH} className="space-y-4">
             <p className="text-zinc-300 text-sm">
               Tekan tombol di bawah untuk masuk ke dashboard RPP Anda.
             </p>
