@@ -19,6 +19,9 @@ services:
       # AI Configuration
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       GEMINI_API_BASE_URL: ${GEMINI_API_BASE_URL:-https://generativelanguage.googleapis.com/v1beta}
+      # Agent Native's Google provider uses the Vercel AI SDK variable below.
+      GOOGLE_GENERATIVE_AI_API_KEY: ${GOOGLE_GENERATIVE_AI_API_KEY}
+      AGENT_ENGINE: ${AGENT_ENGINE:-ai-sdk:google}
 
       # App
       APP_URL: ${APP_URL:-http://localhost:3000}
