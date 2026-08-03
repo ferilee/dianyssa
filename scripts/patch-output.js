@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { patchBundledIntegrationDispatch } from './patch-bundled-integration-dispatch.js';
 
 const serverDir = path.resolve(process.cwd(), '.output/server');
 const outputDir = path.resolve(serverDir, '_libs');
@@ -31,16 +32,17 @@ for (const filePath of files) {
   // Patch ALL .js and .mjs files under _libs that contain __dirname
   if (filePath.endsWith('.mjs') || filePath.endsWith('.js')) {
     const original = fs.readFileSync(filePath, 'utf-8');
-    if (original.includes('__dirname')) {
-      const patched = original.replace(
+    let patched = patchBundledIntegrationDispatch(original);
+    if (patched.includes('__dirname')) {
+      patched = patched.replace(
         /(?<![\w$.])__dirname(?![\w$])/g,
         'import.meta.dirname'
       );
-      if (patched !== original) {
-        fs.writeFileSync(filePath, patched, 'utf-8');
-        console.log(`[patch-output] Patched __dirname in ${path.relative(serverDir, filePath)}`);
-        patchedCount++;
-      }
+    }
+    if (patched !== original) {
+      fs.writeFileSync(filePath, patched, 'utf-8');
+      console.log(`[patch-output] Patched ${path.relative(serverDir, filePath)}`);
+      patchedCount++;
     }
   }
 }
