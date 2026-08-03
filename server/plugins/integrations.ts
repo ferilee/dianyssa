@@ -19,6 +19,44 @@ import { telegramOwnerEmail } from "../auth/telegram-identity.js";
 import { parseRppFinalApproval } from "../rpp/approval-intent.js";
 
 let cachedBotUsername: string | null = null;
+const telegramTypingTimers = new Map<string, ReturnType<typeof setInterval>>();
+
+async function sendTelegramTyping(chatId: string | number): Promise<void> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return;
+
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendChatAction`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, action: "typing" }),
+    });
+  } catch (error) {
+    // The typing indicator is a best-effort UX enhancement. Never let a
+    // temporary Telegram network failure interrupt the actual agent run.
+    console.warn("[telegram] Failed to send typing indicator:", error);
+  }
+}
+
+function startTelegramTyping(chatId: string | number): string {
+  const key = String(chatId);
+  stopTelegramTyping(key);
+  void sendTelegramTyping(chatId);
+
+  // Telegram clears `typing` after roughly five seconds. Refresh it while the
+  // asynchronously-dispatched agent run is still working.
+  const timer = setInterval(() => void sendTelegramTyping(chatId), 4_000);
+  timer.unref?.();
+  telegramTypingTimers.set(key, timer);
+  return key;
+}
+
+function stopTelegramTyping(key: string | undefined): void {
+  if (!key) return;
+  const timer = telegramTypingTimers.get(key);
+  if (timer) clearInterval(timer);
+  telegramTypingTimers.delete(key);
+}
 
 async function getBotUsername(token: string): Promise<string> {
   if (cachedBotUsername) return cachedBotUsername;
@@ -66,6 +104,15 @@ const originalTelegramAdapter = telegramAdapter();
 
 const customTelegramAdapter = {
   ...originalTelegramAdapter,
+  async postProcessingPlaceholder(incoming: any) {
+    const chatId = incoming.platformContext?.chatId;
+    if (chatId === undefined || chatId === null) return null;
+    return { placeholderRef: startTelegramTyping(chatId) };
+  },
+  async sendResponse(message: any, incoming: any, options?: { placeholderRef?: string }) {
+    stopTelegramTyping(options?.placeholderRef ?? String(incoming.platformContext?.chatId ?? ""));
+    await originalTelegramAdapter.sendResponse(message, incoming, options);
+  },
   async parseIncomingMessage(event: any) {
     const body = event.context.__rawBody ?? (await readBody(event).catch(() => null));
     if (!body) return null;
@@ -108,11 +155,14 @@ const customTelegramAdapter = {
 };
 
 async function runActionByName(name: string, args: any, userId: string): Promise<any> {
-  const actionModule = await import(`../../actions/${name}.js`).catch(() => null);
+  // Use the generated static registry rather than a variable dynamic import.
+  // Nitro only guarantees modules from this registry are present in the
+  // production bundle, which is essential for Telegram-only commands.
+  const actionModule = (actionsRegistry as Record<string, any>)[name] ?? null;
   if (!actionModule) {
     throw new Error(`Aksi '${name}' tidak ditemukan.`);
   }
-  const action = actionModule.default;
+  const action = actionModule.default ?? actionModule;
   if (!action?.run) {
     throw new Error(`Aksi '${name}' tidak memiliki method run.`);
   }
