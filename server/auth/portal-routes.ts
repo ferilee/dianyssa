@@ -8,6 +8,7 @@ export const RPP_PORTAL_PUBLIC_PATHS = [
   "/",
   PORTAL_LOGIN_PATH,
   "/dashboard",
+  "/dashboard.data",
   "/download",
   "/artifacts",
   "/logout",

@@ -18,6 +18,7 @@ describe("portal magic-link routing", () => {
       "/",
       "/portal-login",
       "/dashboard",
+      "/dashboard.data",
       "/download",
       "/artifacts",
       "/logout",
