@@ -10,6 +10,7 @@ import { readBody } from "h3";
 // @ts-ignore
 import pdfjs from "pdf-parse/lib/pdf.js/v1.10.100/build/pdf.js";
 import mammoth from "mammoth";
+import QRCode from "qrcode";
 
 // Nitro plugin compiles this registry dynamically from the actions folder
 import actionsRegistry from "../../.generated/actions-registry.js";
@@ -18,6 +19,13 @@ import { buildPortalLoginUrl } from "../auth/portal-routes.js";
 import { telegramOwnerEmail } from "../auth/telegram-identity.js";
 import { parseRppFinalApproval } from "../rpp/approval-intent.js";
 import { RPP_SYSTEM_PROMPT } from "../rpp/system-prompt.js";
+import {
+  hashAttendanceToken,
+  isAttendanceSessionOpen,
+  issueAttendanceToken,
+  parseAttendanceOpenCommand,
+  parseAttendanceStartPayload,
+} from "../../domain/attendance.js";
 
 let cachedBotUsername: string | null = null;
 const telegramTypingTimers = new Map<string, ReturnType<typeof setInterval>>();
@@ -36,6 +44,29 @@ async function sendTelegramTyping(chatId: string | number): Promise<void> {
     // The typing indicator is a best-effort UX enhancement. Never let a
     // temporary Telegram network failure interrupt the actual agent run.
     console.warn("[telegram] Failed to send typing indicator:", error);
+  }
+}
+
+async function sendTelegramQr(
+  chatId: string | number,
+  image: Buffer,
+  caption: string,
+): Promise<void> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) throw new Error("TELEGRAM_BOT_TOKEN belum dikonfigurasi.");
+
+  const form = new FormData();
+  form.set("chat_id", String(chatId));
+  form.set("caption", caption);
+  form.set("parse_mode", "Markdown");
+  form.set("photo", new Blob([new Uint8Array(image)], { type: "image/png" }), "qr-presensi.png");
+
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+    method: "POST",
+    body: form,
+  });
+  if (!response.ok) {
+    throw new Error(`Telegram gagal mengirim QR (${response.status}).`);
   }
 }
 
@@ -202,6 +233,8 @@ export default createIntegrationsPlugin({
     }
 
     const token = process.env.TELEGRAM_BOT_TOKEN || "";
+    const rawText = (incoming.platformContext.rawText as string) || incoming.text;
+    const trimmed = rawText.trim();
 
     const initialAdminTelegramId = process.env.INITIAL_ADMIN_TELEGRAM_ID?.trim();
     if (!initialAdminTelegramId || !/^\d+$/.test(initialAdminTelegramId)) {
@@ -229,6 +262,61 @@ export default createIntegrationsPlugin({
       });
       await db.insert(schema.organizationMemberships).values({ id: `default:${userId}`, organizationId: "default", telegramUserId: userId, role: "platform_admin", createdAt: Date.now() }).onConflictDoNothing();
       console.log(`[auth] Seeded configured initial admin (${name} - ${userId}).`);
+    }
+
+    // QR attendance is intentionally available before the teacher-only
+    // whitelist check: students authenticate through Telegram plus a
+    // short-lived, hashed QR token issued by their teacher.
+    const attendancePayload = parseAttendanceStartPayload(trimmed);
+    if (attendancePayload) {
+      const tokenHash = hashAttendanceToken(attendancePayload);
+      const [session] = await db
+        .select()
+        .from(schema.attendanceSessions)
+        .where(eq(schema.attendanceSessions.tokenHash, tokenHash))
+        .limit(1);
+
+      if (!session || !isAttendanceSessionOpen(session)) {
+        return {
+          handled: true,
+          responseText: "QR presensi tidak valid atau sesi presensi sudah ditutup/kedaluwarsa.",
+        };
+      }
+
+      const [existingRecord] = await db
+        .select({ id: schema.attendanceRecords.id })
+        .from(schema.attendanceRecords)
+        .where(
+          and(
+            eq(schema.attendanceRecords.attendanceSessionId, session.id),
+            eq(schema.attendanceRecords.telegramUserId, userId),
+          ),
+        )
+        .limit(1);
+
+      if (existingRecord) {
+        return {
+          handled: true,
+          responseText: `Presensi Anda untuk kelas *${session.className}* sudah tercatat.`,
+        };
+      }
+
+      const studentName = String(
+        incoming.senderName?.trim() || incoming.platformContext.fromUsername || `Siswa ${userId}`,
+      );
+      await db.insert(schema.attendanceRecords).values({
+        id: crypto.randomUUID(),
+        attendanceSessionId: String(session.id),
+        organizationId: String(session.organizationId),
+        telegramUserId: userId,
+        studentName,
+        source: "telegram_qr",
+        checkedInAt: Date.now(),
+      });
+      return {
+        handled: true,
+        responseText: `✅ Kehadiran *${studentName}* untuk kelas *${session.className}* berhasil dicatat.`,
+      };
     }
 
     // 2. Cek Akses Whitelist
@@ -292,9 +380,116 @@ export default createIntegrationsPlugin({
     }
 
     // 3. Tangani Perintah Khusus Telegram
-    const rawText = (incoming.platformContext.rawText as string) || incoming.text;
-    const trimmed = rawText.trim();
     const lower = trimmed.toLowerCase();
+
+    // ─── Presensi hybrid: guru membuka QR, siswa scan ke deep-link Telegram ───
+    if (/^\/presensi\s+buka\b/i.test(trimmed)) {
+      const command = parseAttendanceOpenCommand(trimmed);
+      if (!command) {
+        return {
+          handled: true,
+          responseText: "Format salah. Gunakan: `/presensi buka <kelas> [durasi_menit]`\nContoh: `/presensi buka XI RPL 15`",
+        };
+      }
+
+      const botUsername = await getBotUsername(token);
+      if (!botUsername) {
+        return {
+          handled: true,
+          responseText: "Username bot Telegram belum tersedia. Atur username bot melalui BotFather, lalu coba lagi.",
+        };
+      }
+
+      const now = Date.now();
+      const issued = issueAttendanceToken();
+      const sessionId = crypto.randomUUID();
+      const expiresAt = now + command.durationMinutes * 60_000;
+      const deepLink = `https://t.me/${botUsername}?start=att_${issued.token}`;
+      await db.insert(schema.attendanceSessions).values({
+        id: sessionId,
+        organizationId: user.organizationId,
+        className: command.className,
+        openedByTelegramUserId: userId,
+        tokenHash: issued.tokenHash,
+        openedAt: now,
+        expiresAt,
+      });
+
+      try {
+        const qrImage = await QRCode.toBuffer(deepLink, {
+          type: "png",
+          width: 720,
+          margin: 2,
+          errorCorrectionLevel: "M",
+        });
+        const chatId = incoming.platformContext.chatId;
+        if (chatId === undefined || chatId === null) {
+          throw new Error("Chat Telegram tidak ditemukan.");
+        }
+        await sendTelegramQr(
+          String(chatId),
+          qrImage,
+          `*QR Presensi ${command.className}*\nScan QR ini untuk membuka bot dan mencatat kehadiran.\nBerlaku ${command.durationMinutes} menit.`,
+        );
+      } catch (error) {
+        await db.delete(schema.attendanceSessions).where(eq(schema.attendanceSessions.id, sessionId));
+        console.error("[attendance] Failed to generate/send QR:", error);
+        return {
+          handled: true,
+          responseText: "QR presensi gagal dibuat. Sesi tidak dibuka; silakan coba lagi.",
+        };
+      }
+
+      return {
+        handled: true,
+        responseText: `Sesi presensi *${command.className}* telah dibuka sampai ${new Date(expiresAt).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}.`,
+      };
+    }
+
+    if (trimmed === "/presensi tutup") {
+      const sessions = await db
+        .select()
+        .from(schema.attendanceSessions)
+        .where(
+          and(
+            eq(schema.attendanceSessions.organizationId, user.organizationId),
+            eq(schema.attendanceSessions.openedByTelegramUserId, userId),
+          ),
+        )
+        .orderBy(desc(schema.attendanceSessions.openedAt))
+        .limit(10);
+      const session = sessions.find((candidate) => isAttendanceSessionOpen(candidate));
+      if (!session) {
+        return { handled: true, responseText: "Tidak ada sesi presensi aktif yang Anda buka." };
+      }
+      await db
+        .update(schema.attendanceSessions)
+        .set({ closedAt: Date.now() })
+        .where(eq(schema.attendanceSessions.id, session.id));
+      return { handled: true, responseText: `Sesi presensi *${session.className}* telah ditutup.` };
+    }
+
+    if (trimmed === "/presensi rekap") {
+      const [session] = await db
+        .select()
+        .from(schema.attendanceSessions)
+        .where(eq(schema.attendanceSessions.organizationId, user.organizationId))
+        .orderBy(desc(schema.attendanceSessions.openedAt))
+        .limit(1);
+      if (!session) {
+        return { handled: true, responseText: "Belum ada sesi presensi untuk organisasi ini." };
+      }
+      const records = await db
+        .select({ studentName: schema.attendanceRecords.studentName, checkedInAt: schema.attendanceRecords.checkedInAt })
+        .from(schema.attendanceRecords)
+        .where(eq(schema.attendanceRecords.attendanceSessionId, session.id))
+        .orderBy(schema.attendanceRecords.checkedInAt);
+      const names = records.slice(0, 30).map((record, index) => `${index + 1}. ${record.studentName}`).join("\n");
+      return {
+        handled: true,
+        responseText: `*Rekap Presensi ${session.className}*\nHadir: *${records.length}* siswa\n${names || "Belum ada siswa yang hadir."}`,
+      };
+    }
 
     // Perintah /addguru (Hanya Admin)
     if (trimmed.startsWith("/addguru")) {

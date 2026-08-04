@@ -219,6 +219,38 @@ export const rppBotMigrations: Array<RppBotMigration> = [
     `,
   },
   { version: 13, sql: `ALTER TABLE web_portal_sessions ADD COLUMN active_organization_id TEXT NOT NULL DEFAULT 'default';` },
+  {
+    version: 14,
+    sql: `
+      CREATE TABLE IF NOT EXISTS attendance_sessions (
+        id TEXT PRIMARY KEY,
+        organization_id TEXT NOT NULL DEFAULT 'default',
+        class_name TEXT NOT NULL,
+        opened_by_telegram_user_id TEXT NOT NULL,
+        token_hash TEXT NOT NULL UNIQUE,
+        opened_at INTEGER NOT NULL,
+        expires_at INTEGER NOT NULL,
+        closed_at INTEGER
+      );
+      CREATE INDEX IF NOT EXISTS idx_attendance_sessions_open
+        ON attendance_sessions (organization_id, expires_at, closed_at);
+
+      CREATE TABLE IF NOT EXISTS attendance_records (
+        id TEXT PRIMARY KEY,
+        attendance_session_id TEXT NOT NULL,
+        organization_id TEXT NOT NULL DEFAULT 'default',
+        telegram_user_id TEXT NOT NULL,
+        student_name TEXT NOT NULL,
+        source TEXT NOT NULL,
+        checked_in_at INTEGER NOT NULL,
+        UNIQUE (attendance_session_id, telegram_user_id)
+      );
+      CREATE INDEX IF NOT EXISTS idx_attendance_records_session
+        ON attendance_records (attendance_session_id, checked_in_at);
+      CREATE INDEX IF NOT EXISTS idx_attendance_records_student
+        ON attendance_records (organization_id, telegram_user_id, checked_in_at);
+    `,
+  },
 ];
 
 export const RPP_BOT_MIGRATIONS_TABLE = "rpp_bot_migrations";

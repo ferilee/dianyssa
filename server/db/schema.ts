@@ -115,3 +115,27 @@ export const ideTechSessions = table("ide_tech_sessions", {
   createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 });
+
+// Presensi dipisahkan dari domain RPP. Token mentah QR tidak pernah disimpan;
+// hanya hash-nya yang tersimpan sehingga kebocoran database tidak dapat dipakai
+// untuk melakukan check-in ulang.
+export const attendanceSessions = table("attendance_sessions", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default("default"),
+  className: text("class_name").notNull(),
+  openedByTelegramUserId: text("opened_by_telegram_user_id").notNull(),
+  tokenHash: text("token_hash").notNull().unique(),
+  openedAt: integer("opened_at").notNull(),
+  expiresAt: integer("expires_at").notNull(),
+  closedAt: integer("closed_at"),
+});
+
+export const attendanceRecords = table("attendance_records", {
+  id: text("id").primaryKey(),
+  attendanceSessionId: text("attendance_session_id").notNull(),
+  organizationId: text("organization_id").notNull().default("default"),
+  telegramUserId: text("telegram_user_id").notNull(),
+  studentName: text("student_name").notNull(),
+  source: text("source").notNull(),
+  checkedInAt: integer("checked_in_at").notNull(),
+});
