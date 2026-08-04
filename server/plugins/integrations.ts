@@ -8,7 +8,7 @@ import { and, desc, eq } from "drizzle-orm";
 import crypto from "node:crypto";
 import { readBody } from "h3";
 // @ts-ignore
-import pdf from "pdf-parse";
+import pdfjs from "pdf-parse/lib/pdf.js/v1.10.100/build/pdf.js";
 import mammoth from "mammoth";
 
 // Nitro plugin compiles this registry dynamically from the actions folder
@@ -91,9 +91,22 @@ async function downloadTelegramFile(fileId: string, token: string): Promise<Buff
 async function parseDocument(buffer: Buffer, fileName: string): Promise<string> {
   const ext = fileName.split(".").pop()?.toLowerCase();
   if (ext === "pdf") {
-    // @ts-ignore
-    const data = await pdf(buffer);
-    return data.text || "";
+    // Do not call pdf-parse's top-level helper here. It dynamically requires
+    // its pdf.js file, which resolves relative to Nitro's _runtime.mjs after
+    // bundling and fails in production. A static import keeps the parser in
+    // the server bundle and is deterministic in Docker.
+    const document = await pdfjs.getDocument(buffer);
+    const pages: string[] = [];
+    for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
+      const page = await document.getPage(pageNumber);
+      const content = await page.getTextContent({
+        normalizeWhitespace: false,
+        disableCombineTextItems: false,
+      });
+      pages.push(content.items.map((item: { str?: string }) => item.str ?? "").join(" "));
+    }
+    document.destroy();
+    return pages.join("\n\n");
   } else if (ext === "docx") {
     const result = await mammoth.extractRawText({ buffer });
     return result.value || "";
